@@ -3,8 +3,6 @@ package ex01_16;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-class BadDataSetException extends Exception {}
-
 public class MyUtilities {
 	public String DataName;
 	public IOException HoldException;
@@ -17,9 +15,7 @@ public class MyUtilities {
 			in = new FileInputStream(file);
 			return readDataSet(in);
 		} catch (IOException e) {
-			DataName = setName;
-			HoldException = e;
-			throw new BadDataSetException();
+			throw new BadDataSetException(setName, e);
 		} finally {
 			try {
 				if (in != null)
@@ -41,19 +37,17 @@ public class MyUtilities {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) throws BadDataSetException {
+	public static void main(String[] args) throws Exception {
 		MyUtilities test = new MyUtilities();
-
 		try
 		{
 			test.getDataSet("test");
 		}
-		finally
+		catch(BadDataSetException e)
 		{
-			System.out.println(test.DataName);
-			System.out.println(test.HoldException);
+			System.out.println("DataSet: " + e.DataName);
+			System.out.println("Exception: " + e.HoldException);
 		}
-
 	}
 
 }
