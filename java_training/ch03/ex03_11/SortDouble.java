@@ -12,7 +12,7 @@ public abstract class SortDouble {
 		// --  改良部分ここから --
 		if (SortCount > 0)
 		{
-			System.out.println("doSort is used " + SortCount + " times!");
+			System.out.println("doSort is used " + (SortCount + 1) + " times!");
 		}
 		else
 		{
@@ -23,7 +23,7 @@ public abstract class SortDouble {
 
 		/*
 		// オリジナル
-		// curMetrics.init();
+		curMetrics.init();
 		*/
 
 		doSort();

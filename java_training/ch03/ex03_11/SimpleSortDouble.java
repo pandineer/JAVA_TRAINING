@@ -19,7 +19,7 @@ public class SimpleSortDouble extends SortDouble {
 			}
 		}
 		// sortを終えた後に関係ないデータを用いてもう一度ソートを行うと、
-		// カウンタがクリアされ、最終的にcomparesのカウンタ値しか残らない
+		// カウンタが上書きされてしまう
 		if (count == 0)
 		{
 			count = 1;
