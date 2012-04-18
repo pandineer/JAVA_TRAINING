@@ -2,14 +2,14 @@ package ex03_12;
 
 public class TestSort {
 
-	static double[] testData = {
-		0.3, 1.3e-2, 7.9, 3.17
+	static Object[] testData = {
+		"b", "a", "d", "c"
 	};
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		SortDouble bsort = new SimpleSortObject();
+		SortHarness bsort = new SimpleSortObject();
 		SortMetrics metrics = bsort.sort(testData);
 		System.out.println("Metrics: " + metrics);
 		for (int i = 0; i < testData.length; i++)
