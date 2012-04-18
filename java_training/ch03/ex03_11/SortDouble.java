@@ -1,14 +1,31 @@
 package ex03_11;
 
 public abstract class SortDouble {
+	private int SortCount = 0;
 	private double[] values;
 	private final SortMetrics curMetrics = new SortMetrics();
 
-	/** 前ソートをするために呼び出される */
+	/** 全ソートをするために呼び出される */
 	public final SortMetrics sort(double[] data)
 	{
 		values = data;
-		curMetrics.init();
+		// --  改良部分ここから --
+		if (SortCount > 0)
+		{
+			System.out.println("doSort is used " + SortCount + " times!");
+		}
+		else
+		{
+			curMetrics.init();
+		}
+		SortCount++;
+		// -- 改良部分ここまで --
+
+		/*
+		// オリジナル
+		// curMetrics.init();
+		*/
+
 		doSort();
 		return getMetrics();
 	}
