@@ -1,4 +1,4 @@
-package ex03_11;
+package ex03_12;
 
 public class TestSort {
 
@@ -9,7 +9,7 @@ public class TestSort {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		SortDouble bsort = new SimpleSortDouble();
+		SortDouble bsort = new SimpleSortObject();
 		SortMetrics metrics = bsort.sort(testData);
 		System.out.println("Metrics: " + metrics);
 		for (int i = 0; i < testData.length; i++)

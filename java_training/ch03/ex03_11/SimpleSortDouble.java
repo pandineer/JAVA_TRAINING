@@ -7,11 +7,7 @@ public class SimpleSortDouble extends SortDouble {
 
 	protected void doSort()
 	{
-		if (count == 0)
-		{
-			sort(tmp);
-			count = 1;
-		}
+
 		for (int i = 0; i < getDataLength(); i++)
 		{
 			for (int j = i + 1; j < getDataLength(); j++)
@@ -21,6 +17,13 @@ public class SimpleSortDouble extends SortDouble {
 					swap(i, j);
 				}
 			}
+		}
+		// sortを終えた後に関係ないデータを用いてもう一度ソートを行うと、
+		// カウンタがクリアされ、最終的にcomparesのカウンタ値しか残らない
+		if (count == 0)
+		{
+			count = 1;
+			sort(tmp);
 		}
 	}
 }
