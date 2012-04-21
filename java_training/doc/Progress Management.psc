@@ -111,7 +111,7 @@ J2SE 5.0 Tiger第5章、第6章（12頁）</Description>
       <Start>2012-04-07T00:00:00</Start>
       <End>2012-05-04T00:00:00</End>
       <Duration>26</Duration>
-      <Progress>28</Progress>
+      <Progress>36</Progress>
       <Name>第2回テキスト</Name>
       <Owner>1</Owner>
       <Priority>1</Priority>
