@@ -6,6 +6,7 @@
 	<classpathentry kind="src" path="宮原良介/JPL/ch03"/>
 	<classpathentry kind="src" path="宮原良介/JPL/ch04"/>
 	<classpathentry kind="src" path="宮原良介/JPL/ch05"/>
+	<classpathentry kind="src" path="宮原良介/JPL/ch06"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
