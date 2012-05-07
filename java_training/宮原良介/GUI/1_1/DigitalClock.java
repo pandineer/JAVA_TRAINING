@@ -12,6 +12,8 @@ public class DigitalClock extends Frame implements WindowListener, Runnable
     Calendar now = Calendar.getInstance();
     static Thread th;
 
+    // Font f = new Font("TimesRoman", Font.PLAIN, 16);
+
     public DigitalClock(String title)
     {
         super(title);
@@ -89,7 +91,8 @@ public class DigitalClock extends Frame implements WindowListener, Runnable
 
     public void paint(Graphics g)
     {
-        g.drawString(h+":"+m+":"+s, 50, 59);
+    	// setFont(f);
+        g.drawString(h+":"+m+":"+s, 20, 50);
     }
 
 
@@ -98,11 +101,12 @@ public class DigitalClock extends Frame implements WindowListener, Runnable
      */
     public static void main(String[] args)
     {
-        DigitalClock window = new DigitalClock("Test");
+        DigitalClock window = new DigitalClock("Digital Clock");
 
         th = new Thread(window);
 
-        window.setSize(200, 100);
+        window.setSize(200, 150);
+        window.setResizable(false);
         window.setVisible(true);
 
         th.start();     // スレッドスタート
