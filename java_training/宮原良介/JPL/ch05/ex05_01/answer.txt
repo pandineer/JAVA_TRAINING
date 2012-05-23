@@ -1,1 +1,0 @@
-AttributedにAttrがネストされていても良い
