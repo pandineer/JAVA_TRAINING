@@ -1,3 +1,8 @@
+/*
+ * 練習問題1.3 p.5
+ * Fibonacci プログラムの出力リストにタイトルを追加しなさい。
+ */
+
 package ch01.ex01_03;
 
 public class Fibonacci {
