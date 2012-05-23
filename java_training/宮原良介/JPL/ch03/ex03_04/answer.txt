@@ -1,6 +1,0 @@
-Vehicle
-    showCurrentID
-
-PassengerVehicle
-    getSheet
-    getPassenger

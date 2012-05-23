@@ -1,9 +1,0 @@
-Vehicle:
-	ownerが複数いる場合を許すなら必要かもしれない。
-	public void setOwner(String... owners)
-	{
-		//ownersを保存する
-	}
-
-LinkedList:
-	必要ないと思う。
