@@ -1,4 +1,10 @@
-package ex01_12;
+/*
+ * 練習問題1.12 p.19
+ * ImprovedFibonacciを修正してprintlnで文字列を直接表示するのではなく、
+ * Stringオブジェクトを作成して配列に入れるようにしてみてください。
+ */
+
+package ch01.ex01_12;
 
 public class StringArrayImprovedFibonacci {
 
@@ -14,7 +20,6 @@ public class StringArrayImprovedFibonacci {
 		String mark;
 		String[] result = new String[100];
 
-		// System.out.println(START_INDEX + ": " + lo);
 		result[START_INDEX] = START_INDEX + ": " + lo;
 		for (int i = START_INDEX - 1; i >= FINAL_INDEX; i--)
 		{
@@ -26,7 +31,6 @@ public class StringArrayImprovedFibonacci {
 			{
 				mark = "";
 			}
-			// System.out.println(i + ": " + hi + mark);
 			result[i] = i + ": " + hi + mark;
 			hi = lo + hi;
 			lo = hi - lo;
