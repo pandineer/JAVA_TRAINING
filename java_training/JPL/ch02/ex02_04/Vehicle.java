@@ -1,4 +1,9 @@
-package ex02_04;
+/*
+ * 練習問題2.4 p.40
+ * 練習問題2.3に対する答えについて考えてください。識別番号フィールドはfinalとすべきですか。
+ */
+
+package ch02.ex02_04;
 
 public class Vehicle {
 	double currentSpeed;
@@ -14,7 +19,6 @@ public class Vehicle {
 	 */
 	public static void main(String[] args) {
 		Vehicle testVehicle1 = new Vehicle();
-		// testVehicle1.id = Vehicle.nextID++;
 		testVehicle1.currentSpeed = 3.5;
 		testVehicle1.currentDirection = 1.2;
 		testVehicle1.owner = "Bob";
@@ -26,7 +30,6 @@ public class Vehicle {
 		System.out.println("");
 
 		Vehicle testVehicle2 = new Vehicle();
-		// testVehicle2.id = Vehicle.nextID++;
 		testVehicle2.currentSpeed = 42;
 		testVehicle2.currentDirection = 0.5;
 		testVehicle2.owner = "Steve";

@@ -1,6 +1,12 @@
-package ex02_13;
+/*
+ * 練習問題2.13 p.58
+ * Vehicleクラスのフィールドをprivateにして、フィールドに対するアクセッサーメソッドを追加しなさい。
+ * どのフィールドが変更を許すメソッドを持ち、どのフィールドがそのようなメソッドを持つべきではないですか。
+ */
 
-// すべてのフィールドがprivateで良いと思う
+package ch02.ex02_13;
+
+// nextID以外は変更できて良いと思う。
 
 public class Vehicle {
 	private double currentSpeed;
@@ -64,36 +70,14 @@ public class Vehicle {
 	public static void main(String[] args) {
 
 		Vehicle testVehicle1 = new Vehicle("Bob");
-		// testVehicle1.id = Vehicle.nextID++;
-		// testVehicle1.currentSpeed = 3.5;
 		testVehicle1.setCurrentSpeed(3.5);
-		// testVehicle1.currentDirection = 1.2;
 		testVehicle1.setCurrentDirection(1.2);
-		// testVehicle1.owner = "Bob";
 		System.out.println("Id: " + testVehicle1.id);
-		// System.out.println("Current speed: " + testVehicle1.currentSpeed);
 		System.out.println("Current speed: " + testVehicle1.getCurrentSpeed());
-		// System.out.println("Current direction: " + testVehicle1.currentDirection);
 		System.out.println("Current direction: " + testVehicle1.getCurrentDirection());
-		// System.out.println("Owner: " + testVehicle1.owner);
 		System.out.println("Owner: " + testVehicle1.getOwner());
 
 		System.out.println("");
-
-		/*
-		Vehicle testVehicle2 = new Vehicle();
-		// testVehicle2.id = Vehicle.nextID++;
-		testVehicle2.currentSpeed = 42;
-		testVehicle2.currentDirection = 0.5;
-		testVehicle2.owner = "Steve";
-		System.out.println("Id: " + testVehicle2.id);
-		System.out.println("Current speed: " + testVehicle2.currentSpeed);
-		System.out.println("Current direction: " + testVehicle2.currentDirection);
-		System.out.println("Owner: " + testVehicle2.owner);
-
-		System.out.println("");
-		*/
-		// System.out.println("current nextID: " + Vehicle.nextID);
 
 		System.out.println("MAX used ID: " + Vehicle.showCurrentID());
 

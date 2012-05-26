@@ -1,4 +1,9 @@
-package ex02_03;
+/*
+ * 練習問題2.3 p.39
+ * 次の乗り物の識別番号を保持するstaticフィールドと、車単位でID番号を保持するための非staticフィールドをVehicleクラスに追加しなさい。
+ */
+
+package ch02.ex02_03;
 
 public class Vehicle {
 	double currentSpeed;

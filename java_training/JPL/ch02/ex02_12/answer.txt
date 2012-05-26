@@ -1,3 +1,6 @@
+練習問題2.12 p.53
+VehicleクラスにLinkedListクラスを考えてみてください。可変長の引数を取るメソッドの必要性が考えられますか。
+
 Vehicle:
 	ownerが複数いる場合を許すなら必要かもしれない。
 	public void setOwner(String... owners)

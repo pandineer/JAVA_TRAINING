@@ -1,6 +1,12 @@
-package ex02_14;
+/*
+ * 練習問題2.14 p.58
+ * LinkedListクラスのフィールドをprivateにして、フィールドに対するアクセッサーメソッドを追加しなさい。
+ * どのフィールドが変更を許すメソッドを持ち、どのフィールドがそのようなメソッドを持つべきではないですか。
+ */
 
-// すべてのフィールドがprivateで良いと思う
+package ch02.ex02_14;
+
+// すべてて変更可能で良いと思う。
 
 public class LinkedList {
 
@@ -46,15 +52,10 @@ public class LinkedList {
 		Vehicle temporary = new Vehicle();
 
 		LinkedList test = new LinkedList(temporary);
-		// test.object = new Vehicle();
 
 		temporary = new Vehicle();
-		// test.nextObject = new LinkedList(temporary);
 		test.setNextObject(new LinkedList(temporary));
-		// test.nextObject.object = new Vehicle();
-		// System.out.println(((Vehicle)test.object).id);
 		System.out.println(((Vehicle)test.getObject()).id);
-		// System.out.println(((Vehicle)test.nextObject.object).id);
 		System.out.println(((Vehicle)test.getNextObject().getObject()).id);
 
 		System.out.println("");

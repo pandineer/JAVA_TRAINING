@@ -1,4 +1,9 @@
-package ex02_05;
+/*
+ * 練習問題2.5 p.43
+ * Vehicleクラスにmainメソッドを書いて、数個の乗り物を作成し、それらのオブジェクトのフィールドの値を表示するようにしなさい。
+ */
+
+package ch02.ex02_05;
 
 public class Vehicle {
 	double currentSpeed;
@@ -14,7 +19,6 @@ public class Vehicle {
 	 */
 	public static void main(String[] args) {
 		Vehicle testVehicle1 = new Vehicle();
-		// testVehicle1.id = Vehicle.nextID++;
 		testVehicle1.currentSpeed = 3.5;
 		testVehicle1.currentDirection = 1.2;
 		testVehicle1.owner = "Bob";
@@ -26,7 +30,6 @@ public class Vehicle {
 		System.out.println("");
 
 		Vehicle testVehicle2 = new Vehicle();
-		// testVehicle2.id = Vehicle.nextID++;
 		testVehicle2.currentSpeed = 42;
 		testVehicle2.currentDirection = 0.5;
 		testVehicle2.owner = "Steve";
