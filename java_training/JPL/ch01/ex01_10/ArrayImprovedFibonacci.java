@@ -1,4 +1,11 @@
-package ex01_10;
+/*
+ * 練習問題1.10 p.17
+ * ImprovedFibonacciアプリケーションを修正して、数列を配列に保存するようにしなさい。
+ * その際に、数列の値とその値が偶数かを示すブール値を保持するクラスを作成して、そのクラスのオブジェクトへの
+ * 参照を配列として持つようにしなさい。
+ */
+
+package ch01.ex01_10;
 
 public class ArrayImprovedFibonacci {
 
@@ -17,7 +24,6 @@ public class ArrayImprovedFibonacci {
 	public static void main(String[] args) {
 		int lo = 1;
 		int hi = 1;
-		// String mark;
 
 		Fibonacci[] result = new Fibonacci[100];
 
@@ -26,7 +32,6 @@ public class ArrayImprovedFibonacci {
 			result[i] = new Fibonacci();
 		}
 
-		// System.out.println(START_INDEX + ": " + lo);
 		result[START_INDEX].value = lo;
 		if (result[START_INDEX].value % 2 == 0)
 		{
@@ -45,7 +50,6 @@ public class ArrayImprovedFibonacci {
 				// mark = "";
 				;
 			}
-			// System.out.println(i + ": " + hi + mark);
 			hi = lo + hi;
 			lo = hi - lo;
 		}

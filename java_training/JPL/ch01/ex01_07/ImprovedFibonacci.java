@@ -1,4 +1,9 @@
-package ex01_07;
+/*
+ * 練習問題1.7 p.10
+ * i が逆順に値が減るようにImprovedFibonacciのループを書き直しなさい
+ */
+
+package ch01.ex01_07;
 
 public class ImprovedFibonacci {
 
