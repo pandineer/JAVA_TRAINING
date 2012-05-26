@@ -1,6 +1,9 @@
-package ex02_16;
+/*
+ * 練習問題2.16 p.59
+ * リスト内の要素の数を返すメソッドをLinkedListに追加しなさい。
+ */
 
-// すべてのフィールドがprivateで良いと思う
+package ch02.ex02_16;
 
 public class LinkedList {
 
@@ -66,15 +69,10 @@ public class LinkedList {
 		Vehicle temporary = new Vehicle();
 
 		LinkedList test = new LinkedList(temporary);
-		// test.object = new Vehicle();
 
 		temporary = new Vehicle();
-		// test.nextObject = new LinkedList(temporary);
 		test.setNextObject(new LinkedList(temporary));
-		// test.nextObject.object = new Vehicle();
-		// System.out.println(((Vehicle)test.object).id);
 		System.out.println(((Vehicle)test.getObject()).id);
-		// System.out.println(((Vehicle)test.nextObject.object).id);
 		System.out.println(((Vehicle)test.getNextObject().getObject()).id);
 
 		System.out.println("");

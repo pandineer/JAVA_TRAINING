@@ -1,4 +1,9 @@
-package ex02_01;
+/*
+ * 練習問題2.1 p.37
+ * 少なくとも現在のスピード、現在の方向（角度）、所有者の名前を保持するフィールドを持つ簡単なVehicleクラスを書きなさい。
+ */
+
+package ch02.ex02_01;
 
 public class Vehicle {
 	double currentSpeed;

@@ -1,4 +1,9 @@
-package ex02_02;
+/*
+ * 練習問題2.2 p.37
+ * LinkedListクラスを作成しなさい。LinkeListクラスは、Object型のフィールドと、リストの中で次のLinkedList要素への参照を持ちます。
+ */
+
+package ch02.ex02_02;
 
 public class LinkedList {
 

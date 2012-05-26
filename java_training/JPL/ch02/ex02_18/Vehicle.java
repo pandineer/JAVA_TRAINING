@@ -1,4 +1,9 @@
-package ex02_18;
+/*
+ * 練習問題2.18 p.64
+ * Vehicle.mainを変更して、コマンドラインで指定された名前を所有者として持つ車を作成し、表示するようにしなさい。
+ */
+
+package ch02.ex02_18;
 
 public class Vehicle {
 	private double currentSpeed;
@@ -89,9 +94,7 @@ public class Vehicle {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// Vehicle testVehicle1 = new Vehicle("a");
-
-		Vehicle testVehicle1;
+	    Vehicle testVehicle1;
 
 		if (args.length == 0)
 		{
@@ -103,36 +106,14 @@ public class Vehicle {
 			System.out.println("1");
 			testVehicle1 = new Vehicle(args[0]);
 		}
-		// testVehicle1.id = Vehicle.nextID++;
-		// testVehicle1.currentSpeed = 3.5;
 		testVehicle1.changeSpeed(3.5);
-		// testVehicle1.currentDirection = 1.2;
 		testVehicle1.setCurrentDirection(1.2);
-		// testVehicle1.owner = "Bob";
 		System.out.println("Id: " + testVehicle1.id);
-		// System.out.println("Current speed: " + testVehicle1.currentSpeed);
 		System.out.println("Current speed: " + testVehicle1.getCurrentSpeed());
-		// System.out.println("Current direction: " + testVehicle1.currentDirection);
 		System.out.println("Current direction: " + testVehicle1.getCurrentDirection());
-		// System.out.println("Owner: " + testVehicle1.owner);
 		System.out.println("Owner: " + testVehicle1.getOwner());
 
 		System.out.println("");
-
-		/*
-		Vehicle testVehicle2 = new Vehicle();
-		// testVehicle2.id = Vehicle.nextID++;
-		testVehicle2.currentSpeed = 42;
-		testVehicle2.currentDirection = 0.5;
-		testVehicle2.owner = "Steve";
-		System.out.println("Id: " + testVehicle2.id);
-		System.out.println("Current speed: " + testVehicle2.currentSpeed);
-		System.out.println("Current direction: " + testVehicle2.currentDirection);
-		System.out.println("Owner: " + testVehicle2.owner);
-
-		System.out.println("");
-		*/
-		// System.out.println("current nextID: " + Vehicle.nextID);
 
 		System.out.println("MAX used ID: " + Vehicle.showCurrentID());
 

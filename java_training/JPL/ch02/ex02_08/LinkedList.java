@@ -1,4 +1,9 @@
-package ex02_08;
+/*
+ * 練習問題2.8 p.47
+ * LinkedListにはどのようなコンストラクタを追加すべきですか。
+ */
+
+package ch02.ex02_08;
 
 public class LinkedList {
 
@@ -18,11 +23,9 @@ public class LinkedList {
 		Vehicle temporary = new Vehicle();
 
 		LinkedList test = new LinkedList(temporary);
-		// test.object = new Vehicle();
 
 		temporary = new Vehicle();
 		test.nextObject = new LinkedList(temporary);
-		// test.nextObject.object = new Vehicle();
 		System.out.println(((Vehicle)test.object).id);
 		System.out.println(((Vehicle)test.nextObject.object).id);
 
