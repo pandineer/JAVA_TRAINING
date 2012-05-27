@@ -1,4 +1,11 @@
-package ex03_11;
+/*
+ * 練習問題3.11 p.99
+ * ソートアルゴリズムが、気づかれることなくメトリックスに関して不正を行えるSortDoubleのセキュリティホールを
+ * 少なくとも１つ見つけなさい。そのセキュリティホールをなくすように修正しなさい。
+ * この場合、ソートアルゴリズムの作成者はmainを書かないと想定してください
+ */
+
+package ch03.ex03_11;
 
 public class SimpleSortDouble extends SortDouble {
 

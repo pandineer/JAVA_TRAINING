@@ -1,4 +1,9 @@
-package ex03_04;
+/*
+ * 練習問題3.4 p.84
+ * もし、あるとしたら、VehicleとPassengerVehicleのどのメソッドをfinalにするのが適切ですか。
+ */
+
+package ch03.ex03_04;
 
 public class PassengerVehicle extends Vehicle {
 	private int sheet;

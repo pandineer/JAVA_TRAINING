@@ -1,4 +1,10 @@
-package ex03_09;
+/*
+ * 練習問題3.9 p.92
+ * 何個かのVehicleオブジェクトを配列に保持できるGarageクラスを作成しなさい。GarageをCloneable型にして、
+ * 適切なcloneメソッドを書きなさい。cloneをテストするGarage.mainメソッドを書きなさい。
+ */
+
+package ch03.ex03_09;
 
 public class Garage implements Cloneable
 {

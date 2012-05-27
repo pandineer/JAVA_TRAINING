@@ -1,4 +1,9 @@
-package ex03_07;
+/*
+ * 練習問題3.7 p.87
+ * ColorAttrに対してequalsとhashCodeをオーバーライドしなさい。
+ */
+
+package ch03.ex03_07;
 
 public class ColorAttr extends Attr
 {
@@ -32,7 +37,7 @@ public class ColorAttr extends Attr
     /** 値を記述ではなくScreenColorに設定する */
     public ScreenColor setValue(ScreenColor newValue)
     {
-        // シーパークラスのsetValueを最初に行う
+        // スーパークラスのsetValueを最初に行う
         super.setValue(newValue.toString());
         ScreenColor oldValue = myColor;
         myColor = newValue;
