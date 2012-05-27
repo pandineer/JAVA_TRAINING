@@ -1,4 +1,10 @@
-package ex04_02;
+/*
+ * 練習問題4.2 p.114
+ * 99頁の練習問題3.12の回答を、最初にインタフェースを使用して書いていなければ、
+ * インタフェースを使用して書き直しなさい。
+ */
+
+package ch04.ex04_02;
 
 abstract public class SortHarness implements SortInterface{
 	private int SortCount = 0;
