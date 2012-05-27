@@ -1,4 +1,12 @@
-package ex05_02;
+/*
+ * 練習問題5.2 p.119
+ * 口座に対する最後の10個の処理を記録するBankAccountを作成しなさい。
+ * historyメソッドを追加して、Historyオブジェクトを返すようにしなさい。Historyオブジェクトは、nextメソッドで
+ * Actionオブジェクトを１つ返して、リストの最後ではnullを返すようにしなさい。
+ * Historyはネストしたクラスにすべきですか。ネストしたクラスにすべきなら、staticにすべきですか。
+ */
+
+package ch05.ex05_02;
 
 public class BankAccount
 {

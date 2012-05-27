@@ -1,8 +1,15 @@
 /*
+ * 練習問題6.5 p.137
+ * 練習問題6.4で、getColorをabstractとして、各enum定数が正しいColor
+ * オブジェクトを返すように定数固有のメソッドを定義しなさい。
+ * Colorオブジェクトを返すために、定数固有のメソッドを使用することを推奨しますか。
+ */
+
+/*
  * 定数固有のメソッドを使用することを推奨します。getColor()の色ごとの設定し忘れを防止できるため。
  */
 
-package ex06_05;
+package ch06.ex06_05;
 
 public class TrafficLightColor {
 	enum LightColor

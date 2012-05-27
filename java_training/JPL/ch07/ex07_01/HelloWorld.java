@@ -1,4 +1,9 @@
-package ex07_01;
+/*
+ * 練習問題7.1 p.142
+ * 遊びで、Unicodeエスケープシーケンスだけを使用して"Hello, World"プログラムを書きなさい。
+ */
+
+package ch07.ex07_01;
 
 public class HelloWorld {
 
