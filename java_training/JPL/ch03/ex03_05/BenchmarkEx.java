@@ -1,4 +1,10 @@
-package ex03_05;
+/*
+ * 練習問題3.5 p.86
+ * 他のベンチマークを行う新たな拡張したクラスを作成しなさい。たとえば、０からパラメータとして渡された値まで
+ * ループするのに要する時間を計るとか。
+ */
+
+package ch03.ex03_05;
 
 public class BenchmarkEx extends Benchmark
 {

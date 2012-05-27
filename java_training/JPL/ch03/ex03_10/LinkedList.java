@@ -1,4 +1,11 @@
-package ex03_10;
+/*
+ * 練習問題3.10 p.93
+ * （第２章の問題からの）LinkedListクラスをCloneableにして、値の複製ではなく、元のリストと同じ値を参照している
+ * 新たなリストを返すcloneメソッドを書きなさい。つまり、１つのリストに対する変更は、他方のリストには影響しないが、
+ * リストが参照しているオブジェクトに対する変更は、他方のリストから見えます。
+ */
+
+package ch03.ex03_10;
 
 public class LinkedList implements Cloneable
 {

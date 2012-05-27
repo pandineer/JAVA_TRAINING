@@ -1,4 +1,11 @@
-package ex03_01;
+/*
+ * 練習問題3.1 p.69
+ * 第２章の練習問題のVehicleクラスを拡張してPassengerVehicleクラスを作成し、車が持っている座席数と
+ * 現在座っている人数を返す機能を追加しなさい。
+ * PassengerVehicleに新たなmainメソッドを定義して、PassengerVehicleオブジェクトを数個生成して表示するようにしなさい。
+ */
+
+package ch03.ex03_01;
 
 public class PassengerVehicle extends Vehicle {
 	private int sheet;

@@ -1,1 +1,1 @@
-toString()の戻り値をa to zの順でソートする
+toString()の戻り値をcompareToの結果でソートする
