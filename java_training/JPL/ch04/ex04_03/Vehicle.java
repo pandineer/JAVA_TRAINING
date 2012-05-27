@@ -1,4 +1,10 @@
-package ex04_03;
+/*
+ * 練習問題4.3 p.114
+ * 前の練習問題のLinkedListクラスは、インタフェースであるべきですか。
+ * どうあるべきかを決める前に、実装クラスとインタフェースクラスを使用して書き直しなさい。
+ */
+
+package ch04.ex04_03;
 
 public class Vehicle implements Cloneable
 {
@@ -100,69 +106,5 @@ public class Vehicle implements Cloneable
     {
         // まだ識別番号が一度も使われていない場合は-1を返す
         return nextID - 1;
-    }
-
-    /**
-     * @param args
-     */
-    public static void main(String[] args)
-    {
-
-        Vehicle testVehicle1;
-
-        if (args.length == 0)
-        {
-            System.out.println("!");
-            testVehicle1 = new Vehicle("Bob");
-        } else
-        {
-            System.out.println("1");
-            testVehicle1 = new Vehicle(args[0]);
-        }
-        testVehicle1.changeSpeed(3.5);
-        testVehicle1.setCurrentDirection(1.2);
-        System.out.println("Id: " + testVehicle1.id);
-        System.out.println("Current speed: " + testVehicle1.getCurrentSpeed());
-        System.out.println("Current direction: "
-                + testVehicle1.getCurrentDirection());
-        System.out.println("Owner: " + testVehicle1.getOwner());
-
-        System.out.println("");
-
-        System.out.println("MAX used ID: " + Vehicle.showCurrentID());
-
-        System.out.println("");
-
-        System.out.println(testVehicle1);
-
-        testVehicle1.stop();
-        System.out.println("after stop method, Current speed: "
-                + testVehicle1.getCurrentSpeed());
-
-        System.out.println("current direction: "
-                + testVehicle1.getCurrentDirection());
-        System.out.println("add 0.5 to direction");
-        testVehicle1.turn(0.5);
-        System.out.println("current direction: "
-                + testVehicle1.getCurrentDirection());
-        System.out.println("operate turn right");
-        testVehicle1.turn(TURN_RIGHT);
-        System.out.println("current direction: "
-                + testVehicle1.getCurrentDirection());
-        System.out.println("operate turn left");
-        testVehicle1.turn(TURN_LEFT);
-        System.out.println("current direction: "
-                + testVehicle1.getCurrentDirection());
-
-        Vehicle testVehicle2 = new Vehicle();
-
-        testVehicle2 = (Vehicle) testVehicle1.clone();
-
-        System.out.println("clone result: "
-                + testVehicle2.getCurrentDirection());
-
-        testVehicle2.setOwner("test");
-        System.out.println(testVehicle1.getOwner());
-        System.out.println(testVehicle2.getOwner());
     }
 }

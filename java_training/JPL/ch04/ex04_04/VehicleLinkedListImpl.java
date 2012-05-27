@@ -1,4 +1,9 @@
-package ex04_04;
+/*
+ * 練習問題4.4 p.114
+ * インタフェースのみ使用して、コレクションクラス階層を設計しなさい。
+ */
+
+package ch04.ex04_04;
 
 public class VehicleLinkedListImpl implements Cloneable, VehicleLinkedList
 {
