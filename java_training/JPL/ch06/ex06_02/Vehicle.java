@@ -1,4 +1,10 @@
-package ex06_02;
+/*
+ * 練習問題6.2 p.132
+ * TURN_LEFTとTURN_RIGHTを表すenumを使用して、練習問題2.17をやり直しなさい。
+ * enumを使用することにどのような利点がありますか。
+ */
+
+package ch06.ex06_02;
 
 public class Vehicle {
 	private double currentSpeed;

@@ -1,4 +1,9 @@
-package ex06_01;
+/*
+ * 練習問題3.1 p.132
+ * 週の曜日と信号機の色に対する単純なenumを定義しなさい。
+ */
+
+package ch06.ex06_01;
 
 public class EnumTest {
 	enum day
