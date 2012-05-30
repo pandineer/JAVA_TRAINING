@@ -21,19 +21,22 @@
 
 package gui1_2;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowAdapter;
+import java.awt.event.*;
 import java.awt.*;
 import java.util.Calendar;
 
 
-public class DigitalClock extends Frame implements Runnable
+public class DigitalClock extends Frame implements Runnable, ActionListener
 {
-    static int h;       // 時
-    static int m;       // 分
-    static int s;       // 秒
+	private static final long serialVersionUID = 1L;
+	int h;       // 時
+    int m;       // 分
+    int s;       // 秒
     Calendar now = Calendar.getInstance();
-    static Thread th;
+    Thread th;
+    PropertyDialog dialog;
+    Menu menuMenu;
+    MenuItem menuProperty;
 
     // Font f = new Font("TimesRoman", Font.PLAIN, 16);
 
@@ -54,10 +57,17 @@ public class DigitalClock extends Frame implements Runnable
         // メニューバーを作成する
         MenuBar menuBar = new MenuBar();
         setMenuBar(menuBar);
-        Menu menuMenu = new Menu("Menu");
+        // [Menu]
+        //Menu menuProperty = new Menu("Property");
+        menuMenu = new Menu("Menu");
         menuMenu.addActionListener(this);
+        menuBar.add(menuMenu);
+        // [Menu] - [Property]
+        menuProperty = new MenuItem("Property");
+        menuMenu.add(menuProperty);
 
-
+        // ダイアログを生成する
+        dialog = new PropertyDialog(this);
     }
 
     @Override
@@ -66,8 +76,11 @@ public class DigitalClock extends Frame implements Runnable
         while(true)
         {
             h = now.getInstance().get(now.HOUR_OF_DAY);
+            h = now.get(now.HOUR_OF_DAY);
             m = now.getInstance().get(now.MINUTE);
-            s = now.getInstance().get(now.SECOND);
+            // s = now.getInstance().get(now.SECOND);
+            s = now.get(now.SECOND);
+            // s = Calendar.SECOND;
             repaint();
 
             try
@@ -84,7 +97,7 @@ public class DigitalClock extends Frame implements Runnable
     public void paint(Graphics g)
     {
     	// setFont(f);
-        g.drawString(h+":"+m+":"+s, 20, 50);
+        g.drawString(h+":"+m+":"+s, 20, 100);
     }
 
 
@@ -95,15 +108,23 @@ public class DigitalClock extends Frame implements Runnable
     {
         DigitalClock window = new DigitalClock("Digital Clock");
 
-        th = new Thread(window);
+        window.th = new Thread(window);
 
         window.setSize(200, 150);
         window.setResizable(false);
         window.setVisible(true);
 
-        th.start();     // スレッドスタート
+        window.th.start();     // スレッドスタート
 
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand() == "Property")
+		{
+			dialog.setVisible(true);
+		}
+	}
 
 
 
