@@ -37,6 +37,8 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     PropertyDialog dialog;
     Menu menuMenu;
     MenuItem menuProperty;
+    Image imageBuffer = createImage(200, 150);
+    Graphics graphicBuffer;
 
     // Font f = new Font("TimesRoman", Font.PLAIN, 16);
 
@@ -97,7 +99,16 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     public void paint(Graphics g)
     {
     	// setFont(f);
-        g.drawString(h+":"+m+":"+s, 20, 100);
+        // g.drawString(h+":"+m+":"+s, 20, 100);
+    	graphicBuffer.drawString("a", 20, 100);
+    	g.drawImage(imageBuffer, 0, 0, this);
+    }
+
+    @Override
+    public void update(Graphics g)
+    {
+    	// ちらつき防止のため、updateメソッドからそのままpaintメソッドにつなぐ
+    	paint(g);
     }
 
 
