@@ -29,9 +29,14 @@ import java.util.Calendar;
 public class DigitalClock extends Frame implements Runnable, ActionListener
 {
 	private static final long serialVersionUID = 1L;
-	public int h;       // 時
-	public int m;       // 分
-	public int s;       // 秒
+	public Integer hourInteger;       // 時
+	public Integer minuteInteger;       // 分
+	public Integer secondInteger;       // 秒
+
+	public String hourString;
+	public String minuteString;
+	public String secondString;
+
     public Calendar now = Calendar.getInstance();
     public Thread th;
     public PropertyDialog dialog;
@@ -78,16 +83,44 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     public void paint(Graphics g)
     {
     	// バッファをクリアする
-    	graphicBuffer.clearRect(0, 0, 200, 150);
+    	graphicBuffer.clearRect(0, 0, 220, 150);
 
     	// 背景を色つきで塗りつぶす
     	graphicBuffer.setColor(Color.orange);
-    	graphicBuffer.fillRect(0, 0, 200, 150);
+    	graphicBuffer.fillRect(0, 0, 220, 150);
 
     	// 時間の描画
     	graphicBuffer.setFont(f);	// フォントの設定
     	graphicBuffer.setColor(Color.black);	// 文字色の設定
-    	graphicBuffer.drawString(h+":"+m+":"+s, 20, 100);
+
+    	if (hourInteger < 10)
+    	{
+    		hourString = "0" + hourInteger;
+    	}
+    	else
+    	{
+    		hourString = hourInteger.toString();
+    	}
+
+    	if (minuteInteger < 10)
+    	{
+    		minuteString = "0" + minuteInteger;
+    	}
+    	else
+    	{
+    		minuteString = minuteInteger.toString();
+    	}
+
+    	if (secondInteger < 10)
+    	{
+    		secondString = "0" + secondInteger;
+    	}
+    	else
+    	{
+    		secondString = secondInteger.toString();
+    	}
+
+    	graphicBuffer.drawString(hourString+":"+minuteString+":"+secondString, 20, 100);
 
     	// バッファのコピー
     	g.drawImage(imageBuffer, 0, 0,  this);
@@ -107,9 +140,9 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         while(true)
         {
         	// 現在時刻の獲得
-            h = now.getInstance().get(now.HOUR_OF_DAY);
-            m = now.getInstance().get(now.MINUTE);
-            s = now.getInstance().get(now.SECOND);
+            hourInteger = now.getInstance().get(now.HOUR_OF_DAY);
+            minuteInteger = now.getInstance().get(now.MINUTE);
+            secondInteger = now.getInstance().get(now.SECOND);
 
             // 再描画
             repaint();
@@ -135,11 +168,11 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
 
         window.th = new Thread(window);
 
-        window.setSize(200, 150);
+        window.setSize(220, 150);
         window.setResizable(false);
         window.setVisible(true);
 
-        window.imageBuffer = window.createImage(200, 150);
+        window.imageBuffer = window.createImage(220, 150);
     	window.graphicBuffer = window.imageBuffer.getGraphics();
 
         window.th.start();     // スレッドスタート
@@ -148,8 +181,9 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand() == "Property") // クリックしたのが「Property」だったら
+		if (e.getActionCommand() == "Property")
 		{
+			// クリックしたのが「Property」だったら
 			dialog.setVisible(true);
 		}
 	}
