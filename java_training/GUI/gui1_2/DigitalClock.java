@@ -65,11 +65,12 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         // メニューバーを作成する
         MenuBar menuBar = new MenuBar();
         setMenuBar(menuBar);
+        
         // [Menu]
-        //Menu menuProperty = new Menu("Property");
         menuMenu = new Menu("Menu");
         menuMenu.addActionListener(this);
         menuBar.add(menuMenu);
+        
         // [Menu] - [Property]
         menuProperty = new MenuItem("Property");
         menuMenu.add(menuProperty);
