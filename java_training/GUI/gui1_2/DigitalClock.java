@@ -29,18 +29,19 @@ import java.util.Calendar;
 public class DigitalClock extends Frame implements Runnable, ActionListener
 {
 	private static final long serialVersionUID = 1L;
-	int h;       // 時
-    int m;       // 分
-    int s;       // 秒
-    Calendar now = Calendar.getInstance();
-    Thread th;
-    PropertyDialog dialog;
-    Menu menuMenu;
-    MenuItem menuProperty;
-    Image imageBuffer = createImage(200, 150);
-    Graphics graphicBuffer;
+	public int h;       // 時
+	public int m;       // 分
+	public int s;       // 秒
+    public Calendar now = Calendar.getInstance();
+    public Thread th;
+    public PropertyDialog dialog;
+    public Menu menuMenu;
+    public MenuItem menuProperty;
+    public Image imageBuffer;
+    public Graphics graphicBuffer;
 
-    // Font f = new Font("TimesRoman", Font.PLAIN, 16);
+    // フォントの初期設定
+    public Font f = new Font("TimesRoman", Font.PLAIN, 48);
 
     public DigitalClock(String title)
     {
@@ -72,17 +73,45 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         dialog = new PropertyDialog(this);
     }
 
+
+
+    public void paint(Graphics g)
+    {
+    	// バッファをクリアする
+    	graphicBuffer.clearRect(0, 0, 200, 150);
+
+    	// 背景を色つきで塗りつぶす
+    	graphicBuffer.setColor(Color.orange);
+    	graphicBuffer.fillRect(0, 0, 200, 150);
+
+    	// 時間の描画
+    	graphicBuffer.setFont(f);	// フォントの設定
+    	graphicBuffer.setColor(Color.black);	// 文字色の設定
+    	graphicBuffer.drawString(h+":"+m+":"+s, 20, 100);
+
+    	// バッファのコピー
+    	g.drawImage(imageBuffer, 0, 0,  this);
+    }
+
+    @Override
+    public void update(Graphics g)
+    {
+    	// ちらつき防止のため、updateメソッドからそのままpaintメソッドにつなぐ
+    	// (画面がクリアされないようにする)
+    	paint(g);
+    }
+
     @Override
     public void run()
     {
         while(true)
         {
+        	// 現在時刻の獲得
             h = now.getInstance().get(now.HOUR_OF_DAY);
-            h = now.get(now.HOUR_OF_DAY);
             m = now.getInstance().get(now.MINUTE);
-            // s = now.getInstance().get(now.SECOND);
-            s = now.get(now.SECOND);
-            // s = Calendar.SECOND;
+            s = now.getInstance().get(now.SECOND);
+
+            // 再描画
             repaint();
 
             try
@@ -91,26 +120,11 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
             }
             catch(InterruptedException e)
             {
+            	; // 何もしない
             }
         }
 
     }
-
-    public void paint(Graphics g)
-    {
-    	// setFont(f);
-        // g.drawString(h+":"+m+":"+s, 20, 100);
-    	graphicBuffer.drawString("a", 20, 100);
-    	g.drawImage(imageBuffer, 0, 0, this);
-    }
-
-    @Override
-    public void update(Graphics g)
-    {
-    	// ちらつき防止のため、updateメソッドからそのままpaintメソッドにつなぐ
-    	paint(g);
-    }
-
 
     /**
      * @param args
@@ -125,13 +139,16 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         window.setResizable(false);
         window.setVisible(true);
 
+        window.imageBuffer = window.createImage(200, 150);
+    	window.graphicBuffer = window.imageBuffer.getGraphics();
+
         window.th.start();     // スレッドスタート
 
     }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand() == "Property")
+		if (e.getActionCommand() == "Property") // クリックしたのが「Property」だったら
 		{
 			dialog.setVisible(true);
 		}
