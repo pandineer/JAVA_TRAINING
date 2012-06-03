@@ -10,6 +10,9 @@ public class Vehicle {
 	private double currentDirection;
 	private String owner;
 
+	private static int nextID = 1;
+	final int id = nextID++;
+
 	public String getOwner()
 	{
 		return owner;
@@ -40,8 +43,7 @@ public class Vehicle {
 		currentDirection = direction;
 	}
 
-	private static int nextID = 0;
-	final int id = nextID++;
+
 
 	public Vehicle()
 	{
@@ -62,7 +64,7 @@ public class Vehicle {
 
 	public static int showCurrentID()
 	{
-		// まだ識別番号が一度も使われていない場合は-1を返す
+		// まだ識別番号が一度も使われていない場合は0を返す
 		return nextID - 1;
 	}
 

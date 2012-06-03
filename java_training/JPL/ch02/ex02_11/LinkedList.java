@@ -33,7 +33,6 @@ public class LinkedList {
 
 		temporary = new Vehicle();
 		test.nextObject = new LinkedList(temporary);
-		// test.nextObject.object = new Vehicle();
 		System.out.println(((Vehicle)test.object).id);
 		System.out.println(((Vehicle)test.nextObject.object).id);
 
