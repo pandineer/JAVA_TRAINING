@@ -36,28 +36,28 @@ public class SpecialCharacter
             switch (target.charAt(i))
             {
                 case 0xA:
-                    result += "\n";
+                    result += "\\\n";
                     break;
                 case 0x9:
-                    result += "\t";
+                    result += "\\\t";
                     break;
                 case 0x8:
-                    result += "\b";
+                    result += "\\\b";
                     break;
                 case 0xD:
-                    result += "\r";
+                    result += "\\\r";
                     break;
                 case 0xC:
-                    result += "\f";
+                    result += "\\\f";
                     break;
                 case 0x5C:
-                    result += "\\";
+                    result += "\\\\";
                     break;
                 case 0x27:
-                    result += "\'";
+                    result += "\\\'";
                     break;
                 case 0x22:
-                    result += "\"";
+                    result += "\\\"";
                     break;
                 default:
                     break;
@@ -71,7 +71,7 @@ public class SpecialCharacter
      */
     public static void main(String[] args)
     {
-        System.out.println(replaceSpecialCharacter("\u0009 \u0027"));
+        System.out.println(replaceSpecialCharacter("\t\'\""));
     }
 
 }

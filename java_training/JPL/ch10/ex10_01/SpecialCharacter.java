@@ -30,28 +30,28 @@ public class SpecialCharacter
         {
             if (target.charAt(i) == 0xA)
             {
-                result += "\n";
+                result += "\\\n";
             } else if (target.charAt(i) == 0x9)
             {
-                result += "\t";
+                result += "\\\t";
             } else if (target.charAt(i) == 0x8)
             {
-                result += "\b";
+                result += "\\\b";
             } else if (target.charAt(i) == 0xD)
             {
-                result += "\r";
+                result += "\\\r";
             } else if (target.charAt(i) == 0xC)
             {
-                result += "\f";
+                result += "\\\f";
             } else if (target.charAt(i) == 0x5C)
             {
-                result += "\\";
+                result += "\\\\";
             } else if (target.charAt(i) == 0x27)
             {
-                result += "\'";
+                result += "\\\'";
             } else if (target.charAt(i) == 0x22)
             {
-                result += "\"";
+                result += "\\\"";
             }
         }
         return result;
@@ -62,7 +62,7 @@ public class SpecialCharacter
      */
     public static void main(String[] args)
     {
-        System.out.println(replaceSpecialCharacter("\u0009 \u0027"));
+        System.out.println(replaceSpecialCharacter("\t \' \""));
     }
 
 }
