@@ -11,6 +11,14 @@ public class PassengerVehicle extends Vehicle implements Cloneable
     private int sheet;
     private int passenger;
 
+    public PassengerVehicle clone()
+    {
+        PassengerVehicle temp = (PassengerVehicle)super.clone();
+        temp.sheet = sheet;
+        temp.passenger = passenger;
+        return temp;
+    }
+
     PassengerVehicle(int capacity, int people)
     {
         sheet = capacity;
@@ -42,13 +50,19 @@ public class PassengerVehicle extends Vehicle implements Cloneable
         System.out.println("Sheets number: " + test2.getSheet());
         System.out.println("Passenger number: " + test2.getPassenger());
 
-        PassengerVehicle test3 = new PassengerVehicle(1, 1);
+        PassengerVehicle test3;
 
         test3 = (PassengerVehicle) test2.clone();
 
+        System.out.println("");
 
         System.out.println("clone result: sheet: " + test3.getSheet()
                 + ", passenger: " + test3.getPassenger());
+
+        System.out.println(test1.getId());
+        System.out.println(test2.getId());
+        System.out.println(test3.getId());
+
 
     }
 

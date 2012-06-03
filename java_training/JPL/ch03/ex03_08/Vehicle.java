@@ -15,12 +15,21 @@ public class Vehicle implements Cloneable
     static final int TURN_RIGHT = 1;
     static final int TURN_LEFT = 2;
 
+    private static int nextID = 1;
+    // final int id = nextID++;
+    int id;
+
     public Vehicle clone()
     {
         try
         {
-            // デフォルトの仕組みで十分
-            return (Vehicle) super.clone();
+            // IDの処理のため、コンストラクタを実行する必要がある
+            Vehicle temp = (Vehicle)super.clone();
+            temp.id = nextID++;
+            temp.currentSpeed = currentSpeed;
+            temp.currentDirection = currentDirection;
+            temp.owner = owner;
+            return temp;
         } catch (CloneNotSupportedException e)
         {
             // 起こり得ない。このクラスとObjectは複製できる
@@ -77,16 +86,21 @@ public class Vehicle implements Cloneable
         currentDirection = direction;
     }
 
-    private static int nextID = 0;
-    final int id = nextID++;
+
+    public int getId()
+    {
+        return id;
+    }
+
 
     public Vehicle()
     {
-        ;
+        id = nextID++;
     }
 
     public Vehicle(String ownerName)
     {
+        this();
         owner = ownerName;
     }
 
@@ -99,7 +113,7 @@ public class Vehicle implements Cloneable
 
     public static int showCurrentID()
     {
-        // まだ識別番号が一度も使われていない場合は-1を返す
+        // まだ識別番号が一度も使われていない場合は0を返す
         return nextID - 1;
     }
 
