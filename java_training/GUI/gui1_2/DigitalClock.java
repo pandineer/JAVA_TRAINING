@@ -42,6 +42,7 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     private PropertyDialog dialog;
     private Menu menuMenu;
     private MenuItem menuProperty;
+    private MenuItem menuCapture;
     private Image imageBuffer;
     private Graphics graphicBuffer;
 
@@ -54,8 +55,11 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     private int windowSizeY = 48 + 50;
 
     private String timeString;
+    private String captureTimeString = "00:00:00";
 
     private MenuBar menuBar;
+
+    private boolean captureFlag = false;
 
     // フォントのデフォルトの設定
     private Font fontSetting = new Font("TimesRoman", Font.PLAIN, 48);
@@ -87,8 +91,14 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         menuProperty = new MenuItem("Property");
         menuMenu.add(menuProperty);
 
+        // [Menu] - [Capture!]
+        menuCapture = new MenuItem("Capture!");
+        menuMenu.add(menuCapture);
+
         // ダイアログを生成する
         dialog = new PropertyDialog(this);
+
+
     }
 
 
@@ -132,6 +142,7 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     	windowSizeY  = graphicBuffer.getFontMetrics().getAscent();
     	windowSizeY += graphicBuffer.getFontMetrics().getDescent();
     	windowSizeY += graphicBuffer.getFontMetrics().getLeading();
+    	windowSizeY *= 2; // キャプチャした時刻用
     	windowSizeY += getInsets().top;
 
     	setSize(windowSizeX, windowSizeY);
@@ -148,6 +159,14 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         graphicBuffer.setFont(fontSetting);     // フォントの設定
         graphicBuffer.setColor(fontColor);      // 文字色の設定
     	graphicBuffer.drawString(timeString, 0, graphicBuffer.getFontMetrics().getAscent() + getInsets().top - getInsets().bottom);
+
+    	// キャプチャした時刻の描画
+    	if (true == captureFlag)
+    	{
+    	    captureTimeString = timeString;
+    	    captureFlag = false;
+    	}
+    	graphicBuffer.drawString(captureTimeString, 0, (graphicBuffer.getFontMetrics().getAscent())*2 + getInsets().top - getInsets().bottom);
 
     	// バッファのコピー
     	g.drawImage(imageBuffer, 0, 0,  this);
@@ -264,12 +283,16 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
 
         window.th = new Thread(window);
 
+
         window.setSize(220, 150);
         window.setResizable(false);
         window.setVisible(true);
 
+
+
         window.imageBuffer = window.createImage(220, 150);
         window.graphicBuffer = window.imageBuffer.getGraphics();
+
 
         window.th.start();     // スレッドスタート
 
@@ -281,6 +304,11 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
                 {
                         // クリックしたのが「Property」だったら
                         dialog.setVisible(true);
+                }
+                else if (e.getActionCommand() == "Capture!")
+                {
+                    // クリックしたのが「Capture!」だったら
+                    captureFlag = true;
                 }
         }
 
