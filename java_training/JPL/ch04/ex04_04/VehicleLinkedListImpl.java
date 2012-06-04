@@ -17,7 +17,8 @@ public class VehicleLinkedListImpl implements Cloneable, VehicleLinkedList
         {
             // デフォルトの仕組みで十分
             return (VehicleLinkedListImpl) super.clone();
-        } catch (CloneNotSupportedException e)
+        }
+        catch (CloneNotSupportedException e)
         {
             // 起こり得ない。このクラスとObjectは複製できる
             throw new InternalError(e.toString());
@@ -34,9 +35,10 @@ public class VehicleLinkedListImpl implements Cloneable, VehicleLinkedList
             if (next == null)
             {
                 break;
-            } else
+            }
+            else
             {
-                next = (VehicleLinkedListImpl)nextVehicle.getNextVehicle();
+                next = (VehicleLinkedListImpl) nextVehicle.getNextVehicle();
             }
         }
         return vehicleNumber;
@@ -91,16 +93,15 @@ public class VehicleLinkedListImpl implements Cloneable, VehicleLinkedList
         VehicleLinkedListImpl link2 = new VehicleLinkedListImpl(null);
         link2 = link1.clone();
 
-        System.out.println(((Vehicle)link1.getVehicle()).getOwner());
-        System.out.println(((Vehicle)link2.getVehicle()).getOwner());
+        System.out.println(((Vehicle) link1.getVehicle()).getOwner());
+        System.out.println(((Vehicle) link2.getVehicle()).getOwner());
 
         // link1からもlink2からも変更が見える
-        ((Vehicle)(link2).getVehicle()).setOwner("modified");
+        ((Vehicle) (link2).getVehicle()).setOwner("modified");
 
         System.out.println("");
-        System.out.println(((Vehicle)link1.getVehicle()).getOwner());
-        System.out.println(((Vehicle)link2.getVehicle()).getOwner());
-
+        System.out.println(((Vehicle) link1.getVehicle()).getOwner());
+        System.out.println(((Vehicle) link2.getVehicle()).getOwner());
 
         // １つのリストに対する変更は、他方のリストに影響しない（link2のリストを別の参照にする）
         temporary = new Vehicle("test3");
@@ -111,9 +112,8 @@ public class VehicleLinkedListImpl implements Cloneable, VehicleLinkedList
         link2.setNextVehicle(new VehicleLinkedListImpl(temporary));
 
         System.out.println("");
-        System.out.println(((Vehicle)link1.getVehicle()).getOwner());
-        System.out.println(((Vehicle)link2.getVehicle()).getOwner());
-
+        System.out.println(((Vehicle) link1.getVehicle()).getOwner());
+        System.out.println(((Vehicle) link2.getVehicle()).getOwner());
 
     }
 
