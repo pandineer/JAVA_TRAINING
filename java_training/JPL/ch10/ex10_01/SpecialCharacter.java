@@ -8,10 +8,12 @@
 
 /*
  * p.146より
- * \n   改行(\u000A)
+ * \n   改行(
+ )
  * \t   タブ(\u0009)
  * \b   バックスペース(\u0008)
- * \r   復帰(\u000D)
+ * \r   復帰(
+ )
  * \f   フォームフィード(\u000C)
  * \\   バックスラッシュ自身(\u005C)
  * \'   シングルクォート      (\u0027)
@@ -31,25 +33,32 @@ public class SpecialCharacter
             if (target.charAt(i) == 0xA)
             {
                 result += "\\\n";
-            } else if (target.charAt(i) == 0x9)
+            }
+            else if (target.charAt(i) == 0x9)
             {
                 result += "\\\t";
-            } else if (target.charAt(i) == 0x8)
+            }
+            else if (target.charAt(i) == 0x8)
             {
                 result += "\\\b";
-            } else if (target.charAt(i) == 0xD)
+            }
+            else if (target.charAt(i) == 0xD)
             {
                 result += "\\\r";
-            } else if (target.charAt(i) == 0xC)
+            }
+            else if (target.charAt(i) == 0xC)
             {
                 result += "\\\f";
-            } else if (target.charAt(i) == 0x5C)
+            }
+            else if (target.charAt(i) == 0x5C)
             {
                 result += "\\\\";
-            } else if (target.charAt(i) == 0x27)
+            }
+            else if (target.charAt(i) == 0x27)
             {
                 result += "\\\'";
-            } else if (target.charAt(i) == 0x22)
+            }
+            else if (target.charAt(i) == 0x22)
             {
                 result += "\\\"";
             }

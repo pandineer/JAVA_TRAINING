@@ -19,21 +19,22 @@ public abstract class Benchmark
     public final long repeat(int count)
     {
         long start = System.nanoTime();
-        // オリジナル
+
+        // ##### オリジナル(for版) #####
         /*
-        for (int i = 0; i < count; i++)
-        {
-            benchmark();
-        }
-        */
+         * for (int i = 0; i < count; i++) { benchmark(); }
+         */
+
+        // ##### while版 #####
         int i = 0;
-        while(i < count)
+        while (i < count)
         {
             benchmark();
             i++;
         }
 
         // countが0の場合、benchmarkが一度も実行されてはいけないので、do-whileでは書けない
+
         return (System.nanoTime() - start);
     }
 
