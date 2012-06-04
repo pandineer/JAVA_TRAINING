@@ -79,10 +79,6 @@ public class LinkedList
 
         System.out.println("");
 
-        System.out.println(test);
-
-        System.out.println("");
-
         System.out.println("Object number of test: " + test.getObjectNumber());
         System.out.println("Object number of next object of test: "
                 + test.getNextObject().getObjectNumber());
