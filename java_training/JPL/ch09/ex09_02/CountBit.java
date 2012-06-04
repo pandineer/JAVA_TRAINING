@@ -12,7 +12,7 @@ public class CountBit
     static int countBit(int target)
     {
         int count = 0;
-        for(; target != 0; target = target >> 1)
+        for (; target != 0; target = target >> 1)
         {
             if ((target & 1) == 1)
             {

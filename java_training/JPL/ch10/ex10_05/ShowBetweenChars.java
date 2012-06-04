@@ -19,7 +19,7 @@ public class ShowBetweenChars
         System.out.println("start: " + start);
         for (int i = 1; (start + i) < end; i++)
         {
-            System.out.println("between: " + (char)(start + i));
+            System.out.println("between: " + (char) (start + i));
         }
         System.out.println("end: " + end);
     }

@@ -12,15 +12,10 @@
 
 package ch10.ex10_03;
 
-public class EnumTest {
-	enum day
-	{
-		SUNDAY,
-		MONDAY,
-		TUESDAY,
-		WEDNESDAY,
-		THURSDAY,
-		FRIDAY,
-		SATURDAY,
-	}
+public class EnumTest
+{
+    enum day
+    {
+        SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY,
+    }
 }

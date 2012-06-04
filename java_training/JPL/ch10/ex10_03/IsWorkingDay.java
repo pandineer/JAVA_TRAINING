@@ -14,7 +14,9 @@ public class IsWorkingDay
 {
     static boolean isWorkingDayIfElse(EnumTest.day target)
     {
-        if (target == day.MONDAY || target == day.TUESDAY || target == day.WEDNESDAY || target == day.THURSDAY || target == day.FRIDAY)
+        if (target == day.MONDAY || target == day.TUESDAY
+                || target == day.WEDNESDAY || target == day.THURSDAY
+                || target == day.FRIDAY)
         {
             return true;
         }
@@ -35,9 +37,14 @@ public class IsWorkingDay
     {
         switch (target)
         {
-            case MONDAY: case TUESDAY: case WEDNESDAY: case THURSDAY: case FRIDAY:
+            case MONDAY:
+            case TUESDAY:
+            case WEDNESDAY:
+            case THURSDAY:
+            case FRIDAY:
                 return true;
-            case SATURDAY: case SUNDAY:
+            case SATURDAY:
+            case SUNDAY:
                 return false;
             default:
                 throw new IllegalArgumentException();
