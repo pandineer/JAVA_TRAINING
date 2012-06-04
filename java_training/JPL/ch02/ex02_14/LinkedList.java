@@ -8,59 +8,54 @@ package ch02.ex02_14;
 
 // すべてて変更可能で良いと思う。
 
-public class LinkedList {
+public class LinkedList
+{
+    private Object object;
+    private LinkedList nextObject;
 
-	private Object object;
-	private LinkedList nextObject;
+    public Object getObject()
+    {
+        return object;
+    }
 
-	public Object getObject()
-	{
-		return object;
-	}
+    public void setObject(Object target)
+    {
+        object = target;
+    }
 
-	public void setObject(Object target)
-	{
-		object = target;
-	}
+    public LinkedList getNextObject()
+    {
+        return nextObject;
+    }
 
-	public LinkedList getNextObject()
-	{
-		return nextObject;
-	}
+    public void setNextObject(LinkedList target)
+    {
+        nextObject = target;
+    }
 
-	public void setNextObject(LinkedList target)
-	{
-		nextObject = target;
-	}
+    LinkedList(Object associatedObject)
+    {
+        object = associatedObject;
+    }
 
-	LinkedList (Object associatedObject)
-	{
-		object = associatedObject;
-	}
+    public String toString()
+    {
+        String desc = "This method is toString of LinkedList!";
+        return desc;
+    }
 
-	public String toString()
-	{
-		String desc = "This method is toString of LinkedList!";
-		return desc;
-	}
+    /**
+     * @param args
+     */
+    public static void main(String[] args)
+    {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+        LinkedList test = new LinkedList(new Vehicle());
 
-		Vehicle temporary = new Vehicle();
-
-		LinkedList test = new LinkedList(temporary);
-
-		temporary = new Vehicle();
-		test.setNextObject(new LinkedList(temporary));
-		System.out.println(((Vehicle)test.getObject()).id);
-		System.out.println(((Vehicle)test.getNextObject().getObject()).id);
-
-		System.out.println("");
-
-		System.out.println(test);
-	}
+        test.setNextObject(new LinkedList(new Vehicle()));
+        test.setObject(new Vehicle());
+        System.out.println(((Vehicle) test.getObject()).id);
+        System.out.println(((Vehicle) test.getNextObject().getObject()).id);
+    }
 
 }

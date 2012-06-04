@@ -5,93 +5,89 @@
 
 package ch02.ex02_15;
 
-public class Vehicle {
-	private double currentSpeed;
-	private double currentDirection;
-	private String owner;
+public class Vehicle
+{
+    private double currentSpeed;
+    private double currentDirection;
+    private String owner;
 
-	private static int nextID = 1;
-	final int id = nextID++;
+    private static int nextID = 1;
+    final int id = nextID++;
 
-	public String getOwner()
-	{
-		return owner;
-	}
+    public String getOwner()
+    {
+        return owner;
+    }
 
-	public double getCurrentSpeed()
-	{
-		return currentSpeed;
-	}
+    public double getCurrentSpeed()
+    {
+        return currentSpeed;
+    }
 
-	public void changeSpeed(double speed)
-	{
-		currentSpeed = speed;
-	}
+    public void changeSpeed(double speed)
+    {
+        currentSpeed = speed;
+    }
 
-	public void stop()
-	{
-		currentSpeed = 0.0;
-	}
+    public void stop()
+    {
+        currentSpeed = 0.0;
+    }
 
-	public double getCurrentDirection()
-	{
-		return currentDirection;
-	}
+    public double getCurrentDirection()
+    {
+        return currentDirection;
+    }
 
-	public void setCurrentDirection(double direction)
-	{
-		currentDirection = direction;
-	}
+    public void setCurrentDirection(double direction)
+    {
+        currentDirection = direction;
+    }
 
+    public Vehicle()
+    {
+        ;
+    }
 
+    public Vehicle(String ownerName)
+    {
+        owner = ownerName;
+    }
 
-	public Vehicle()
-	{
-		;
-	}
+    public String toString()
+    {
+        String desc = "owner: " + owner;
 
-	public Vehicle (String ownerName)
-	{
-		owner = ownerName;
-	}
+        return desc;
+    }
 
-	public String toString()
-	{
-		String desc = "owner: " + owner;
+    public static int showCurrentID()
+    {
+        // まだ識別番号が一度も使われていない場合は0を返す
+        return nextID - 1;
+    }
 
-		return desc;
-	}
+    /**
+     * @param args
+     */
+    public static void main(String[] args)
+    {
 
-	public static int showCurrentID()
-	{
-		// まだ識別番号が一度も使われていない場合は0を返す
-		return nextID - 1;
-	}
+        Vehicle testVehicle1 = new Vehicle("Bob");
+        testVehicle1.changeSpeed(3.5);
+        System.out.println("Current speed: " + testVehicle1.getCurrentSpeed());
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+        System.out.println("");
 
-		Vehicle testVehicle1 = new Vehicle("Bob");
-		testVehicle1.changeSpeed(3.5);
-		testVehicle1.setCurrentDirection(1.2);
-		System.out.println("Id: " + testVehicle1.id);
-		System.out.println("Current speed: " + testVehicle1.getCurrentSpeed());
-		System.out.println("Current direction: " + testVehicle1.getCurrentDirection());
-		System.out.println("Owner: " + testVehicle1.getOwner());
+        testVehicle1.changeSpeed(2.1);
+        System.out.println("Current speed: " + testVehicle1.getCurrentSpeed());
 
-		System.out.println("");
+        System.out.println("");
 
-		System.out.println("MAX used ID: " + Vehicle.showCurrentID());
+        testVehicle1.stop();
+        System.out.println("after stop method, Current speed: "
+                + testVehicle1.getCurrentSpeed());
 
-		System.out.println("");
-
-		System.out.println(testVehicle1);
-
-		testVehicle1.stop();
-		System.out.println("after stop method, Current speed: " + testVehicle1.getCurrentSpeed());
-
-	}
+    }
 
 }

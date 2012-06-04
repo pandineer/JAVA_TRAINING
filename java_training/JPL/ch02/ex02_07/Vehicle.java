@@ -6,53 +6,56 @@
 
 package ch02.ex02_07;
 
-public class Vehicle {
-	public double currentSpeed;
-	double currentDirection;
-	String owner;
+public class Vehicle
+{
+    public double currentSpeed;
+    double currentDirection;
+    String owner;
 
+    public static int nextID = 1;
+    final int id = nextID++;
 
-	public static int nextID = 0;
-	final int id = nextID++;
+    public Vehicle()
+    {
+        ;
+    }
 
-	public Vehicle()
-	{
-		;
-	}
+    public Vehicle(String ownerName)
+    {
+        owner = ownerName;
+    }
 
-	public Vehicle (String ownerName)
-	{
-		owner = ownerName;
-	}
+    /**
+     * @param args
+     */
+    public static void main(String[] args)
+    {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+        Vehicle testVehicle1 = new Vehicle("Bob");
+        testVehicle1.currentSpeed = 3.5;
+        testVehicle1.currentDirection = 1.2;
+        System.out.println("Id: " + testVehicle1.id);
+        System.out.println("Current speed: " + testVehicle1.currentSpeed);
+        System.out.println("Current direction: "
+                + testVehicle1.currentDirection);
+        System.out.println("Owner: " + testVehicle1.owner);
 
-		Vehicle testVehicle1 = new Vehicle("Bob");
-		testVehicle1.currentSpeed = 3.5;
-		testVehicle1.currentDirection = 1.2;
-		System.out.println("Id: " + testVehicle1.id);
-		System.out.println("Current speed: " + testVehicle1.currentSpeed);
-		System.out.println("Current direction: " + testVehicle1.currentDirection);
-		System.out.println("Owner: " + testVehicle1.owner);
+        System.out.println("");
 
-		System.out.println("");
+        Vehicle testVehicle2 = new Vehicle();
+        testVehicle2.currentSpeed = 42;
+        testVehicle2.currentDirection = 0.5;
+        testVehicle2.owner = "Steve";
+        System.out.println("Id: " + testVehicle2.id);
+        System.out.println("Current speed: " + testVehicle2.currentSpeed);
+        System.out.println("Current direction: "
+                + testVehicle2.currentDirection);
+        System.out.println("Owner: " + testVehicle2.owner);
 
-		Vehicle testVehicle2 = new Vehicle();
-		testVehicle2.currentSpeed = 42;
-		testVehicle2.currentDirection = 0.5;
-		testVehicle2.owner = "Steve";
-		System.out.println("Id: " + testVehicle2.id);
-		System.out.println("Current speed: " + testVehicle2.currentSpeed);
-		System.out.println("Current direction: " + testVehicle2.currentDirection);
-		System.out.println("Owner: " + testVehicle2.owner);
+        System.out.println("");
 
-		System.out.println("");
+        System.out.println("current nextID: " + Vehicle.nextID);
 
-		System.out.println("current nextID: " + Vehicle.nextID);
-
-	}
+    }
 
 }
