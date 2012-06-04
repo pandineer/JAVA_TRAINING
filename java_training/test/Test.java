@@ -11,7 +11,7 @@ public class Test
         System.out.println(temp.floatToRawIntBits( Float.POSITIVE_INFINITY + Float.NEGATIVE_INFINITY));
         System.out.println( Float.POSITIVE_INFINITY + Float.NEGATIVE_INFINITY);
         System.out.println(temp.floatToIntBits( Float.POSITIVE_INFINITY + Float.NEGATIVE_INFINITY));
-
+        System.out.println('"' + "aaa");
     }
 
 }
