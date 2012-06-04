@@ -7,10 +7,12 @@
 
 package ch06.ex06_05;
 
-public class Color {
-	public String ColorName;
-	Color(String name)
-	{
-		ColorName = name;
-	}
+public class Color
+{
+    public String ColorName;
+
+    Color(String name)
+    {
+        ColorName = name;
+    }
 }
