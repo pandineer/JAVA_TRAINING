@@ -10,9 +10,9 @@ package ch05.ex05_02;
 
 public class BankAccount
 {
-    private long number;        // 口座番号
-    private long balance;       // 現在の残高（単位は、セント）
-    private Action lastAct;     // 最後に行われた処理
+    private long number; // 口座番号
+    private long balance; // 現在の残高（単位は、セント）
+    private Action lastAct; // 最後に行われた処理
     private History lastHistory;
 
     private class History
@@ -31,7 +31,7 @@ public class BankAccount
             return nextHistory;
         }
 
-        History (Action preAction, Action currentAction, History preHistory)
+        History(Action preAction, Action currentAction, History preHistory)
         {
             nextAction = preAction;
             historyAction = currentAction;
@@ -75,11 +75,13 @@ public class BankAccount
     {
         private String act;
         private long amount;
+
         Action(String act, long amount)
         {
             this.act = act;
             this.amount = amount;
         }
+
         public String toString()
         {
             // identify our enclosing account
@@ -112,15 +114,26 @@ public class BankAccount
         for (int i = 0; i < 6; i++)
         {
             test.deposit(1000 * (i + 1));
+            System.out.println("Current balance: " + test.balance);
         }
         for (int i = 0; i < 6; i++)
         {
             test.withdraw(1000 * (i + 1));
+            System.out.println("Current balance: " + test.balance);
         }
-        System.out.println("Lastest Action          : " + test.history().getCurrentAction());
-        System.out.println("Lastest Action - 1      : " + test.history().next());
-        System.out.println("Lastest Action - 9.next : " + test.history().nextH().nextH().nextH().nextH().nextH().nextH().nextH().nextH().next());
-        System.out.println("Lastest ACtion - 10.next: " + test.history().nextH().nextH().nextH().nextH().nextH().nextH().nextH().nextH().nextH().next());
+
+        System.out.println("");
+
+        System.out.println("Lastest Action          : "
+                + test.history().getCurrentAction());
+        System.out
+                .println("Lastest Action - 1      : " + test.history().next());
+        System.out.println("Lastest Action - 9.next : "
+                + test.history().nextH().nextH().nextH().nextH().nextH()
+                        .nextH().nextH().nextH().next());
+        System.out.println("Lastest ACtion - 10.next: "
+                + test.history().nextH().nextH().nextH().nextH().nextH()
+                        .nextH().nextH().nextH().nextH().next());
     }
 
 }
