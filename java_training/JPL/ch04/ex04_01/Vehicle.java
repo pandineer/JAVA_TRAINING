@@ -1,6 +1,6 @@
 /*
  * 練習問題4.1 p.113
- * 86頁のれんしゅう問題3.6の回答を、抽象クラスではなく、EnergySourceのためのインタフェースを使用して書き直しなさい。
+ * 86頁の練習問題3.6の回答を、抽象クラスではなく、EnergySourceのためのインタフェースを使用して書き直しなさい。
  */
 
 package ch04.ex04_01;
@@ -15,15 +15,20 @@ public class Vehicle
     static final int TURN_RIGHT = 1;
     static final int TURN_LEFT = 2;
 
+    private static int nextID = 1;
+    final int id = nextID++;
+
     public void turn(int direction)
     {
         if (direction == TURN_RIGHT)
         {
             currentDirection = currentDirection + 1.0;
-        } else if (direction == TURN_LEFT)
+        }
+        else if (direction == TURN_LEFT)
         {
             currentDirection = currentDirection - 1.0;
-        } else
+        }
+        else
         {
             ; // 何もしない
         }
@@ -64,9 +69,6 @@ public class Vehicle
         currentDirection = direction;
     }
 
-    private static int nextID = 0;
-    final int id = nextID++;
-
     public Vehicle(EnergySource power)
     {
         this.power = power;
@@ -87,7 +89,7 @@ public class Vehicle
 
     public static int showCurrentID()
     {
-        // まだ識別番号が一度も使われていない場合は-1を返す
+        // まだ識別番号が一度も使われていない場合は0を返す
         return nextID - 1;
     }
 
