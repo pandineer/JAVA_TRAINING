@@ -5,30 +5,27 @@
 
 package ch02.ex02_08;
 
-public class LinkedList {
+public class LinkedList
+{
+    Object object;
+    LinkedList nextObject;
 
-	Object object;
-	LinkedList nextObject;
+    LinkedList(Object associatedObject)
+    {
+        object = associatedObject;
+    }
 
-	LinkedList (Object associatedObject)
-	{
-		object = associatedObject;
-	}
+    /**
+     * @param args
+     */
+    public static void main(String[] args)
+    {
+        LinkedList test = new LinkedList(new Vehicle());
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+        test.nextObject = new LinkedList(new Vehicle());
+        System.out.println(((Vehicle) test.object).id);
+        System.out.println(((Vehicle) test.nextObject.object).id);
 
-		Vehicle temporary = new Vehicle();
-
-		LinkedList test = new LinkedList(temporary);
-
-		temporary = new Vehicle();
-		test.nextObject = new LinkedList(temporary);
-		System.out.println(((Vehicle)test.object).id);
-		System.out.println(((Vehicle)test.nextObject.object).id);
-
-	}
+    }
 
 }

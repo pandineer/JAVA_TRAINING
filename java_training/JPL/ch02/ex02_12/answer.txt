@@ -9,4 +9,8 @@ Vehicle:
 	}
 
 LinkedList:
-	必要ないと思う。
+	複数のobjectを一気にLinkedListに登録したい場合は必要かもしれない。
+	LinkedList (Object... objects)
+	{
+	   // objectsをLinkedListに登録する
+	}

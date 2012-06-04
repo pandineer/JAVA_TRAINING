@@ -5,13 +5,13 @@
 
 package ch02.ex02_16;
 
-public class Vehicle {
-	public double currentSpeed;
-	double currentDirection;
-	String owner;
+public class Vehicle
+{
+    public double currentSpeed;
+    double currentDirection;
+    String owner;
 
-
-	public static int nextID = 0;
-	final int id = nextID++;
+    public static int nextID = 1;
+    final int id = nextID++;
 
 }

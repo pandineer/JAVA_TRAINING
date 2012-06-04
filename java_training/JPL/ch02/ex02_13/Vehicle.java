@@ -6,93 +6,95 @@
 
 package ch02.ex02_13;
 
-// nextID以外は変更できて良いと思う。
+// id, nextID以外は変更できて良いと思う。
 
-public class Vehicle {
-	private double currentSpeed;
-	private double currentDirection;
-	private String owner;
+public class Vehicle
+{
+    private double currentSpeed;
+    private double currentDirection;
+    private String owner;
 
-	private static int nextID = 1;
-	private final int id;
+    private static int nextID = 1;
+    private final int id;
 
-	public String getOwner()
-	{
-		return owner;
-	}
+    public String getOwner()
+    {
+        return owner;
+    }
 
-	public void setOwner(String newOwner)
-	{
-	    owner = newOwner;
-	}
+    public void setOwner(String newOwner)
+    {
+        owner = newOwner;
+    }
 
-	public double getCurrentSpeed()
-	{
-		return currentSpeed;
-	}
+    public double getCurrentSpeed()
+    {
+        return currentSpeed;
+    }
 
-	public void setCurrentSpeed(double speed)
-	{
-		currentSpeed = speed;
-	}
+    public void setCurrentSpeed(double speed)
+    {
+        currentSpeed = speed;
+    }
 
-	public double getCurrentDirection()
-	{
-		return currentDirection;
-	}
+    public double getCurrentDirection()
+    {
+        return currentDirection;
+    }
 
-	public void setCurrentDirection(double direction)
-	{
-		currentDirection = direction;
-	}
+    public void setCurrentDirection(double direction)
+    {
+        currentDirection = direction;
+    }
 
+    public Vehicle()
+    {
+        id = nextID++;
+        ;
+    }
 
+    public Vehicle(String ownerName)
+    {
+        id = nextID++;
+        owner = ownerName;
+    }
 
-	public Vehicle()
-	{
-		id = nextID++;;
-	}
+    public String toString()
+    {
+        String desc = "owner: " + owner;
 
-	public Vehicle (String ownerName)
-	{
-	    id = nextID++;
-		owner = ownerName;
-	}
+        return desc;
+    }
 
-	public String toString()
-	{
-		String desc = "owner: " + owner;
+    public static int showCurrentID()
+    {
+        // まだ識別番号が一度も使われていない場合は0を返す
+        return nextID - 1;
+    }
 
-		return desc;
-	}
+    /**
+     * @param args
+     */
+    public static void main(String[] args)
+    {
 
-	public static int showCurrentID()
-	{
-		// まだ識別番号が一度も使われていない場合は0を返す
-		return nextID - 1;
-	}
+        Vehicle testVehicle1 = new Vehicle("Bob");
+        testVehicle1.setCurrentSpeed(3.5);
+        testVehicle1.setCurrentDirection(1.2);
+        System.out.println("Id: " + testVehicle1.id);
+        System.out.println("Current speed: " + testVehicle1.getCurrentSpeed());
+        System.out.println("Current direction: "
+                + testVehicle1.getCurrentDirection());
+        System.out.println("Owner: " + testVehicle1.getOwner());
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+        System.out.println("");
 
-		Vehicle testVehicle1 = new Vehicle("Bob");
-		testVehicle1.setCurrentSpeed(3.5);
-		testVehicle1.setCurrentDirection(1.2);
-		System.out.println("Id: " + testVehicle1.id);
-		System.out.println("Current speed: " + testVehicle1.getCurrentSpeed());
-		System.out.println("Current direction: " + testVehicle1.getCurrentDirection());
-		System.out.println("Owner: " + testVehicle1.getOwner());
+        System.out.println("MAX used ID: " + Vehicle.showCurrentID());
 
-		System.out.println("");
+        System.out.println("");
 
-		System.out.println("MAX used ID: " + Vehicle.showCurrentID());
+        System.out.println(testVehicle1);
 
-		System.out.println("");
-
-		System.out.println(testVehicle1);
-
-	}
+    }
 
 }
