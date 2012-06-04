@@ -5,17 +5,18 @@
 
 package ch01.ex01_11;
 
-public class StringDemo {
+public class StringDemo
+{
+    /**
+     * @param args
+     */
+    public static void main(String[] args)
+    {
+        String myName = "Ryosuke";
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		String myName = "Ryosuke";
+        myName = myName + " Miyahara";
+        System.out.println("Name = " + myName);
 
-		myName = myName + " Miyahara";
-		System.out.println("Name = " + myName);
-
-	}
+    }
 
 }
