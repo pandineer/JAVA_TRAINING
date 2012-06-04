@@ -19,7 +19,8 @@ public class LinkedList implements Cloneable
         {
             // デフォルトの仕組みで十分
             return (LinkedList) super.clone();
-        } catch (CloneNotSupportedException e)
+        }
+        catch (CloneNotSupportedException e)
         {
             // 起こり得ない。このクラスとObjectは複製できる
             throw new InternalError(e.toString());
@@ -36,7 +37,8 @@ public class LinkedList implements Cloneable
             if (next == null)
             {
                 break;
-            } else
+            }
+            else
             {
                 next = nextObject.getNextObject();
             }
@@ -83,39 +85,32 @@ public class LinkedList implements Cloneable
     {
 
         // リストが参照しているオブジェクトに対する変更は、他方のリストから見える
-        Vehicle temporary = new Vehicle("test1");
+        LinkedList link1 = new LinkedList(new Vehicle("test1"));
 
-        LinkedList link1 = new LinkedList(temporary);
-
-        temporary = new Vehicle("test2");
-        link1.setNextObject(new LinkedList(temporary));
+        link1.setNextObject(new LinkedList(new Vehicle("test2")));
 
         LinkedList link2 = new LinkedList(null);
         link2 = link1.clone();
 
-        System.out.println(((Vehicle)link1.getObject()).getOwner());
-        System.out.println(((Vehicle)link2.getObject()).getOwner());
+        System.out.println(((Vehicle) link1.getObject()).getOwner());
+        System.out.println(((Vehicle) link2.getObject()).getOwner());
+
+        System.out.println("");
 
         // link1からもlink2からも変更が見える
-        ((Vehicle)(link2).getObject()).setOwner("modified");
+        ((Vehicle) (link2).getObject()).setOwner("modified");
 
-        System.out.println("");
-        System.out.println(((Vehicle)link1.getObject()).getOwner());
-        System.out.println(((Vehicle)link2.getObject()).getOwner());
-
+        System.out.println(((Vehicle) link1.getObject()).getOwner());
+        System.out.println(((Vehicle) link2.getObject()).getOwner());
 
         // １つのリストに対する変更は、他方のリストに影響しない（link2のリストを別の参照にする）
-        temporary = new Vehicle("test3");
+        link2 = new LinkedList(new Vehicle("test3"));
 
-        link2 = new LinkedList(temporary);
-
-        temporary = new Vehicle("test4");
-        link2.setNextObject(new LinkedList(temporary));
+        link2.setNextObject(new LinkedList(new Vehicle("test4")));
 
         System.out.println("");
-        System.out.println(((Vehicle)link1.getObject()).getOwner());
-        System.out.println(((Vehicle)link2.getObject()).getOwner());
-
+        System.out.println(((Vehicle) link1.getObject()).getOwner());
+        System.out.println(((Vehicle) link2.getObject()).getOwner());
 
     }
 
