@@ -13,7 +13,8 @@ public class PassengerVehicle extends Vehicle implements Cloneable
 
     public PassengerVehicle clone()
     {
-        PassengerVehicle temp = (PassengerVehicle)super.clone();
+        // 単純なObject.cloneによるコピーでは、idが正しく処理されない
+        PassengerVehicle temp = (PassengerVehicle) super.clone();
         temp.sheet = sheet;
         temp.passenger = passenger;
         return temp;
@@ -62,7 +63,6 @@ public class PassengerVehicle extends Vehicle implements Cloneable
         System.out.println(test1.getId());
         System.out.println(test2.getId());
         System.out.println(test3.getId());
-
 
     }
 

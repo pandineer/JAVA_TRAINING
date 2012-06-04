@@ -16,13 +16,25 @@ public class Vehicle implements Cloneable
     static final int TURN_RIGHT = 1;
     static final int TURN_LEFT = 2;
 
+    private static int nextID = 1;
+
+    int id;
+
     public Vehicle clone()
     {
         try
         {
-            // デフォルトの仕組みで十分
-            return (Vehicle) super.clone();
-        } catch (CloneNotSupportedException e)
+            // 単純なObject.cloneによるコピーでは、idが正しく処理されない
+
+            // IDの処理が必要
+            Vehicle temp = (Vehicle) super.clone();
+            temp.id = nextID++;
+            temp.currentSpeed = currentSpeed;
+            temp.currentDirection = currentDirection;
+            temp.owner = owner;
+            return temp;
+        }
+        catch (CloneNotSupportedException e)
         {
             // 起こり得ない。このクラスとObjectは複製できる
             throw new InternalError(e.toString());
@@ -34,10 +46,12 @@ public class Vehicle implements Cloneable
         if (direction == TURN_RIGHT)
         {
             currentDirection = currentDirection + 1.0;
-        } else if (direction == TURN_LEFT)
+        }
+        else if (direction == TURN_LEFT)
         {
             currentDirection = currentDirection - 1.0;
-        } else
+        }
+        else
         {
             ; // 何もしない
         }
@@ -46,11 +60,6 @@ public class Vehicle implements Cloneable
     public void turn(double degree)
     {
         currentDirection = currentDirection + degree;
-    }
-
-    public void setOwner(String owner)
-    {
-        this.owner = owner;
     }
 
     public String getOwner()
@@ -83,16 +92,19 @@ public class Vehicle implements Cloneable
         currentDirection = direction;
     }
 
-    private static int nextID = 0;
-    final int id = nextID++;
+    public int getId()
+    {
+        return id;
+    }
 
     public Vehicle()
     {
-        ;
+        id = nextID++;
     }
 
     public Vehicle(String ownerName)
     {
+        this();
         owner = ownerName;
     }
 
@@ -105,7 +117,12 @@ public class Vehicle implements Cloneable
 
     public static int showCurrentID()
     {
-        // まだ識別番号が一度も使われていない場合は-1を返す
+        // まだ識別番号が一度も使われていない場合は0を返す
         return nextID - 1;
+    }
+
+    public void setOwner(String owner)
+    {
+        this.owner = owner;
     }
 }

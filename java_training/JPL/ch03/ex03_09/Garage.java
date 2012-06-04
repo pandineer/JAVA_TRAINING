@@ -46,9 +46,7 @@ public class Garage implements Cloneable
         System.out.println(test1.VehicleList[1].getOwner());
         System.out.println(test2.VehicleList[0].getOwner()); // 元のオブジェクトに影響を与えないことを確認
         System.out.println(test2.VehicleList[1].getOwner()); // コピーできていることを確認
-
-
-
+        System.out.println("used max id: " + Vehicle.showCurrentID());
 
     }
 
