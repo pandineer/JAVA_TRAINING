@@ -6,18 +6,20 @@
 
 package ch01.ex01_05;
 
-public class HelloWorld {
+public class HelloWorld
+{
+    /**
+     * 表示するメッセージを定義する
+     */
+    static final String message = "Hello, World";
 
-	/**
-	 * 表示するメッセージを定義する
-	 */
-	static final String message = "Hello, World";
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		System.out.println(message);
+    /**
+     * @param args
+     */
+    public static void main(String[] args)
+    {
+        System.out.println(message);
 
-	}
+    }
 
 }
