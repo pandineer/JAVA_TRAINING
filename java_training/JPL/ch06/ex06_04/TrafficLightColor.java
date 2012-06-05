@@ -18,6 +18,8 @@ public class TrafficLightColor
 
         static Color Error = new Color("Error");
 
+        
+        
         public static Color getColor(LightColor lightColor)
         {
             switch (lightColor)
