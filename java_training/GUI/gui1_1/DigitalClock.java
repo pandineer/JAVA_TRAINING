@@ -16,10 +16,13 @@ import java.util.Calendar;
 
 public class DigitalClock extends Frame implements WindowListener, Runnable
 {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     static int h;       // 時
     static int m;       // 分
     static int s;       // 秒
-    Calendar now = Calendar.getInstance();
     static Thread th;
 
     // Font f = new Font("TimesRoman", Font.PLAIN, 16);
@@ -83,14 +86,14 @@ public class DigitalClock extends Frame implements WindowListener, Runnable
     {
         while(true)
         {
-            h = now.getInstance().get(now.HOUR_OF_DAY);
-            m = now.getInstance().get(now.MINUTE);
-            s = now.getInstance().get(now.SECOND);
+            h = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            m = Calendar.getInstance().get(Calendar.MINUTE);
+            s = Calendar.getInstance().get(Calendar.SECOND);
             repaint();
 
             try
             {
-                th.sleep(1000); // スリープ1秒
+                Thread.sleep(1000); // スリープ1秒
             }
             catch(InterruptedException e)
             {

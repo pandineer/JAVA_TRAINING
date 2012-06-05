@@ -37,7 +37,6 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     private String minuteString;
     private String secondString;
 
-    private Calendar now = Calendar.getInstance();
     private Thread th;
     private PropertyDialog dialog;
     private Menu menuMenu;
@@ -186,16 +185,16 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         while(true)
         {
         	// 現在時刻の獲得
-            hourInteger = now.getInstance().get(now.HOUR_OF_DAY);
-            minuteInteger = now.getInstance().get(now.MINUTE);
-            secondInteger = now.getInstance().get(now.SECOND);
+            hourInteger = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            minuteInteger = Calendar.getInstance().get(Calendar.MINUTE);
+            secondInteger = Calendar.getInstance().get(Calendar.SECOND);
 
             // 再描画
             repaint();
 
             try
             {
-                th.sleep(1000); // スリープ1秒
+                Thread.sleep(1000); // スリープ1秒
             }
             catch(InterruptedException e)
             {
