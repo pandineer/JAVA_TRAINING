@@ -97,6 +97,11 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         // ダイアログを生成する
         dialog = new PropertyDialog(this);
 
+        // 現在時刻用変数の初期化
+        hourInteger = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        minuteInteger = Calendar.getInstance().get(Calendar.MINUTE);
+        secondInteger = Calendar.getInstance().get(Calendar.SECOND);
+
 
     }
 
