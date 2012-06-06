@@ -25,13 +25,12 @@ import java.awt.event.*;
 import java.awt.*;
 import java.util.Calendar;
 
-
 public class DigitalClock extends Frame implements Runnable, ActionListener
 {
     private static final long serialVersionUID = 1L;
-    private Integer hourInteger;       // 時
-    private Integer minuteInteger;       // 分
-    private Integer secondInteger;       // 秒
+    private Integer hourInteger; // 時
+    private Integer minuteInteger; // 分
+    private Integer secondInteger; // 秒
 
     private String hourString;
     private String minuteString;
@@ -65,16 +64,16 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
 
     public DigitalClock(String title)
     {
-    	// タイトルバーにタイトルを登録する
+        // タイトルバーにタイトルを登録する
         super(title);
 
         // ウィンドウを閉じられるようにする
         addWindowListener(new WindowAdapter()
         {
-        	public void windowClosing(WindowEvent e)
-        	{
-        		System.exit(0);
-        	}
+            public void windowClosing(WindowEvent e)
+            {
+                System.exit(0);
+            }
         });
 
         // メニューバーを作成する
@@ -102,57 +101,54 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         minuteInteger = Calendar.getInstance().get(Calendar.MINUTE);
         secondInteger = Calendar.getInstance().get(Calendar.SECOND);
 
-
     }
-
-
 
     public void paint(Graphics g)
     {
-    	// 時・分・秒が一桁の時、0で二桁目を埋める
-    	if (hourInteger < 10)
-    	{
-    		hourString = "0" + hourInteger;
-    	}
-    	else
-    	{
-    		hourString = hourInteger.toString();
-    	}
+        // 時・分・秒が一桁の時、0で二桁目を埋める
+        if (hourInteger < 10)
+        {
+            hourString = "0" + hourInteger;
+        }
+        else
+        {
+            hourString = hourInteger.toString();
+        }
 
-    	if (minuteInteger < 10)
-    	{
-    		minuteString = "0" + minuteInteger;
-    	}
-    	else
-    	{
-    		minuteString = minuteInteger.toString();
-    	}
+        if (minuteInteger < 10)
+        {
+            minuteString = "0" + minuteInteger;
+        }
+        else
+        {
+            minuteString = minuteInteger.toString();
+        }
 
-    	if (secondInteger < 10)
-    	{
-    		secondString = "0" + secondInteger;
-    	}
-    	else
-    	{
-    		secondString = secondInteger.toString();
-    	}
-    	timeString = hourString+":"+minuteString+":"+secondString;
+        if (secondInteger < 10)
+        {
+            secondString = "0" + secondInteger;
+        }
+        else
+        {
+            secondString = secondInteger.toString();
+        }
+        timeString = hourString + ":" + minuteString + ":" + secondString;
 
-    	// ウィンドウサイズの計算
-    	windowSizeX  = graphicBuffer.getFontMetrics().stringWidth(timeString);
+        // ウィンドウサイズの計算
+        windowSizeX = graphicBuffer.getFontMetrics().stringWidth(timeString);
         windowSizeX += getInsets().left;
-    	windowSizeX += getInsets().right;
+        windowSizeX += getInsets().right;
 
-    	windowSizeY  = graphicBuffer.getFontMetrics().getAscent();
-    	windowSizeY += graphicBuffer.getFontMetrics().getDescent();
-    	windowSizeY += graphicBuffer.getFontMetrics().getLeading();
-    	windowSizeY *= 2; // キャプチャした時刻用
-    	windowSizeY += getInsets().top;
+        windowSizeY = graphicBuffer.getFontMetrics().getAscent();
+        windowSizeY += graphicBuffer.getFontMetrics().getDescent();
+        windowSizeY += graphicBuffer.getFontMetrics().getLeading();
+        windowSizeY *= 2; // キャプチャした時刻用
+        windowSizeY += getInsets().top;
 
-    	setSize(windowSizeX, windowSizeY);
+        setSize(windowSizeX, windowSizeY);
 
         imageBuffer = createImage(windowSizeX, windowSizeY);
-        graphicBuffer =imageBuffer.getGraphics();
+        graphicBuffer = imageBuffer.getGraphics();
 
         // 背景を色つきで塗りつぶす
         graphicBuffer.setColor(backgroundColor);
@@ -160,36 +156,39 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
 
         // 時刻の描画
         fontSetting = new Font(fontType, Font.PLAIN, fontSize);
-        graphicBuffer.setFont(fontSetting);     // フォントの設定
-        graphicBuffer.setColor(fontColor);      // 文字色の設定
-    	graphicBuffer.drawString(timeString, 0, graphicBuffer.getFontMetrics().getAscent() + getInsets().top - getInsets().bottom);
+        graphicBuffer.setFont(fontSetting); // フォントの設定
+        graphicBuffer.setColor(fontColor); // 文字色の設定
+        graphicBuffer.drawString(timeString, 0, graphicBuffer.getFontMetrics()
+                .getAscent() + getInsets().top - getInsets().bottom);
 
-    	// キャプチャした時刻の描画
-    	if (true == captureFlag)
-    	{
-    	    captureTimeString = timeString;
-    	    captureFlag = false;
-    	}
-    	graphicBuffer.drawString(captureTimeString, 0, (graphicBuffer.getFontMetrics().getAscent())*2 + getInsets().top - getInsets().bottom);
+        // キャプチャした時刻の描画
+        if (true == captureFlag)
+        {
+            captureTimeString = timeString;
+            captureFlag = false;
+        }
+        graphicBuffer.drawString(captureTimeString, 0,
+                (graphicBuffer.getFontMetrics().getAscent()) * 2
+                        + getInsets().top - getInsets().bottom);
 
-    	// バッファのコピー
-    	g.drawImage(imageBuffer, 0, 0,  this);
+        // バッファのコピー
+        g.drawImage(imageBuffer, 0, 0, this);
     }
 
     @Override
     public void update(Graphics g)
     {
-    	// ちらつき防止のため、updateメソッドからそのままpaintメソッドにつなぐ
-    	// (画面がクリアされないようにする)
-    	paint(g);
+        // ちらつき防止のため、updateメソッドからそのままpaintメソッドにつなぐ
+        // (画面がクリアされないようにする)
+        paint(g);
     }
 
     @Override
     public void run()
     {
-        while(true)
+        while (true)
         {
-        	// 現在時刻の獲得
+            // 現在時刻の獲得
             hourInteger = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
             minuteInteger = Calendar.getInstance().get(Calendar.MINUTE);
             secondInteger = Calendar.getInstance().get(Calendar.SECOND);
@@ -199,11 +198,11 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
 
             try
             {
-                Thread.sleep(1000); // スリープ1秒
+                Thread.sleep(100); // スリープ1秒
             }
-            catch(InterruptedException e)
+            catch (InterruptedException e)
             {
-            	; // 何もしない
+                ; // 何もしない
             }
         }
 
@@ -214,69 +213,50 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         return fontType;
     }
 
-
-
     public void setFontType(String fontType)
     {
         this.fontType = fontType;
     }
-
-
 
     public Integer getFontSize()
     {
         return fontSize;
     }
 
-
-
     public void setFontSize(int fontSize)
     {
         this.fontSize = fontSize;
     }
-
-
 
     public Color getFontColor()
     {
         return fontColor;
     }
 
-
-
     public void setFontColor(Color fontColor)
     {
         this.fontColor = fontColor;
     }
-
-
 
     public Color getBackgroundColor()
     {
         return backgroundColor;
     }
 
-
-
     public void setBackgroundColor(Color backgroundColor)
     {
         this.backgroundColor = backgroundColor;
     }
-
-
 
     public Font getFontSetting()
     {
         return fontSetting;
     }
 
-
-
     public void setFontSetting(Font fontSetting)
     {
         this.fontSetting = fontSetting;
     }
-
 
     /**
      * @param args
@@ -287,34 +267,30 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
 
         window.th = new Thread(window);
 
-
         window.setSize(220, 150);
         window.setResizable(false);
         window.setVisible(true);
 
-
-
         window.imageBuffer = window.createImage(220, 150);
         window.graphicBuffer = window.imageBuffer.getGraphics();
 
-
-        window.th.start();     // スレッドスタート
+        window.th.start(); // スレッドスタート
 
     }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand() == "Property")
-                {
-                        // クリックしたのが「Property」だったら
-                        dialog.setVisible(true);
-                }
-                else if (e.getActionCommand() == "Capture!")
-                {
-                    // クリックしたのが「Capture!」だったら
-                    captureFlag = true;
-                }
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        if (e.getActionCommand() == "Property")
+        {
+            // クリックしたのが「Property」だったら
+            dialog.setVisible(true);
         }
-
+        else if (e.getActionCommand() == "Capture!")
+        {
+            // クリックしたのが「Capture!」だったら
+            captureFlag = true;
+        }
+    }
 
 }

@@ -230,7 +230,7 @@ public class PropertyDialog extends Dialog implements ActionListener, ItemListen
 	        {
 	            newBackgroundColor = Color.white;
 	        }
-	    }
-
         }
+
+    }
 }
