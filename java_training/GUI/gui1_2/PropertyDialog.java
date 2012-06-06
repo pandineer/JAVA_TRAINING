@@ -89,8 +89,7 @@ public class PropertyDialog extends Dialog implements ActionListener, ItemListen
 
                 // フォントサイズ
                 topPanel.add(new Label("Font Size: "));
-		choiceFontSize.add("8");
-		choiceFontSize.add("12");
+		choiceFontSize.add("36");
 		choiceFontSize.add("48");
 		choiceFontSize.add("60");
 		choiceFontSize.add("72");
