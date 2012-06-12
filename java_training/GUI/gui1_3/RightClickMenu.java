@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 
 public class RightClickMenu extends MouseAdapter
 {
-    DigitalClock digitalClock;
+    private DigitalClock digitalClock;
 
     RightClickMenu(DigitalClock digitalClock)
     {
@@ -16,8 +16,7 @@ public class RightClickMenu extends MouseAdapter
     {
         if (e.isPopupTrigger())
         {
-            System.out.println(e);
-            digitalClock.popup.show(digitalClock, 0, 0);
+            digitalClock.popup.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 }
