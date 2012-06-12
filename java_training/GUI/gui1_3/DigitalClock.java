@@ -21,8 +21,9 @@
 
 package gui1_3;
 
-import java.awt.event.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Calendar;
 
 public class DigitalClock extends Window implements Runnable, ActionListener
@@ -37,10 +38,6 @@ public class DigitalClock extends Window implements Runnable, ActionListener
     private String secondString;
 
     private Thread th;
-    private PropertyDialog dialog;
-    private Menu menuMenu;
-    private MenuItem menuProperty;
-    private MenuItem menuCapture;
     private Image imageBuffer;
     private Graphics graphicBuffer;
 
@@ -52,12 +49,14 @@ public class DigitalClock extends Window implements Runnable, ActionListener
     private int windowSizeX = 48 * 8 + 50;
     private int windowSizeY = 48 + 50;
 
-    private String timeString;
+    private String timeString = "00:00:00";
     private String captureTimeString = "00:00:00";
 
-    private MenuBar menuBar;
-
     private boolean captureFlag = false;
+
+    public PopupMenu popup = new PopupMenu();
+
+    private Menu menu = new Menu("!");
 
     // フォントのデフォルトの設定
     private Font fontSetting = new Font("TimesRoman", Font.PLAIN, 48);
@@ -66,20 +65,15 @@ public class DigitalClock extends Window implements Runnable, ActionListener
     {
         super(null);
 
-        // ウィンドウを閉じられるようにする
-        addWindowListener(new WindowAdapter()
-        {
-            public void windowClosing(WindowEvent e)
-            {
-                System.exit(0);
-            }
-        });
-
         // 現在時刻用変数の初期化
         hourInteger = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         minuteInteger = Calendar.getInstance().get(Calendar.MINUTE);
         secondInteger = Calendar.getInstance().get(Calendar.SECOND);
 
+        menu.add(new MenuItem("!"));
+        popup.add(menu);
+
+        addMouseListener(new RightClickMenu(this));
     }
 
     public void paint(Graphics g)
@@ -113,17 +107,20 @@ public class DigitalClock extends Window implements Runnable, ActionListener
         }
         timeString = hourString + ":" + minuteString + ":" + secondString;
 
-        // ウィンドウサイズの計算
-        windowSizeX = graphicBuffer.getFontMetrics().stringWidth(timeString);
-        windowSizeX += getInsets().left;
-        windowSizeX += getInsets().right;
+        if (null != graphicBuffer)
+        {
+            // ウィンドウサイズの計算
+            windowSizeX = graphicBuffer.getFontMetrics()
+                    .stringWidth(timeString);
+            windowSizeX += getInsets().left;
+            windowSizeX += getInsets().right;
 
-        windowSizeY = graphicBuffer.getFontMetrics().getAscent();
-        windowSizeY += graphicBuffer.getFontMetrics().getDescent();
-        windowSizeY += graphicBuffer.getFontMetrics().getLeading();
-        windowSizeY *= 2; // キャプチャした時刻用
-        windowSizeY += getInsets().top;
-
+            windowSizeY = graphicBuffer.getFontMetrics().getAscent();
+            windowSizeY += graphicBuffer.getFontMetrics().getDescent();
+            windowSizeY += graphicBuffer.getFontMetrics().getLeading();
+            windowSizeY *= 2; // キャプチャした時刻用
+            windowSizeY += getInsets().top;
+        }
         setSize(windowSizeX, windowSizeY);
 
         imageBuffer = createImage(windowSizeX, windowSizeY);
@@ -259,16 +256,7 @@ public class DigitalClock extends Window implements Runnable, ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if (e.getActionCommand() == "Property")
-        {
-            // クリックしたのが「Property」だったら
-            dialog.setVisible(true);
-        }
-        else if (e.getActionCommand() == "Capture!")
-        {
-            // クリックしたのが「Capture!」だったら
-            captureFlag = true;
-        }
-    }
+        // TODO 自動生成されたメソッド・スタブ
 
+    }
 }
