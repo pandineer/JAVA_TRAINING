@@ -73,6 +73,8 @@ public class DigitalClock extends Window implements Runnable, ActionListener
         menu.add(new MenuItem("!"));
         popup.add(menu);
 
+        add(popup);
+
         addMouseListener(new RightClickMenu(this));
     }
 
@@ -244,6 +246,7 @@ public class DigitalClock extends Window implements Runnable, ActionListener
         window.th = new Thread(window);
 
         window.setSize(220, 150);
+        window.setLocation(100, 100);
         window.setVisible(true);
 
         window.imageBuffer = window.createImage(220, 150);
