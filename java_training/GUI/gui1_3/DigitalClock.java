@@ -51,12 +51,12 @@ public class DigitalClock extends Window implements Runnable, ActionListener
     private Graphics graphicBuffer;
 
     private String fontType = "TimesRoman";
-    private Integer fontSize = 48;
+    private Integer fontSize = 60;
     private Color fontColor = Color.black;
     private Color backgroundColor = Color.white;
 
-    private int windowSizeX = 48 * 8 + 50;
-    private int windowSizeY = 48 + 50;
+    private int windowSizeX = 60 * 8 + 50;
+    private int windowSizeY = 60 + 50;
 
     private String timeString = "00:00:00";
     private String captureTimeString = "00:00:00";
@@ -68,11 +68,21 @@ public class DigitalClock extends Window implements Runnable, ActionListener
     private Menu property = new Menu("Property");
     private MenuItem menuItemExit = new MenuItem("Exit");
 
-    private MenuItem menuItemFontType = new MenuItem("Font Type");
-    private MenuItem menuItemFontSize = new MenuItem("Font Size");
-    private MenuItem menuItemFontColor = new MenuItem("Font Color");
-    private MenuItem menuItemBackgroundColor = new MenuItem("BackgroundColor");
+    private Menu menuFontType = new Menu("Font Type");
+    private Menu menuFontStyle = new Menu("Font Style");
+    private Menu menuFontSize = new Menu("Font Size");
+    private Menu menuFontColor = new Menu("Font Color");
+    private Menu menuBackgroundColor = new Menu("BackgroundColor");
 
+    static private String fonts[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+
+    static private String stringFontStyle[] = {"Plain", "Bold", "Italic", "Bold and Italic"};
+    static private int intFontStyle[] = {Font.PLAIN, Font.BOLD, Font.ITALIC, Font.BOLD | Font.ITALIC};
+
+    static private String stringColor[] = {"Black", "White", "Red", "Green", "Blue", "Cyan", "Magenta", "Yellow", "Orange"};
+    static private Color colorColor[] = {Color.black, Color.white, Color.red, Color.green, Color.blue, Color.cyan, Color.magenta, Color.yellow, Color.orange};
+
+    private RightClickMenu mouse;
 
     // フォントのデフォルトの設定
     private Font fontSetting = new Font("TimesRoman", Font.PLAIN, 48);
@@ -86,22 +96,56 @@ public class DigitalClock extends Window implements Runnable, ActionListener
         minuteInteger = Calendar.getInstance().get(Calendar.MINUTE);
         secondInteger = Calendar.getInstance().get(Calendar.SECOND);
 
-        property.add(menuItemFontType);
-        property.add(menuItemFontSize);
-        property.add(menuItemFontColor);
-        property.add(menuItemBackgroundColor);
+        property.add(menuFontType);
+        {
+            for (int i = 0; i < fonts.length; i++)
+            {
+                menuFontType.add(fonts[i]);
+            }
+        }
+        property.add(menuFontStyle);
+        {
+            for (int i = 0; i < stringFontStyle.length; i++)
+            {
+                menuFontStyle.add(stringFontStyle[i]);
+            }
+        }
+        property.add(menuFontSize);
+        {
+            for (Integer i = 0; i < 300; i += 30)
+            {
+                menuFontSize.add(i.toString());
+            }
+        }
+        property.add(menuFontColor);
+        {
+            for (int i = 0; i < stringColor.length; i++)
+            {
+                menuFontColor.add(new MenuItem(stringColor[i]));
+            }
+        }
+        property.add(menuBackgroundColor);
+        {
+            for (int i = 0; i < stringColor.length; i++)
+            {
+                menuBackgroundColor.add(new MenuItem(stringColor[i]));
+            }
+        }
         popup.add(property);
         popup.add(menuItemExit);
 
-        menuItemFontType.addActionListener(this);
-        menuItemFontSize.addActionListener(this);
-        menuItemFontColor.addActionListener(this);
-        menuItemBackgroundColor.addActionListener(this);
+        menuFontType.addActionListener(this);
+        menuFontSize.addActionListener(this);
+        menuFontColor.addActionListener(this);
+        menuBackgroundColor.addActionListener(this);
         menuItemExit.addActionListener(this);
 
         add(popup);
 
-        addMouseListener(new RightClickMenu(this));
+        mouse = new RightClickMenu(this);
+
+        addMouseListener(mouse);
+        addMouseMotionListener(mouse);
     }
 
     public void paint(Graphics g)
@@ -138,8 +182,14 @@ public class DigitalClock extends Window implements Runnable, ActionListener
         if (null != graphicBuffer)
         {
             // ウィンドウサイズの計算
-            windowSizeX = graphicBuffer.getFontMetrics()
-                    .stringWidth(timeString);
+            if (graphicBuffer.getFontMetrics().stringWidth(timeString) > graphicBuffer.getFontMetrics().stringWidth(captureTimeString))
+            {
+                windowSizeX = graphicBuffer.getFontMetrics().stringWidth(timeString);
+            } else
+            {
+                windowSizeX = graphicBuffer.getFontMetrics().stringWidth(captureTimeString);
+            }
+
             windowSizeX += getInsets().left;
             windowSizeX += getInsets().right;
 
@@ -286,21 +336,25 @@ public class DigitalClock extends Window implements Runnable, ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if (menuItemFontType == e.getSource())
+        if (menuFontType == e.getSource())
         {
-            changeFontType(e.getActionCommand());
+            setFontType(e.getActionCommand());
         }
-        else if (menuItemFontSize == e.getSource())
+        else if (menuFontStyle == e.getSource())
         {
-            changeFontSize(e.getActionCommand());
+            // TODO: implement
         }
-        else if (menuItemFontColor == e.getSource())
+        else if (menuFontSize == e.getSource())
         {
-            changeFontColor(e.getActionCommand());
+            setFontSize(Integer.valueOf(e.getActionCommand()));
         }
-        else if (menuItemBackgroundColor == e.getSource())
+        else if (menuFontColor == e.getSource())
         {
-            changeBackgroundColor(e.getActionCommand());
+            setFontColor(changeStringToColor(e.getActionCommand()));
+        }
+        else if (menuBackgroundColor == e.getSource())
+        {
+            setBackgroundColor(changeStringToColor(e.getActionCommand()));
         }
         else if ("Exit" == e.getActionCommand())
         {
@@ -313,23 +367,21 @@ public class DigitalClock extends Window implements Runnable, ActionListener
         }
     }
 
-    public void changeFontType(String changeType)
+
+    public Color changeStringToColor(String colorString)
     {
-        // TODO: 実装
+        for (int i = 0; i < stringColor.length; i++)
+        {
+            if (colorString == stringColor[i])
+            {
+                return colorColor[i];
+            }
+        }
+        return Color.black;
     }
 
-    public void changeFontSize(String changeSize)
+    public void setWindowLocation(int x, int y)
     {
-        // TODO: 実装
-    }
-
-    public void changeFontColor(String changeColor)
-    {
-        // TODO: 実装
-    }
-
-    public void changeBackgroundColor(String changeColor)
-    {
-        // TODO: 実装
+        setLocation(x, y);
     }
 }
