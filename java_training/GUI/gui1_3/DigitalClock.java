@@ -1,4 +1,13 @@
 /*
+ * 課題1-3
+ * 課題1-2のデジタル時計を、次のように修正してください。
+ * ・FrameではなくWindowクラスを使用して、フレーム枠のないデジタル時計にする。
+ * ・課題1-2のダイアログで指定できた属性は、マウスの右クリックでポップアップメニューを表示して、
+ * 　カスケード形式で選択できるようにする（ダイアログは開かない）。
+ * 時計内をマウスの左ボタンでクリックしたまま、デスクトップ上でウィンドウを移動させることができるようにする。
+ */
+
+/*
  * 課題1-2
  * デジタル時計に次の機能追加を行ってください。
  * ・メニューを付けて、プロパティダイアログを開ける。
@@ -43,7 +52,7 @@ public class DigitalClock extends Window implements Runnable, ActionListener
 
     private String fontType = "TimesRoman";
     private Integer fontSize = 48;
-    private Color fontColor = Color.blue;
+    private Color fontColor = Color.black;
     private Color backgroundColor = Color.white;
 
     private int windowSizeX = 48 * 8 + 50;
@@ -56,7 +65,14 @@ public class DigitalClock extends Window implements Runnable, ActionListener
 
     public PopupMenu popup = new PopupMenu();
 
-    private Menu menu = new Menu("!");
+    private Menu property = new Menu("Property");
+    private MenuItem menuItemExit = new MenuItem("Exit");
+
+    private MenuItem menuItemFontType = new MenuItem("Font Type");
+    private MenuItem menuItemFontSize = new MenuItem("Font Size");
+    private MenuItem menuItemFontColor = new MenuItem("Font Color");
+    private MenuItem menuItemBackgroundColor = new MenuItem("BackgroundColor");
+
 
     // フォントのデフォルトの設定
     private Font fontSetting = new Font("TimesRoman", Font.PLAIN, 48);
@@ -70,8 +86,18 @@ public class DigitalClock extends Window implements Runnable, ActionListener
         minuteInteger = Calendar.getInstance().get(Calendar.MINUTE);
         secondInteger = Calendar.getInstance().get(Calendar.SECOND);
 
-        menu.add(new MenuItem("!"));
-        popup.add(menu);
+        property.add(menuItemFontType);
+        property.add(menuItemFontSize);
+        property.add(menuItemFontColor);
+        property.add(menuItemBackgroundColor);
+        popup.add(property);
+        popup.add(menuItemExit);
+
+        menuItemFontType.addActionListener(this);
+        menuItemFontSize.addActionListener(this);
+        menuItemFontColor.addActionListener(this);
+        menuItemBackgroundColor.addActionListener(this);
+        menuItemExit.addActionListener(this);
 
         add(popup);
 
@@ -251,6 +277,7 @@ public class DigitalClock extends Window implements Runnable, ActionListener
 
         window.imageBuffer = window.createImage(220, 150);
         window.graphicBuffer = window.imageBuffer.getGraphics();
+        window.setAlwaysOnTop(true);
 
         window.th.start(); // スレッドスタート
 
@@ -259,7 +286,50 @@ public class DigitalClock extends Window implements Runnable, ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        // TODO 自動生成されたメソッド・スタブ
+        if (menuItemFontType == e.getSource())
+        {
+            changeFontType(e.getActionCommand());
+        }
+        else if (menuItemFontSize == e.getSource())
+        {
+            changeFontSize(e.getActionCommand());
+        }
+        else if (menuItemFontColor == e.getSource())
+        {
+            changeFontColor(e.getActionCommand());
+        }
+        else if (menuItemBackgroundColor == e.getSource())
+        {
+            changeBackgroundColor(e.getActionCommand());
+        }
+        else if ("Exit" == e.getActionCommand())
+        {
+            System.exit(0);
+        }
+        else
+        {
+            System.out.println(e.getSource());
+            System.out.println("This action is not implemented!");
+        }
+    }
 
+    public void changeFontType(String changeType)
+    {
+        // TODO: 実装
+    }
+
+    public void changeFontSize(String changeSize)
+    {
+        // TODO: 実装
+    }
+
+    public void changeFontColor(String changeColor)
+    {
+        // TODO: 実装
+    }
+
+    public void changeBackgroundColor(String changeColor)
+    {
+        // TODO: 実装
     }
 }
