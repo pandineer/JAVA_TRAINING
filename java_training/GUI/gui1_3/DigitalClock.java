@@ -50,7 +50,8 @@ public class DigitalClock extends Window implements Runnable, ActionListener
     private Image imageBuffer;
     private Graphics graphicBuffer;
 
-    private String fontType = "TimesRoman";
+    private String fontType = "Broadway BT";
+    private int fontStyle = Font.PLAIN;
     private Integer fontSize = 60;
     private Color fontColor = Color.black;
     private Color backgroundColor = Color.white;
@@ -85,7 +86,7 @@ public class DigitalClock extends Window implements Runnable, ActionListener
     private RightClickMenu mouse;
 
     // フォントのデフォルトの設定
-    private Font fontSetting = new Font("TimesRoman", Font.PLAIN, 48);
+    private Font fontSetting = new Font(fontType, fontStyle, fontSize);
 
     public DigitalClock()
     {
@@ -112,7 +113,7 @@ public class DigitalClock extends Window implements Runnable, ActionListener
         }
         property.add(menuFontSize);
         {
-            for (Integer i = 0; i < 300; i += 30)
+            for (Integer i = 10; i < 300; i += 30)
             {
                 menuFontSize.add(i.toString());
             }
@@ -135,6 +136,7 @@ public class DigitalClock extends Window implements Runnable, ActionListener
         popup.add(menuItemExit);
 
         menuFontType.addActionListener(this);
+        menuFontStyle.addActionListener(this);
         menuFontSize.addActionListener(this);
         menuFontColor.addActionListener(this);
         menuBackgroundColor.addActionListener(this);
@@ -209,7 +211,7 @@ public class DigitalClock extends Window implements Runnable, ActionListener
         graphicBuffer.fillRect(0, 0, windowSizeX, windowSizeY);
 
         // 時刻の描画
-        fontSetting = new Font(fontType, Font.PLAIN, fontSize);
+        fontSetting = new Font(fontType, fontStyle, fontSize);
         graphicBuffer.setFont(fontSetting); // フォントの設定
         graphicBuffer.setColor(fontColor); // 文字色の設定
         graphicBuffer.drawString(timeString, 0, graphicBuffer.getFontMetrics()
@@ -227,6 +229,16 @@ public class DigitalClock extends Window implements Runnable, ActionListener
 
         // バッファのコピー
         g.drawImage(imageBuffer, 0, 0, this);
+    }
+
+    public int getFontStyle()
+    {
+        return fontStyle;
+    }
+
+    public void setFontStyle(int fontStyle)
+    {
+        this.fontStyle = fontStyle;
     }
 
     @Override
@@ -342,7 +354,13 @@ public class DigitalClock extends Window implements Runnable, ActionListener
         }
         else if (menuFontStyle == e.getSource())
         {
-            // TODO: implement
+            for (int i = 0; i < stringFontStyle.length; i++)
+            {
+                if (e.getActionCommand() == stringFontStyle[i])
+                {
+                    setFontStyle(intFontStyle[i]);
+                }
+            }
         }
         else if (menuFontSize == e.getSource())
         {
