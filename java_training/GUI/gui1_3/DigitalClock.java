@@ -44,9 +44,9 @@ public class DigitalClock extends Window implements Runnable, ActionListener
     private Date capturedDate;
     private SimpleDateFormat simpleDataFormat = new SimpleDateFormat("HH:mm:ss");
 
-    private String stringCurrentTime = "--:--:--";
-    private String stringErapsedTime = "--:--:--";
-    private String stringCapturedTime = "--:--:--";
+    private String stringCurrentTime = " Current: --:--:--";
+    private String stringErapsedTime = " Erapsed: --:--:--";
+    private String stringCapturedTime = "Captured: --:--:--";
 
     private Thread th;
     private Image imageBuffer;
@@ -171,39 +171,28 @@ public class DigitalClock extends Window implements Runnable, ActionListener
             captureFlag = false;
         }
 
-        // capturedDateがnullでない場合は、経過時間を取得する
-        if (null != capturedDate)
+        // 時刻用文字列の生成
+        stringCurrentTime = " Current: " + simpleDataFormat.format(currentDate);
+        // キャプチャ時刻がnullでなければキャプチャ時刻・経過時間用文字列を生成する
+        if (capturedDate != null)
         {
-            stringErapsedTime = " Erapsed: " + calculateErapsedTime(currentDate, capturedDate);
+            stringCapturedTime = "Captured: "
+                    + simpleDataFormat.format(capturedDate);
+            // capturedDateがnullでない場合は、経過時間を取得する
+            stringErapsedTime = " Erapsed: "
+                    + calculateErapsedTime(capturedDate, currentDate);
         }
 
         if (null != graphicBuffer)
         {
-            // 時刻用文字列の生成
-            stringCurrentTime = " ,mmmmmCurrent: "
-                    + simpleDataFormat.format(currentDate);
-            if (capturedDate == null)
-            {
-                stringCapturedTime = "Captured: " + "--:--:--";
-            }
-            else
-            {
-                stringCapturedTime = "Captured: "
-                        + simpleDataFormat.format(capturedDate);
-            }
-
             // ウィンドウサイズの計算
-            if (graphicBuffer.getFontMetrics().stringWidth(stringCurrentTime) > graphicBuffer
-                    .getFontMetrics().stringWidth(stringCapturedTime))
-            {
-                windowSizeX = graphicBuffer.getFontMetrics().stringWidth(
-                        stringCurrentTime);
-            }
-            else
-            {
-                windowSizeX = graphicBuffer.getFontMetrics().stringWidth(
-                        stringCapturedTime);
-            }
+            windowSizeX = Math.max(
+                    graphicBuffer.getFontMetrics().stringWidth(
+                            stringCurrentTime), Math.max(
+                            graphicBuffer.getFontMetrics().stringWidth(
+                                    stringCapturedTime),
+                            graphicBuffer.getFontMetrics().stringWidth(
+                                    stringErapsedTime)));
 
             windowSizeX += getInsets().left;
             windowSizeX += getInsets().right;
@@ -211,7 +200,7 @@ public class DigitalClock extends Window implements Runnable, ActionListener
             windowSizeY = graphicBuffer.getFontMetrics().getAscent();
             windowSizeY += graphicBuffer.getFontMetrics().getDescent();
             windowSizeY += graphicBuffer.getFontMetrics().getLeading();
-            windowSizeY *= 2; // キャプチャした時刻用
+            windowSizeY *= 3; // 経過時間、キャプチャした時刻用
             windowSizeY += getInsets().top;
         }
         setSize(windowSizeX, windowSizeY);
@@ -233,9 +222,14 @@ public class DigitalClock extends Window implements Runnable, ActionListener
                 + getInsets().top
                 - getInsets().bottom);
 
+        // 経過時間の描画
+        graphicBuffer.drawString(stringErapsedTime, 0,
+                (graphicBuffer.getFontMetrics().getAscent()) * 2
+                        + getInsets().top - getInsets().bottom);
+
         // キャプチャした時刻の描画
         graphicBuffer.drawString(stringCapturedTime, 0,
-                (graphicBuffer.getFontMetrics().getAscent()) * 2
+                (graphicBuffer.getFontMetrics().getAscent()) * 3
                         + getInsets().top - getInsets().bottom);
 
         // バッファのコピー
@@ -270,7 +264,7 @@ public class DigitalClock extends Window implements Runnable, ActionListener
 
             try
             {
-                Thread.sleep(100); // スリープ1秒
+                Thread.sleep(10); // スリープ1秒
             }
             catch (InterruptedException e)
             {
@@ -414,15 +408,46 @@ public class DigitalClock extends Window implements Runnable, ActionListener
 
     public String calculateErapsedTime(Date start, Date end)
     {
-        long diff = start.getTime() - end.getTime();
-        long diff_hour = diff / (60*24);
-        long diff_minute = (diff - diff_hour * 24) / 60;
-        long diff_second = (diff - diff_hour * 24 - diff_minute * 60);
+        Long diffAsSecond = (end.getTime() - start.getTime()) / 1000;
+        Long diffHour = diffAsSecond / (60 * 24);
+        Long diffMinute = (diffAsSecond - diffHour * 24 * 60) / 60;
+        Long diffSecond = (diffAsSecond - diffHour * 24 * 60 - diffMinute * 60);
 
-        String string_hour;
-        String string_minute;
-        String string_second;
+        String stringHour;
+        String stringMinute;
+        String stringSecond;
 
-        // TODO: 二桁目を0埋めしてStringをreturnする
+        if (diffHour < 10)
+        {
+            stringHour = "0" + diffHour;
+        }
+        else if (diffHour >= 100)
+        {
+            stringHour = "00";
+        }
+        else
+        {
+            stringHour = diffHour.toString();
+        }
+
+        if (diffMinute < 10)
+        {
+            stringMinute = "0" + diffMinute;
+        }
+        else
+        {
+            stringMinute = diffMinute.toString();
+        }
+
+        if (diffSecond < 10)
+        {
+            stringSecond = "0" + diffSecond;
+        }
+        else
+        {
+            stringSecond = diffSecond.toString();
+        }
+
+        return stringHour + ":" + stringMinute + ":" + stringSecond;
     }
 }
