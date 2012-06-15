@@ -409,9 +409,9 @@ public class DigitalClock extends Window implements Runnable, ActionListener
     public String calculateErapsedTime(Date start, Date end)
     {
         Long diffAsSecond = (end.getTime() - start.getTime()) / 1000;
-        Long diffHour = diffAsSecond / (60 * 24);
-        Long diffMinute = (diffAsSecond - diffHour * 24 * 60) / 60;
-        Long diffSecond = (diffAsSecond - diffHour * 24 * 60 - diffMinute * 60);
+        Long diffHour = diffAsSecond / (60 * 60);
+        Long diffMinute = (diffAsSecond - diffHour * 60 * 60) / 60;
+        Long diffSecond = (diffAsSecond - diffHour * 60 * 60 - diffMinute * 60);
 
         String stringHour;
         String stringMinute;
