@@ -149,7 +149,7 @@ J2SE 5.0 Tiger第4章（16頁）
       <Start>2012-06-09T00:00:00</Start>
       <End>2012-07-01T00:00:00+09:00</End>
       <Duration>23</Duration>
-      <Progress>29</Progress>
+      <Progress>42</Progress>
       <Name>第4回テキスト＋Tiger</Name>
       <Owner>0</Owner>
       <Priority>1</Priority>
