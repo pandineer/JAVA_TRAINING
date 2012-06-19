@@ -1,3 +1,8 @@
+Integer 500
+Short 20
+Long 1000
+Byte 3
+Float 0.5
+Double 0.0032
 Boolean true
-Integer 5
-String "test"
+Character c
