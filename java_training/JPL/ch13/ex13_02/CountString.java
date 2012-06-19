@@ -5,7 +5,7 @@
 
 package ch13.ex13_02;
 
-public class EX13_02
+public class CountString
 {
     static int countSpecificString(String specificString, String targetString)
     {

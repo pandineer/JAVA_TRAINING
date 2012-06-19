@@ -5,7 +5,7 @@
 
 package ch13.ex13_01;
 
-public class EX13_01
+public class CountChar
 {
 
     static int countSpecificChar(char ch, String str)
