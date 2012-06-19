@@ -9,16 +9,46 @@
 
 package ch13.ex13_04;
 
+import java.io.*;
+import java.util.ArrayList;
+
 public class Input
 {
+    ArrayList<Object> arrayList = new ArrayList<Object>();
+    public void inputToArray(String filename)
+    {
+        String[] tmp = new String[2]; // 分割された一行が入る
+        try
+        {
+            // System.out.println(new File(".").getAbsolutePath());  // デバッグ用 カレントディレクトリを表示する
+            FileReader f = new FileReader(filename);
+            BufferedReader b = new BufferedReader(f);
+            String row;
+            while((row = b.readLine()) != null)
+            {
+                // System.out.println(row); // デバッグ用
+                tmp = row.split(" ");
+                // System.out.println(tmp[0]); // デバッグ用
+                // System.out.println(tmp[1]); // デバッグ用
 
+                arrayList.add(new String("test")); // TODO: ジェネリックス使って、指定したオブジェクトを返す関数作ったらいいかな？
+                System.out.println(arrayList.get(0) instanceof String);
+                System.out.println(arrayList.get(0) instanceof Integer);
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+            System.out.println("ファイル読み込み失敗");
+        }
+    }
     /**
      * @param args
      */
     public static void main(String[] args)
     {
-        // TODO 自動生成されたメソッド・スタブ
-
+        Input test = new Input();
+        test.inputToArray("JPL/ch13/ex13_04/input_data.dat");
     }
 
 }
