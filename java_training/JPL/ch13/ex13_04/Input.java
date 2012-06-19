@@ -15,33 +15,78 @@ import java.util.ArrayList;
 public class Input
 {
     ArrayList<Object> arrayList = new ArrayList<Object>();
+
     public void inputToArray(String filename)
     {
         String[] tmp = new String[2]; // 分割された一行が入る
+        FileReader f;
+        BufferedReader b;
+        String row;
         try
         {
-            // System.out.println(new File(".").getAbsolutePath());  // デバッグ用 カレントディレクトリを表示する
-            FileReader f = new FileReader(filename);
-            BufferedReader b = new BufferedReader(f);
-            String row;
-            while((row = b.readLine()) != null)
+            System.out.println(filename);
+            f = new FileReader(filename);
+            b = new BufferedReader(f);
+            while ((row = b.readLine()) != null)
             {
-                // System.out.println(row); // デバッグ用
                 tmp = row.split(" ");
-                // System.out.println(tmp[0]); // デバッグ用
-                // System.out.println(tmp[1]); // デバッグ用
-
-                arrayList.add(new String("test")); // TODO: ジェネリックス使って、指定したオブジェクトを返す関数作ったらいいかな？
-                System.out.println(arrayList.get(0) instanceof String);
-                System.out.println(arrayList.get(0) instanceof Integer);
+                addArrayList(tmp[0], tmp[1]);
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             System.out.println(e);
-            System.out.println("ファイル読み込み失敗");
         }
     }
+
+    public void addArrayList(String type, String value)
+    {
+        if (type.equals("Integer"))
+        {
+            arrayList.add(new Integer(value));
+        }
+        else if (type.equals("Short"))
+        {
+            arrayList.add(new Short(value));
+        }
+        else if (type.equals("Long"))
+        {
+            arrayList.add(new Long(value));
+        }
+        else if (type.equals("Byte"))
+        {
+            arrayList.add(new Byte(value));
+        }
+        else if (type.equals("Float"))
+        {
+            arrayList.add(new Float(value));
+        }
+        else if (type.equals("Double"))
+        {
+            arrayList.add(new Double(value));
+        }
+        else if (type.equals("Boolean"))
+        {
+            arrayList.add(new Boolean(value));
+        }
+        else if (type.equals("Character"))
+        {
+            arrayList.add(new Character(value.toCharArray().clone()[0]));
+        }
+        else
+        {
+            throw new IllegalArgumentException("Error in addArrayList");
+        }
+    }
+
+    public void showAllArray()
+    {
+        for (int i = 0; i < arrayList.size(); i++)
+        {
+            System.out.println("Class: " + arrayList.get(i).getClass().getName() + ", value: " + arrayList.get(i));
+        }
+    }
+
     /**
      * @param args
      */
@@ -49,6 +94,7 @@ public class Input
     {
         Input test = new Input();
         test.inputToArray("JPL/ch13/ex13_04/input_data.dat");
+        test.showAllArray();
     }
 
 }
