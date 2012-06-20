@@ -24,7 +24,6 @@ public class Input
         String row;
         try
         {
-            System.out.println(filename);
             f = new FileReader(filename);
             b = new BufferedReader(f);
             while ((row = b.readLine()) != null)
