@@ -1,4 +1,20 @@
 /*
+ * 課題1-4
+ * 課題1-2のデジタル時計で、属性をダイアログで指定できるようにしましたが、ダイアログを作りなおして下さい。
+ * ・レイアウトマネージャは、GridBagLayoutを使用する。
+ * ・プロパティダイアログは、属性名+のリストメニューが縦に並ぶようにする。
+ * 　　　フォント　フォントのリスト
+ * フォントサイズ　サイズのリスト
+ * 　　　　文字色　色のリスト
+ * 　　　　背景色　色のリスト
+ * 　この場合「属性名」のラベルは右寄せして、「値の選択リスト」メニューは左寄せる。
+ * ・ダイアログの下には、「OK」「キャンセル」のバタンをダイアログの右下に寄せて表示し、それぞれのボタンを実装する。
+ * 　キャンセルされた場合には、正しく、元の値に戻るようにする。
+ * ・java.util.prefsパッケージを使用して、プロパティダイアログの内容の保存と、時計の終了時の位置を保存する。
+ * 　再度、時計を起動した場合に、それらの保存を復元して、デスクトップの元の位置に表示されるようにする。
+ */
+
+/*
  * 課題1-2
  * デジタル時計に次の機能追加を行ってください。
  * ・メニューを付けて、プロパティダイアログを開ける。
@@ -32,6 +48,11 @@ public class PropertyDialog extends Dialog implements ActionListener,
     Choice choiceFontColor = new Choice();
     Choice choiceBackgroundColor = new Choice();
 
+    Label labelFontType = new Label("Font Type: ");
+    Label labelFontSize = new Label("Font Size: ");
+    Label labelFontColor = new Label("Font Color: ");
+    Label labelBackgroundColor = new Label("Background Color: ");
+
     String defaultFontColor;
     String defaultBackgroundColor;
 
@@ -41,6 +62,7 @@ public class PropertyDialog extends Dialog implements ActionListener,
     Color newBackgroundColor = Color.white;
 
     Button OKButton = new Button("OK");
+    Button cancelButton = new Button("Cancel");
 
     GridBagConstraints gbc = new GridBagConstraints();
 
@@ -74,24 +96,34 @@ public class PropertyDialog extends Dialog implements ActionListener,
         OKButton.addActionListener(this);
 
         // フォントタイプ
+        // ラベル
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbl.setConstraints(new Label("Font Type: "), gbc);
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(labelFontType, gbc);
+        // choice
         choiceFontType.add("TimesRoman");
         choiceFontType.add("Serif");
         choiceFontType.add("Monospaced");
-
         choiceFontType.select(digitalClock.getFontType());
         gbc.gridx = 1;
         gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
         gbl.setConstraints(choiceFontType, gbc);
 
         // フォントサイズ
+        // label
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbl.setConstraints(new Label("Font Size: "), gbc);
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(labelFontSize, gbc);
+        // choice
         choiceFontSize.add("36");
         choiceFontSize.add("48");
         choiceFontSize.add("60");
@@ -101,6 +133,9 @@ public class PropertyDialog extends Dialog implements ActionListener,
         choiceFontSize.select(digitalClock.getFontSize().toString());
         gbc.gridx = 1;
         gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
         gbl.setConstraints(choiceFontSize, gbc);
 
         // フォントカラーの初期選択値をStringで取得する
@@ -126,9 +161,14 @@ public class PropertyDialog extends Dialog implements ActionListener,
         }
 
         // フォントカラー
+        // label
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbl.setConstraints(new Label("Font Color: "), gbc);
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(labelFontColor, gbc);
+        // choice
         choiceFontColor.add("black");
         choiceFontColor.add("red");
         choiceFontColor.add("green");
@@ -136,6 +176,9 @@ public class PropertyDialog extends Dialog implements ActionListener,
         choiceFontColor.select(defaultFontColor);
         gbc.gridx = 1;
         gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
         gbl.setConstraints(choiceFontColor, gbc);
 
         // 背景色の初期選択値をStringで取得する
@@ -157,21 +200,38 @@ public class PropertyDialog extends Dialog implements ActionListener,
         }
 
         // 背景色
+        // label
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbl.setConstraints(new Label("Background Color: "), gbc);
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(labelBackgroundColor, gbc);
+        // choice
         choiceBackgroundColor.add("white");
         choiceBackgroundColor.add("black");
         choiceBackgroundColor.add("orange");
         choiceBackgroundColor.select(defaultBackgroundColor);
         gbc.gridx = 1;
         gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
         gbl.setConstraints(choiceBackgroundColor, gbc);
 
         // OKボタン
         gbc.gridx = 1;
         gbc.gridy = 4;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
         gbl.setConstraints(OKButton, gbc);
+
+        // Cancelボタン
+        gbc.gridx = 2;
+        gbc.gridy = 4;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbl.setConstraints(cancelButton, gbc);
 
         // ダイアログボックスを閉じるとき
         addWindowListener(new WindowAdapter()
@@ -182,12 +242,16 @@ public class PropertyDialog extends Dialog implements ActionListener,
             }
         });
 
-        // TODO: ラベルをオブジェクト化し、add処理を加える
+        this.add(labelFontType);
+        this.add(labelFontSize);
+        this.add(labelFontColor);
+        this.add(labelBackgroundColor);
+        this.add(choiceFontType);
+        this.add(choiceFontSize);
+        this.add(choiceFontColor);
         this.add(choiceBackgroundColor);
-        this.add(choiceBackgroundColor);
-        this.add(choiceBackgroundColor);
-        this.add(choiceBackgroundColor);
-        this.add(choiceBackgroundColor);
+        this.add(OKButton);
+        this.add(cancelButton);
     }
 
     private static final long serialVersionUID = 3853419917132576660L;
@@ -203,6 +267,7 @@ public class PropertyDialog extends Dialog implements ActionListener,
             digitalClock.setBackgroundColor(newBackgroundColor);
             setVisible(false);
         }
+        // TODO: Cancelボタンのロジックを実装する
     }
 
     @Override
