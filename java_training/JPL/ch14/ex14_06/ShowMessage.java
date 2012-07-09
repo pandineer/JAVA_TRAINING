@@ -7,40 +7,37 @@
 
 package ch14.ex14_06;
 
+import java.util.Date;
+
 public class ShowMessage implements Runnable
 {
     String message;
     long messageInterval;
-    ShowTime showTimeObj;
     long showedTime = 0;
+    ShowTime showTimeObj;
 
-    public ShowMessage(String message, long messageInterval, ShowTime obj)
+    public ShowMessage(ShowTime obj, long messageInterval, String message)
     {
-        this.message = message;
-        this.messageInterval = messageInterval;
         this.showTimeObj = obj;
-        showedTime = showTimeObj.currentTime;
+        this.messageInterval = messageInterval;
+        this.message = message;
+        showedTime = new Date().getTime();
     }
 
     public void run()
     {
-        try
+        while (true)
         {
-            showMessage();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
+            try
+            {
+                showedTime = showTimeObj.showMessage(messageInterval, message, showedTime);
+            }
+            catch (Exception e)
+            {
+                System.out.println(e);
+            }
         }
     }
 
-    public synchronized void showMessage() throws InterruptedException
-    {
-        while ((showTimeObj.currentTime - this.showedTime) < messageInterval)
-        {
-            System.out.println("!");
-            wait(3*1000);
-        }
-        System.out.println(message);
-    }
+
 }
