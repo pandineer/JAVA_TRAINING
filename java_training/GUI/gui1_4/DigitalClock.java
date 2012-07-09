@@ -62,8 +62,8 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
 
     private String fontType = "TimesRoman";
     private Integer fontSize = 48;
-    private Color fontColor = Color.blue;
-    private Color backgroundColor = Color.white;
+    private Color fontColor = Color.green;
+    private Color backgroundColor = Color.black;
 
     private int windowSizeX = 48 * 8 + 50;
     private int windowSizeY = 48 + 50;
