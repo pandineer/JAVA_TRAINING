@@ -43,32 +43,35 @@ import java.awt.event.*;
 public class PropertyDialog extends Dialog implements ActionListener,
         ItemListener
 {
-    Choice choiceFontType = new Choice();
-    Choice choiceFontSize = new Choice();
-    Choice choiceFontColor = new Choice();
-    Choice choiceBackgroundColor = new Choice();
+    private Choice choiceFontType = new Choice();
+    private Choice choiceFontSize = new Choice();
+    private Choice choiceFontColor = new Choice();
+    private Choice choiceBackgroundColor = new Choice();
 
-    Label labelFontType = new Label("Font Type: ");
-    Label labelFontSize = new Label("Font Size: ");
-    Label labelFontColor = new Label("Font Color: ");
-    Label labelBackgroundColor = new Label("Background Color: ");
+    private Label labelFontType = new Label("Font Type: ");
+    private Label labelFontSize = new Label("Font Size: ");
+    private Label labelFontColor = new Label("Font Color: ");
+    private Label labelBackgroundColor = new Label("Background Color: ");
 
-    String defaultFontColor;
-    String defaultBackgroundColor;
+    private String defaultFontColor;
+    private String defaultBackgroundColor;
 
-    String newFontType = "TimesRoman";
-    int newFontSize = 10;
-    Color newFontColor = Color.black;
-    Color newBackgroundColor = Color.white;
+    private String fonts[] = GraphicsEnvironment
+            .getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 
-    Button OKButton = new Button("OK");
-    Button cancelButton = new Button("Cancel");
+    private String newFontType = "TimesRoman";
+    private int newFontSize = 10;
+    private Color newFontColor = Color.black;
+    private Color newBackgroundColor = Color.white;
 
-    GridBagConstraints gbc = new GridBagConstraints();
+    private Button OKButton = new Button("OK");
+    private Button cancelButton = new Button("Cancel");
 
-    GridBagLayout gbl = new GridBagLayout();
+    private GridBagConstraints gbc = new GridBagConstraints();
 
-    DigitalClock digitalClock;
+    private GridBagLayout gbl = new GridBagLayout();
+
+    private DigitalClock digitalClock;
 
     public PropertyDialog(Frame owner)
     {
@@ -104,9 +107,10 @@ public class PropertyDialog extends Dialog implements ActionListener,
         gbc.anchor = GridBagConstraints.EAST;
         gbl.setConstraints(labelFontType, gbc);
         // choice
-        choiceFontType.add("TimesRoman");
-        choiceFontType.add("Serif");
-        choiceFontType.add("Monospaced");
+        for (int i = 0; i < fonts.length; i++)
+        {
+            choiceFontType.add(fonts[i]);
+        }
         choiceFontType.select(digitalClock.getFontType());
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -267,7 +271,11 @@ public class PropertyDialog extends Dialog implements ActionListener,
             digitalClock.setBackgroundColor(newBackgroundColor);
             setVisible(false);
         }
+
+        if ("Cancel" == e.getActionCommand())
+        {
         // TODO: Cancelボタンのロジックを実装する
+        }
     }
 
     @Override
