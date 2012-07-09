@@ -36,9 +36,10 @@ public class ShowMessage implements Runnable
 
     public synchronized void showMessage() throws InterruptedException
     {
-        while (showTimeObj.currentTime - this.showedTime < messageInterval)
+        while ((showTimeObj.currentTime - this.showedTime) < messageInterval)
         {
-            wait();
+            System.out.println("!");
+            wait(3*1000);
         }
         System.out.println(message);
     }
