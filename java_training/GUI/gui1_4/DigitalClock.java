@@ -66,8 +66,10 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     private Color fontColor = Color.green;
     private Color backgroundColor = Color.black;
 
-    private int windowSizeX = 48 * 8 + 50;
-    private int windowSizeY = 48 + 50;
+    private Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+
+    private int windowSizeX = prefs.getInt("miyahara_window_x", 48 * 8 + 50);
+    private int windowSizeY = prefs.getInt("miyahara_window_y", 48 * 50);
 
     private String timeString;
     private String captureTimeString = "00:00:00";
@@ -79,7 +81,7 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     // フォントのデフォルトの設定
     private Font fontSetting = new Font("TimesRoman", Font.PLAIN, 48);
 
-    private Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+
 
     public DigitalClock(String title)
     {
@@ -91,16 +93,25 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         {
             public void windowClosing(WindowEvent e)
             {
-                prefs.putDouble("miyahara_window_x", getBounds().getX());
-                prefs.putDouble("miyahara_window_y", getBounds().getY());
-                prefs.putDouble("miyahara_window_width", getBounds().getWidth());
-                prefs.putDouble("miyahara_window_height", getBounds().getHeight());
+                // windowを閉じるときにパラメータを保存する
+                prefs.putInt("miyahara_window_x", (int)getBounds().getX());
+                prefs.putInt("miyahara_window_y", (int)getBounds().getY());
+                prefs.putInt("miyahara_window_width", (int)getBounds().getWidth());
+                prefs.putInt("miyahara_window_height", (int)getBounds().getHeight());
+
+                prefs.put("miyahara_font_type", fontType);
+                prefs.putInt("miyahara_font_size", fontSize);
+                // TODO: 全パラメータを保存する。とりあえずあとは文字色と背景色
+
                 System.exit(0);
             }
         });
 
-        // TODO: 位置を読み込む
-        setBounds(prefs.getDouble("miyahara_window_x", ));
+        // TODO: 全パラメータを読み込む。とりあえずあとは文字色と背景色
+        setBounds(prefs.getInt("miyahara_window_x", 500), prefs.getInt("miyahara_window_y", 100), prefs.getInt("miyahara_window_width", 500), prefs.getInt("miyahara_window_height", 200));
+        fontType = prefs.get("miyahara_font_type", "TimesRoman");
+        fontSize = prefs.getInt("miyahara_font_size", 48);
+
 
         // メニューバーを作成する
         menuBar = new MenuBar();
