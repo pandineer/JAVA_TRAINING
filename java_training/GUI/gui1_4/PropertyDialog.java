@@ -97,6 +97,7 @@ public class PropertyDialog extends Dialog implements ActionListener,
         choiceFontColor.addItemListener(this);
         choiceBackgroundColor.addItemListener(this);
         OKButton.addActionListener(this);
+        cancelButton.addActionListener(this);
 
         // フォントタイプ
         // ラベル
@@ -260,6 +261,61 @@ public class PropertyDialog extends Dialog implements ActionListener,
 
     private static final long serialVersionUID = 3853419917132576660L;
 
+    public void resetParameter()
+    {
+        // 現在の時計の設定を取得する
+        newFontType = digitalClock.getFontType();
+        newFontSize = digitalClock.getFontSize();
+        newFontColor = digitalClock.getFontColor();
+        newBackgroundColor = digitalClock.getBackgroundColor();
+
+
+        choiceFontType.select(digitalClock.getFontType());
+        choiceFontSize.select(digitalClock.getFontSize().toString());
+
+        // フォントカラーの初期選択値をStringで取得する
+        if (Color.black == digitalClock.getFontColor())
+        {
+            defaultFontColor = "black";
+        }
+        else if (Color.red == digitalClock.getFontColor())
+        {
+            defaultFontColor = "red";
+        }
+        else if (Color.green == digitalClock.getFontColor())
+        {
+            defaultFontColor = "green";
+        }
+        else if (Color.blue == digitalClock.getFontColor())
+        {
+            defaultFontColor = "blue";
+        }
+        else
+        {
+            defaultFontColor = "black";
+        }
+        choiceFontColor.select(defaultFontColor);
+
+        // 背景色の初期選択値をStringで取得する
+        if (Color.white == digitalClock.getBackgroundColor())
+        {
+            defaultBackgroundColor = "white";
+        }
+        else if (Color.black == digitalClock.getBackgroundColor())
+        {
+            defaultBackgroundColor = "black";
+        }
+        else if (Color.orange == digitalClock.getBackgroundColor())
+        {
+            defaultBackgroundColor = "orange";
+        }
+        else
+        {
+            defaultBackgroundColor = "white";
+        }
+        choiceBackgroundColor.select(defaultBackgroundColor);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -274,7 +330,7 @@ public class PropertyDialog extends Dialog implements ActionListener,
 
         if ("Cancel" == e.getActionCommand())
         {
-        // TODO: Cancelボタンのロジックを実装する
+            setVisible(false);
         }
     }
 
