@@ -40,6 +40,7 @@ package gui1_4;
 import java.awt.event.*;
 import java.awt.*;
 import java.util.Calendar;
+import java.util.prefs.Preferences;
 
 public class DigitalClock extends Frame implements Runnable, ActionListener
 {
@@ -78,6 +79,8 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     // フォントのデフォルトの設定
     private Font fontSetting = new Font("TimesRoman", Font.PLAIN, 48);
 
+    private Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+
     public DigitalClock(String title)
     {
         // タイトルバーにタイトルを登録する
@@ -88,9 +91,16 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         {
             public void windowClosing(WindowEvent e)
             {
+                prefs.putDouble("miyahara_window_x", getBounds().getX());
+                prefs.putDouble("miyahara_window_y", getBounds().getY());
+                prefs.putDouble("miyahara_window_width", getBounds().getWidth());
+                prefs.putDouble("miyahara_window_height", getBounds().getHeight());
                 System.exit(0);
             }
         });
+
+        // TODO: 位置を読み込む
+        setBounds(prefs.getDouble("miyahara_window_x", ));
 
         // メニューバーを作成する
         menuBar = new MenuBar();
@@ -116,7 +126,6 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         hourInteger = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         minuteInteger = Calendar.getInstance().get(Calendar.MINUTE);
         secondInteger = Calendar.getInstance().get(Calendar.SECOND);
-
     }
 
     public void paint(Graphics g)
@@ -300,6 +309,7 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         if (e.getActionCommand() == "Property")
         {
             // クリックしたのが「Property」だったら
+            dialog.resetParameter();
             dialog.setVisible(true);
         }
         else if (e.getActionCommand() == "Capture!")
