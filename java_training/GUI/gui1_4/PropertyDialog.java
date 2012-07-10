@@ -388,6 +388,11 @@ public class PropertyDialog extends Dialog implements ActionListener,
                 newBackgroundColor = Color.white;
             }
         }
+        else
+        {
+            System.out.println("Error occurs at select property!");
+            System.out.println(e);
+        }
 
     }
 }
