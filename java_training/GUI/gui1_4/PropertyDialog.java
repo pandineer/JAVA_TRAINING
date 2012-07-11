@@ -73,6 +73,13 @@ public class PropertyDialog extends Dialog implements ActionListener,
 
     private DigitalClock digitalClock;
 
+    static public String stringColor[] =
+        { "Black", "White", "Red", "Green", "Blue", "Cyan", "Magenta", "Yellow",
+                "Orange" };
+    static public Color colorColor[] =
+        { Color.black, Color.white, Color.red, Color.green, Color.blue, Color.cyan,
+                Color.magenta, Color.yellow, Color.orange };
+
     public PropertyDialog(Frame owner)
     {
 
@@ -143,29 +150,10 @@ public class PropertyDialog extends Dialog implements ActionListener,
         gbc.anchor = GridBagConstraints.WEST;
         gbl.setConstraints(choiceFontSize, gbc);
 
-        // フォントカラーの初期選択値をStringで取得する
-        if (Color.black == digitalClock.getFontColor())
-        {
-            defaultFontColor = "black";
-        }
-        else if (Color.red == digitalClock.getFontColor())
-        {
-            defaultFontColor = "red";
-        }
-        else if (Color.green == digitalClock.getFontColor())
-        {
-            defaultFontColor = "green";
-        }
-        else if (Color.blue == digitalClock.getFontColor())
-        {
-            defaultFontColor = "blue";
-        }
-        else
-        {
-            defaultFontColor = "black";
-        }
 
         // フォントカラー
+        // フォントカラーの初期選択値をStringで取得する
+        defaultFontColor = changeColorToString(digitalClock.getFontColor());
         // label
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -174,10 +162,10 @@ public class PropertyDialog extends Dialog implements ActionListener,
         gbc.anchor = GridBagConstraints.EAST;
         gbl.setConstraints(labelFontColor, gbc);
         // choice
-        choiceFontColor.add("black");
-        choiceFontColor.add("red");
-        choiceFontColor.add("green");
-        choiceFontColor.add("blue");
+        for (int i = 0; i < stringColor.length; i++)
+        {
+            choiceFontColor.add(stringColor[i]);
+        }
         choiceFontColor.select(defaultFontColor);
         gbc.gridx = 1;
         gbc.gridy = 2;
@@ -186,25 +174,10 @@ public class PropertyDialog extends Dialog implements ActionListener,
         gbc.anchor = GridBagConstraints.WEST;
         gbl.setConstraints(choiceFontColor, gbc);
 
-        // 背景色の初期選択値をStringで取得する
-        if (Color.white == digitalClock.getBackgroundColor())
-        {
-            defaultBackgroundColor = "white";
-        }
-        else if (Color.black == digitalClock.getBackgroundColor())
-        {
-            defaultBackgroundColor = "black";
-        }
-        else if (Color.orange == digitalClock.getBackgroundColor())
-        {
-            defaultBackgroundColor = "orange";
-        }
-        else
-        {
-            defaultBackgroundColor = "white";
-        }
 
         // 背景色
+        // 背景色の初期選択値をStringで取得する
+        defaultBackgroundColor = changeColorToString(digitalClock.getBackgroundColor());
         // label
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -213,9 +186,10 @@ public class PropertyDialog extends Dialog implements ActionListener,
         gbc.anchor = GridBagConstraints.EAST;
         gbl.setConstraints(labelBackgroundColor, gbc);
         // choice
-        choiceBackgroundColor.add("white");
-        choiceBackgroundColor.add("black");
-        choiceBackgroundColor.add("orange");
+        for (int i = 0; i < stringColor.length; i++)
+        {
+            choiceBackgroundColor.add(stringColor[i]);
+        }
         choiceBackgroundColor.select(defaultBackgroundColor);
         gbc.gridx = 1;
         gbc.gridy = 3;
@@ -274,6 +248,7 @@ public class PropertyDialog extends Dialog implements ActionListener,
         choiceFontSize.select(digitalClock.getFontSize().toString());
 
         // フォントカラーの初期選択値をStringで取得する
+        // TODO: 色の取得方法を新しいものに切り替える
         if (Color.black == digitalClock.getFontColor())
         {
             defaultFontColor = "black";
@@ -297,6 +272,7 @@ public class PropertyDialog extends Dialog implements ActionListener,
         choiceFontColor.select(defaultFontColor);
 
         // 背景色の初期選択値をStringで取得する
+        // TODO: 色の取得方法を新しいものに切り替える
         if (Color.white == digitalClock.getBackgroundColor())
         {
             defaultBackgroundColor = "white";
@@ -334,6 +310,30 @@ public class PropertyDialog extends Dialog implements ActionListener,
         }
     }
 
+    static public Color changeStringToColor(String colorString)
+    {
+        for (int i = 0; i < stringColor.length; i++)
+        {
+            if (colorString.equals(stringColor[i]))
+            {
+                return colorColor[i];
+            }
+        }
+        return Color.black;
+    }
+
+    static public String changeColorToString(Color targetColor)
+    {
+        for (int i = 0; i < colorColor.length; i++)
+        {
+            if (targetColor.equals(colorColor[i]))
+            {
+                return stringColor[i];
+            }
+        }
+        return stringColor[0];
+    }
+
     @Override
     public void itemStateChanged(ItemEvent e)
     {
@@ -348,45 +348,11 @@ public class PropertyDialog extends Dialog implements ActionListener,
         }
         else if (choiceFontColor == e.getSource())
         {
-            if ("black" == e.getItem())
-            {
-                newFontColor = Color.black;
-            }
-            else if ("red" == e.getItem())
-            {
-                newFontColor = Color.red;
-            }
-            else if ("green" == e.getItem())
-            {
-                newFontColor = Color.green;
-            }
-            else if ("blue" == e.getItem())
-            {
-                newFontColor = Color.blue;
-            }
-            else
-            {
-                newFontColor = Color.black;
-            }
+            newFontColor = changeStringToColor((String)e.getItem());
         }
         else if (choiceBackgroundColor == e.getSource())
         {
-            if ("white" == e.getItem())
-            {
-                newBackgroundColor = Color.white;
-            }
-            else if ("black" == e.getItem())
-            {
-                newBackgroundColor = Color.black;
-            }
-            else if ("orange" == e.getItem())
-            {
-                newBackgroundColor = Color.orange;
-            }
-            else
-            {
-                newBackgroundColor = Color.white;
-            }
+            newBackgroundColor = changeStringToColor((String)e.getItem());
         }
         else
         {

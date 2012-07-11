@@ -63,8 +63,8 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
 
     private String fontType = "TimesRoman";
     private Integer fontSize = 48;
-    private Color fontColor = Color.green;
-    private Color backgroundColor = Color.black;
+    private Color fontColor = PropertyDialog.colorColor[3];
+    private Color backgroundColor = PropertyDialog.colorColor[0];
 
     private Preferences prefs = Preferences.userNodeForPackage(this.getClass());
 
@@ -101,16 +101,19 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
 
                 prefs.put("miyahara_font_type", fontType);
                 prefs.putInt("miyahara_font_size", fontSize);
-                // TODO: 全パラメータを保存する。とりあえずあとは文字色と背景色
+                prefs.put("miyahara_font_color", PropertyDialog.changeColorToString(fontColor));
+                prefs.put("miyahara_bg_color", PropertyDialog.changeColorToString(backgroundColor));
 
                 System.exit(0);
             }
         });
 
-        // TODO: 全パラメータを読み込む。とりあえずあとは文字色と背景色
+        // prefsからパラメータを読み込む
         setBounds(prefs.getInt("miyahara_window_x", 500), prefs.getInt("miyahara_window_y", 100), prefs.getInt("miyahara_window_width", 500), prefs.getInt("miyahara_window_height", 200));
         fontType = prefs.get("miyahara_font_type", "TimesRoman");
         fontSize = prefs.getInt("miyahara_font_size", 48);
+        fontColor = PropertyDialog.changeStringToColor(prefs.get("miyahara_font_color", PropertyDialog.stringColor[3]));
+        backgroundColor = PropertyDialog.changeStringToColor(prefs.get("miyahara_bg_color", PropertyDialog.stringColor[0]));
 
 
         // メニューバーを作成する
