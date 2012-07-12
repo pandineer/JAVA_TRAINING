@@ -58,6 +58,7 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     private Menu menuMenu;
     private MenuItem menuProperty;
     private MenuItem menuCapture;
+    private MenuItem menuShake;
     private Image imageBuffer;
     private Graphics graphicBuffer;
 
@@ -132,6 +133,10 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         // [Menu] - [Capture!]
         menuCapture = new MenuItem("Capture!");
         menuMenu.add(menuCapture);
+
+        // [Menu] - [Shake!!]
+        menuShake = new MenuItem("Shake!!");
+        menuMenu.add(menuShake);
 
         // ダイアログを生成する
         dialog = new PropertyDialog(this);
@@ -330,6 +335,37 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         {
             // クリックしたのが「Capture!」だったら
             captureFlag = true;
+        }
+        else if (e.getActionCommand() == "Shake!!")
+        {
+            shake();
+        }
+        else
+        {
+            System.out.println("actionPerformed error");
+        }
+    }
+
+    public void shake()
+    {
+        int originalX = (int)getBounds().getX();
+        int originalY = (int)getBounds().getY();
+
+        try
+        {
+        setBounds(originalX-50, originalY-50, (int)getBounds().getWidth(), (int)getBounds().getHeight());
+        Thread.sleep(50);
+        setBounds(originalX+50, originalY+50, (int)getBounds().getWidth(), (int)getBounds().getHeight());
+        Thread.sleep(50);
+        setBounds(originalX-50, originalY+50, (int)getBounds().getWidth(), (int)getBounds().getHeight());
+        Thread.sleep(50);
+        setBounds(originalX+50, originalY+50, (int)getBounds().getWidth(), (int)getBounds().getHeight());
+        Thread.sleep(50);
+        setBounds(originalX, originalY, (int)getBounds().getWidth(), (int)getBounds().getHeight());
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
         }
     }
 
