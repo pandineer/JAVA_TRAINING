@@ -136,12 +136,10 @@ public class PropertyDialog extends Dialog implements ActionListener,
         gbc.anchor = GridBagConstraints.EAST;
         gbl.setConstraints(labelFontSize, gbc);
         // choice
-        choiceFontSize.add("36");
-        choiceFontSize.add("48");
-        choiceFontSize.add("60");
-        choiceFontSize.add("72");
-        choiceFontSize.add("96");
-        choiceFontSize.add("120");
+        for (Integer i = 50; i < 300; i = i + 30)
+        {
+            choiceFontSize.add(i.toString());
+        }
         choiceFontSize.select(digitalClock.getFontSize().toString());
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -243,52 +241,13 @@ public class PropertyDialog extends Dialog implements ActionListener,
         newFontColor = digitalClock.getFontColor();
         newBackgroundColor = digitalClock.getBackgroundColor();
 
-
         choiceFontType.select(digitalClock.getFontType());
         choiceFontSize.select(digitalClock.getFontSize().toString());
-
         // フォントカラーの初期選択値をStringで取得する
-        // TODO: 色の取得方法を新しいものに切り替える
-        if (Color.black == digitalClock.getFontColor())
-        {
-            defaultFontColor = "black";
-        }
-        else if (Color.red == digitalClock.getFontColor())
-        {
-            defaultFontColor = "red";
-        }
-        else if (Color.green == digitalClock.getFontColor())
-        {
-            defaultFontColor = "green";
-        }
-        else if (Color.blue == digitalClock.getFontColor())
-        {
-            defaultFontColor = "blue";
-        }
-        else
-        {
-            defaultFontColor = "black";
-        }
+        defaultFontColor = changeColorToString(digitalClock.getFontColor());
         choiceFontColor.select(defaultFontColor);
-
         // 背景色の初期選択値をStringで取得する
-        // TODO: 色の取得方法を新しいものに切り替える
-        if (Color.white == digitalClock.getBackgroundColor())
-        {
-            defaultBackgroundColor = "white";
-        }
-        else if (Color.black == digitalClock.getBackgroundColor())
-        {
-            defaultBackgroundColor = "black";
-        }
-        else if (Color.orange == digitalClock.getBackgroundColor())
-        {
-            defaultBackgroundColor = "orange";
-        }
-        else
-        {
-            defaultBackgroundColor = "white";
-        }
+        defaultBackgroundColor = changeColorToString(digitalClock.getBackgroundColor());
         choiceBackgroundColor.select(defaultBackgroundColor);
     }
 
