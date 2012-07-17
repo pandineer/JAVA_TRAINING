@@ -33,10 +33,12 @@ public class ThreadGroupInformation implements Runnable
 
     public int getThreadGroupDepth()
     {
+        ThreadGroup tmp = targetThreadGroup;
         int result = 0;
-        while(null != targetThreadGroup.getParent())
+        while(null != tmp.getParent())
         {
             result++;
+            tmp = tmp.getParent();
         }
 
         return result;
@@ -44,7 +46,7 @@ public class ThreadGroupInformation implements Runnable
 
     public void showThreadGroupInformation()
     {
-        System.out.println("The number of thread: " + targetThreadGroup.activeCount());
         System.out.println("Thread group depth: " + getThreadGroupDepth());
+        System.out.println("The number of thread: " + targetThreadGroup.activeCount());
     }
 }
