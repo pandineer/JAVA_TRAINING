@@ -179,7 +179,7 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         timeString = hourString + ":" + minuteString + ":" + secondString;
 
         // ウィンドウサイズの計算
-        if (null != graphicBuffer.getFontMetrics())
+        if (null != graphicBuffer)
         {
         windowSizeX = graphicBuffer.getFontMetrics().stringWidth(timeString);
         windowSizeX += getInsets().left;
@@ -190,7 +190,7 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
             windowSizeX = 48 * 8 + 50;
         }
 
-        if (null != graphicBuffer.getFontMetrics())
+        if (null != graphicBuffer)
         {
         windowSizeY = graphicBuffer.getFontMetrics().getAscent();
         windowSizeY += graphicBuffer.getFontMetrics().getDescent();
