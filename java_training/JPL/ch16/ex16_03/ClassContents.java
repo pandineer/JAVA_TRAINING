@@ -11,30 +11,52 @@ import java.lang.reflect.*;
 
 public class ClassContents
 {
+    private static String[] memberName = new String[100];
+
     public static void main(String[] args)
     {
         try
         {
             Class<?> c = Class.forName(args[0]);
             System.out.println(c);
-            printMembers(c.getFields());
-            printMembers(c.getConstructors());
-            printMembers(c.getMethods());
+            printMembers(c.getFields(), true);
+            printMembers(c.getDeclaredFields(), false);
+            printMembers(c.getConstructors(), true);
+            printMembers(c.getDeclaredConstructors(), false);
+            printMembers(c.getMethods(), true);
+            printMembers(c.getDeclaredMethods(), false);
         }
-        catch(ClassNotFoundException e)
+        catch (ClassNotFoundException e)
         {
             System.out.println("unknown class: " + args[0]);
         }
     }
 
     // TODO: 現状はテキスト通り。これから練習問題の回答を実装する必要あり
-    private static void printMembers(Member[] mems)
+    private static void printMembers(Member[] mems, boolean isFirst)
     {
-        for (Member m : mems)
+        Member m;
+        // for (Member m : mems)
+        checkMember: for (int i = 0; i < mems.length; i++)
         {
+            m = mems[i];
             if (m.getDeclaringClass() == Object.class)
             {
                 continue;
+            }
+            if (true == isFirst)
+            {
+                memberName[i] = m.toString();
+            }
+            if (false == isFirst)
+            {
+                for (int j = 0; j < memberName.length; j++)
+                {
+                    if (m.toString().equals(memberName[j]))
+                    {
+                        continue checkMember;
+                    }
+                }
             }
             String decl = m.toString();
             System.out.print(" ");
