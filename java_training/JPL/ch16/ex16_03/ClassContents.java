@@ -32,7 +32,6 @@ public class ClassContents
         }
     }
 
-    // TODO: 現状はテキスト通り。これから練習問題の回答を実装する必要あり
     private static void printMembers(Member[] mems, boolean isFirst)
     {
         Member m;
