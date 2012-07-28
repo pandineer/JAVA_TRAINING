@@ -1,4 +1,4 @@
-package ch16.ex16_04;
+package ch16.ex16_05;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -9,13 +9,22 @@ import java.lang.annotation.RetentionPolicy;
     String created();
 }
 
+@Retention(RetentionPolicy.RUNTIME)
+@interface MethodInfo
+{
+    String text();
+}
+
 @ClassInfo
 (
         created = "Jul 28 20"
 )
 public class Foo
 {
-    @Override
+    @MethodInfo
+    (
+            text = "test text"
+    )
     public String toString()
     {
         return "!";
