@@ -12,7 +12,6 @@ public class ShowAllAnnotation
 {
     public void showAllAnnotation(Class<?> c)
     {
-        System.out.println(c.getAnnotation(ClassInfo.class));
         Annotation[] tmp;
         tmp = c.getAnnotations();
         for (int i = 0; i < tmp.length; i++)
@@ -27,12 +26,11 @@ public class ShowAllAnnotation
     public static void main(String[] args)
     {
         ShowAllAnnotation test = new ShowAllAnnotation();
-        Foo tttest = new Foo();
         try
         {
             Class<?> c = Class.forName(args[0]);
             System.out.println(c);
-            test.showAllAnnotation(tttest);
+            test.showAllAnnotation(c);
         }
         catch (ClassNotFoundException e)
         {
