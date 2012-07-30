@@ -6,18 +6,32 @@
 
 package ch16.ex16_11;
 
+import ch16.ex16_11.Game.Reply;
+
 public abstract class Player
 {
     int answer = 0;
+    int score = 0;
+    Game.Reply previous_result = Reply.LESS;
 
-    public void play(Game game)
+    public final void play(Game game)
     {
-        // TODO: playの中身を実装する
         // strategyで値を決めて、checkにまわして、結果を受け取ってまたstrategyを実行する。
         // EQUALをgetしたら完了する
 
+        while(true)
+        {
+            score++;
+            answer = strategy(answer, previous_result);
+            previous_result = game.check(answer);
+            if (Reply.EQUAL == previous_result)
+            {
+                game.setScore(score);
+                break;
+            }
+        }
     }
 
     // 継承して、値の決定方法を工夫する
-    public abstract int strategy();
+    public abstract int strategy(int previous, Game.Reply result);
 }

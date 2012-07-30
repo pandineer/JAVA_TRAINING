@@ -6,11 +6,12 @@
 
 package ch16.ex16_11;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+// import java.io.FileInputStream;
+// import java.io.IOException;
 
 public class PlayerLoader extends ClassLoader
 {
+    /*
     public Class<?> findClass(String name) throws ClassNotFoundException
     {
         try
@@ -48,4 +49,5 @@ public class PlayerLoader extends ClassLoader
             }
         }
     }
+    */
 }

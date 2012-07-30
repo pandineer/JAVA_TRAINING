@@ -29,15 +29,17 @@ public class Game
         // Randomクラスのインスタンス化
         Random rnd = new Random();
 
-        // 当てる数字の決定（0～9）
-        target = rnd.nextInt(10);
+        // 当てる数字の決定（0～30）
+        target = rnd.nextInt(30);
     }
 
     public static void main(String[] args)
     {
         String name;    // クラス名
-        while((name = getNextPlayer(args)) != null)
+        // while((name = getNextPlayer(args)) != null)
+        for (int i = 0; i < args.length; i++)
         {
+            name = args[i];
             try
             {
                 PlayerLoader loader = new PlayerLoader();
@@ -57,11 +59,17 @@ public class Game
     // ...他のメソッドの定義...
     public static String getNextPlayer(String[] args)
     {
-        if (playerNumber < 2)
+        if (playerNumber <= args.length)
         {
-            return "testPlayer" + playerNumber++;
+            return args[playerNumber];
         }
         return null;
+    }
+
+    public static void reportException(String name, Exception e)
+    {
+        System.out.println("name: " + name);
+        System.out.println(e);
     }
 
     public void reportScore(String name)
@@ -85,5 +93,10 @@ public class Game
         }
         System.out.println("Error occurs. ");
         return null;
+    }
+
+    public void setScore(int score)
+    {
+        this.score = score;
     }
 }
