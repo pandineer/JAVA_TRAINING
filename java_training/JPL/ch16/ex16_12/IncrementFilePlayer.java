@@ -1,5 +1,6 @@
 package ch16.ex16_12;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -8,6 +9,7 @@ import ch16.ex16_12.PlayerLoader;
 
 public class IncrementFilePlayer extends Player
 {
+    private int incrementValue = 1;
     public IncrementFilePlayer()
     {
         super();
@@ -26,8 +28,10 @@ public class IncrementFilePlayer extends Player
         try
         {
             FileReader in = new FileReader(f.getFile());
-            // TODO:BUfferedReaderクラスを使うべし？？
-            System.out.println(in.readline());
+            BufferedReader br = new BufferedReader(in);
+            incrementValue = Integer.valueOf(br.readLine());
+            System.out.println("IncrementFilePlayer uses: " + incrementValue);
+            br.close();
             in.close();
         }
         catch(IOException e)
@@ -47,7 +51,7 @@ public class IncrementFilePlayer extends Player
             case GREATER:
                 return previous - 1;
             case LESS:
-                return previous + 5;
+                return previous + incrementValue;
             default:
                 return previous;
         }
