@@ -19,10 +19,6 @@ import java.io.File;
 
 public class PlayerLoader extends ClassLoader
 {
-    public PlayerLoader()
-    {
-        System.out.println(findResouce("C:\\home\\miyahara\\90_warehouse\\01_git\\JAVA_TRAINING\\java_training\\JPL\\ch16\\ex16_12\\test.txt"));
-    }
     /*
     public Class<?> findClass(String name) throws ClassNotFoundException
     {
@@ -64,7 +60,7 @@ public class PlayerLoader extends ClassLoader
     */
 
     @SuppressWarnings("deprecation")
-    public java.net.URL findResouce(String name)
+    public static java.net.URL findResouce(String name)
     {
         File f = new File(name);
         if (!f.exists())

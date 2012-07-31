@@ -4,7 +4,6 @@ import ch16.ex16_12.Game.Reply;
 
 public class IncrementPlayer extends Player
 {
-
     @Override
     public int strategy(int previous, Reply result)
     {
