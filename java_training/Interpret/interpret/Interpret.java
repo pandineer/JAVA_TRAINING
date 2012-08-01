@@ -42,6 +42,7 @@ private finalのインスタンスフィールドの書き換えもできるこ�
 
 package interpret;
 
+import java.awt.*;
 import java.awt.Frame;
 import java.awt.event.*;
 import java.lang.reflect.Member;
@@ -50,6 +51,9 @@ public class Interpret extends Frame implements ActionListener
 {
     private static final long serialVersionUID = 1L;
     private static String[] memberName = new String[1000];
+
+    private Choice choiceConstructor = new Choice();
+
 
     public Interpret(String title)
     {
@@ -64,13 +68,35 @@ public class Interpret extends Frame implements ActionListener
                 System.exit(0);
             }
         });
+
+        // レイアウトの設定
+        this.setLayout(new GridLayout(3, 3));
+        {
+            // クラス名
+            this.add(new Label("Class name: "));
+            this.add(new TextArea());
+
+            // クラスチェック
+            this.add(new Label(""));
+            this.add(new Button("Check the class"));
+
+            // コンストラクタの選択肢を表示する
+            this.add(new Label("Constructor: "));
+            choiceConstructor.add("con A");
+            choiceConstructor.add("con b");
+            this.add(choiceConstructor);
+
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        // TODO 自動生成されたメソッド・スタブ
-
+        if ("Check the class" == e.getActionCommand())
+        {
+            // TODO: ユーザが入力したクラス名のStringを取得して、関数に渡すべし。
+            checkClass("hoge");
+        }
     }
 
     private static void printMembers(Member[] mems, boolean isFirst)
@@ -109,6 +135,16 @@ public class Interpret extends Frame implements ActionListener
         return source.replaceAll(removeTarget, "");
     }
 
+    public checkClass(String className)
+    {
+        // TODO:
+        // クラスが存在するかどうか
+        // この後コンストラクタを取得する関数に続いていくのだろう。。。
+    }
+
+
+
+
     /**
      * @param args
      */
@@ -116,7 +152,7 @@ public class Interpret extends Frame implements ActionListener
     {
         Interpret main = new Interpret("Interpret");
 
-        main.setSize(220, 150);
+        main.setSize(640, 480);
         main.setResizable(false);
         main.setVisible(true);
 
