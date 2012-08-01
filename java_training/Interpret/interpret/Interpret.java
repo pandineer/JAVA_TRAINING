@@ -9,16 +9,18 @@ GUIで作成する（AWT/Swingのどちらでも良い）
 java.awt.FrameのsetVisible()、setTitle()、setSize()、setBackground()を呼び出すデモができること
 private finalのインスタンスフィールドの書き換えもできること
 
-なお、Interpretの課題は、私からOKがでる何度も再提出（多分、3回が限度）してもらい確認を行います。OKが出ない場合には、受講資格を失うこともありますので、注意してください。
+なお、Interpretの課題は、私からOKがでる何度も再提出（多分、3回が限度）してもらい確認を行います。
+OKが出ない場合には、受講資格を失うこともありますので、注意してください。
 
-課題提出時には、「JPL」や「GUI」のフォルダと同じ階層に「Interpret」というフォルダを作成し、その中にコードを入れて提出する。
+課題提出時には、「JPL」や「GUI」のフォルダと同じ階層に「Interpret」というフォルダを作成し、
+その中にコードを入れて提出する。
  */
 
 /*
  * 練習問題16.10 p.378
- * Interpretをさらに修正して、ユーザが生成する配列の型とサイズを指定できて、その配列の要素を読みだしたり
- * 設定したりできて、また、配列の要素として含まれているオブジェクトを指定して、そのオブジェクトのフィールドに
- * アクセスしたりメソッドを呼び出したりできるようにしなさい。
+ * Interpretをさらに修正して、ユーザが生成する配列の型とサイズを指定できて、その配列の要素を
+ * 読みだしたり設定したりできて、また、配列の要素として含まれているオブジェクトを指定して、
+ * そのオブジェクトのフィールドにアクセスしたりメソッドを呼び出したりできるようにしなさい。
  */
 
 /*
@@ -52,6 +54,8 @@ public class Interpret extends Frame implements ActionListener
     private static final long serialVersionUID = 1L;
     private static String[] memberName = new String[1000];
 
+    private TextArea classNameTextArea = new TextArea();
+    private Button checkTheClassButton = new Button("Check the class");
     private Choice choiceConstructor = new Choice();
 
 
@@ -73,17 +77,19 @@ public class Interpret extends Frame implements ActionListener
         this.setLayout(new GridLayout(3, 3));
         {
             // クラス名
-            this.add(new Label("Class name: "));
-            this.add(new TextArea());
+            this.add(new Label("Input class name: "));
+            this.add(classNameTextArea);
 
             // クラスチェック
             this.add(new Label(""));
-            this.add(new Button("Check the class"));
+            this.add(checkTheClassButton);
+            checkTheClassButton.addActionListener(this);
+
+
 
             // コンストラクタの選択肢を表示する
             this.add(new Label("Constructor: "));
-            choiceConstructor.add("con A");
-            choiceConstructor.add("con b");
+            choiceConstructor.add("---");
             this.add(choiceConstructor);
 
         }
@@ -94,15 +100,34 @@ public class Interpret extends Frame implements ActionListener
     {
         if ("Check the class" == e.getActionCommand())
         {
-            // TODO: ユーザが入力したクラス名のStringを取得して、関数に渡すべし。
-            checkClass("hoge");
+            // テキストエリアの名前を関数に渡す
+            checkClass(classNameTextArea.getText());
         }
     }
 
-    private static void printMembers(Member[] mems, boolean isFirst)
+    public void checkClass(String className)
+    {
+        try
+        {
+            Class<?> c = Class.forName(className);
+            addConstructor(c.getConstructors(), true);
+            addConstructor(c.getDeclaredConstructors(), false);
+        }
+        catch (ClassNotFoundException e)
+        {
+            System.out.println("unknown class: " + className);
+        }
+    }
+
+
+    private void addConstructor(Member[] mems, boolean isFirst)
     {
         Member m;
-        // for (Member m : mems)
+
+        if (true == isFirst)
+        {
+            choiceConstructor.removeAll();
+        }
         checkMember: for (int i = 0; i < mems.length; i++)
         {
             m = mems[i];
@@ -124,22 +149,8 @@ public class Interpret extends Frame implements ActionListener
                     }
                 }
             }
-            String decl = m.toString();
-            System.out.print(" ");
-            System.out.println(strip(decl, "java.lang."));
+            choiceConstructor.add(m.toString());
         }
-    }
-
-    public static String strip(String source, String removeTarget)
-    {
-        return source.replaceAll(removeTarget, "");
-    }
-
-    public checkClass(String className)
-    {
-        // TODO:
-        // クラスが存在するかどうか
-        // この後コンストラクタを取得する関数に続いていくのだろう。。。
     }
 
 
@@ -155,22 +166,6 @@ public class Interpret extends Frame implements ActionListener
         main.setSize(640, 480);
         main.setResizable(false);
         main.setVisible(true);
-
-        try
-        {
-            Class<?> c = Class.forName("interpret.Interpret");
-            System.out.println(c);
-            printMembers(c.getFields(), true);
-            printMembers(c.getDeclaredFields(), false);
-            printMembers(c.getConstructors(), true);
-            printMembers(c.getDeclaredConstructors(), false);
-            printMembers(c.getMethods(), true);
-            printMembers(c.getDeclaredMethods(), false);
-        }
-        catch (ClassNotFoundException e)
-        {
-            System.out.println("unknown class: " + args[0]);
-        }
     }
 
 }
