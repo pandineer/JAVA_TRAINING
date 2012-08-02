@@ -53,11 +53,54 @@ public class Interpret extends Frame implements ActionListener
 {
     private static final long serialVersionUID = 1L;
     private static String[] memberName = new String[1000];
+    private Class<?> c;
 
     private TextArea classNameTextArea = new TextArea();
     private Button checkTheClassButton = new Button("Check the class");
     private Choice choiceConstructor = new Choice();
+    private Button createInstanceButton = new Button("Create instance");
 
+    public Interpret()
+    {
+        // タイトルバーの設定
+        super("hoge");
+
+        // ウィンドウを閉じられるようにする
+        addWindowListener(new WindowAdapter()
+        {
+            public void windowClosing(WindowEvent e)
+            {
+                System.exit(0);
+            }
+        });
+
+        // レイアウトの設定
+        this.setLayout(new GridLayout(4, 2));
+        {
+            // クラス名
+            this.add(new Label("Input class name: "));
+            this.add(classNameTextArea);
+
+            // クラスチェック
+            this.add(new Label(""));
+            this.add(checkTheClassButton);
+            checkTheClassButton.addActionListener(this);
+
+            // コンストラクタの選択肢を表示する
+            this.add(new Label("Constructor: "));
+            choiceConstructor.add("---");
+            this.add(choiceConstructor);
+
+            // インスタンス生成ボタン
+            this.add(new Label("Create Instanace: "));
+            this.add(createInstanceButton);
+            createInstanceButton.addActionListener(this);
+        }
+
+        setSize(640, 480);
+        setResizable(false);
+        setVisible(true);
+    }
 
     public Interpret(String title)
     {
@@ -74,7 +117,7 @@ public class Interpret extends Frame implements ActionListener
         });
 
         // レイアウトの設定
-        this.setLayout(new GridLayout(3, 3));
+        this.setLayout(new GridLayout(4, 2));
         {
             // クラス名
             this.add(new Label("Input class name: "));
@@ -85,23 +128,43 @@ public class Interpret extends Frame implements ActionListener
             this.add(checkTheClassButton);
             checkTheClassButton.addActionListener(this);
 
-
-
             // コンストラクタの選択肢を表示する
             this.add(new Label("Constructor: "));
             choiceConstructor.add("---");
             this.add(choiceConstructor);
 
+            // インスタンス生成ボタン
+            this.add(new Label("Create Instanace: "));
+            this.add(createInstanceButton);
+            createInstanceButton.addActionListener(this);
         }
+
+        setSize(640, 480);
+        setResizable(false);
+        setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        // Check the classボタン
         if ("Check the class" == e.getActionCommand())
         {
             // テキストエリアの名前を関数に渡す
             checkClass(classNameTextArea.getText());
+        }
+
+        // Create instanceボタン
+        if ("Create instance" == e.getActionCommand())
+        {
+            try
+            {
+                c.newInstance();
+            }
+            catch(Exception ex)
+            {
+                System.out.println(ex);
+            }
         }
     }
 
@@ -109,7 +172,7 @@ public class Interpret extends Frame implements ActionListener
     {
         try
         {
-            Class<?> c = Class.forName(className);
+            c = Class.forName(className);
             addConstructor(c.getConstructors(), true);
             addConstructor(c.getDeclaredConstructors(), false);
         }
@@ -162,10 +225,7 @@ public class Interpret extends Frame implements ActionListener
     public static void main(String[] args)
     {
         Interpret main = new Interpret("Interpret");
-
-        main.setSize(640, 480);
-        main.setResizable(false);
-        main.setVisible(true);
+        main.setTitle("Interpret");
     }
 
 }
