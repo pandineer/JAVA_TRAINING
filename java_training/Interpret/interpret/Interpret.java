@@ -59,6 +59,7 @@ public class Interpret extends Frame implements ActionListener
     private Button checkTheClassButton = new Button("Check the class");
     private Choice choiceConstructor = new Choice();
     private Button createInstanceButton = new Button("Create instance");
+    private Label errorLabel = new Label("a");
 
     public Interpret()
     {
@@ -75,7 +76,7 @@ public class Interpret extends Frame implements ActionListener
         });
 
         // レイアウトの設定
-        this.setLayout(new GridLayout(4, 2));
+        this.setLayout(new GridLayout(5, 2));
         {
             // クラス名
             this.add(new Label("Input class name: "));
@@ -95,9 +96,13 @@ public class Interpret extends Frame implements ActionListener
             this.add(new Label("Create Instanace: "));
             this.add(createInstanceButton);
             createInstanceButton.addActionListener(this);
+
+            // エラーメッセージ表示
+            this.add(errorLabel);
+            this.add(errorLabel);
         }
 
-        setSize(640, 480);
+        setSize(640, 640);
         setResizable(false);
         setVisible(true);
     }
@@ -117,7 +122,7 @@ public class Interpret extends Frame implements ActionListener
         });
 
         // レイアウトの設定
-        this.setLayout(new GridLayout(4, 2));
+        this.setLayout(new GridLayout(5, 2));
         {
             // クラス名
             this.add(new Label("Input class name: "));
@@ -137,6 +142,9 @@ public class Interpret extends Frame implements ActionListener
             this.add(new Label("Create Instanace: "));
             this.add(createInstanceButton);
             createInstanceButton.addActionListener(this);
+
+            // エラーメッセージ表示
+            this.add(errorLabel);
         }
 
         setSize(640, 480);
@@ -178,7 +186,8 @@ public class Interpret extends Frame implements ActionListener
         }
         catch (ClassNotFoundException e)
         {
-            System.out.println("unknown class: " + className);
+            // System.out.println("unknown class: " + className);
+            errorLabel.setText("Unknown class: " + className);
         }
     }
 
