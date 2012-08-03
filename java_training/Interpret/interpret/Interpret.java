@@ -65,7 +65,7 @@ public class Interpret extends Frame implements ActionListener
     private Button selectTheConstructorButton = new Button("Select the constructor");
     private Choice choiceConstructorArgs = new Choice();
     private Button createInstanceButton = new Button("Create instance");
-    private Label errorLabel = new Label("a");
+    private Label errorLabel = new Label("Error message is shown here");
 
     public Interpret()
     {
@@ -83,9 +83,10 @@ public class Interpret extends Frame implements ActionListener
         commonInitialize();
     }
 
+
+    // 共通初期化部分。コンストラクタから呼ぶ
     private void commonInitialize()
     {
-
         // ウィンドウを閉じられるようにする
         addWindowListener(new WindowAdapter()
         {
@@ -109,12 +110,12 @@ public class Interpret extends Frame implements ActionListener
 
             // コンストラクタの選択肢を表示する
             this.add(new Label("Constructor: "));
-            choiceConstructor.add("---");
             this.add(choiceConstructor);
 
             // コンストラクタを選ぶ
             this.add(new Label("Select constructor"));
             this.add(selectTheConstructorButton);
+            selectTheConstructorButton.addActionListener(this);
 
             // コンストラクタの引数リスト
             this.add(new Label("Input construtctor argument"));
@@ -165,8 +166,12 @@ public class Interpret extends Frame implements ActionListener
         // Select the constructorボタン
         if ("Select the constructor" == e.getActionCommand())
         {
-            // TODO: getGenericParameterTypes()を使って、コンストラクタの引数の型一覧を取得・表示する
-            for(int i = 0; i < )
+            choiceConstructorArgs.removeAll();
+            for(int i = 0; i < constructor[choiceConstructor.getSelectedIndex()].getGenericParameterTypes().length; i++)
+            {
+                constructorArgument[i] = constructor[choiceConstructor.getSelectedIndex()].getGenericParameterTypes()[i];
+                choiceConstructorArgs.add(constructorArgument[i].toString());
+            }
         }
     }
 
@@ -174,12 +179,14 @@ public class Interpret extends Frame implements ActionListener
     {
         try
         {
+            // クラスが存在するかどうか調べて、コンストラクタを取得する
             c = Class.forName(className);
             addConstructor(c.getConstructors(), true);
             addConstructor(c.getDeclaredConstructors(), false);
         }
         catch (ClassNotFoundException e)
         {
+            // クラスが見つからなかったらエラーメッセージを変更する
             errorLabel.setText("Unknown class: " + className);
         }
     }
@@ -189,16 +196,21 @@ public class Interpret extends Frame implements ActionListener
     {
         if (true == isFirst)
         {
+            // addConstructor関数が呼ばれるのが最初だったら、コンストラクタようのセレクタをクリアする
             choiceConstructor.removeAll();
         }
+
         checkMember: for (int i = 0; i < tempConstructor.length; i++)
         {
             if (tempConstructor[i].getDeclaringClass() == Object.class)
             {
+                // コンストラクタが重複したら登録しない
                 continue;
             }
+
             if (true == isFirst)
             {
+                // consutrcutor関数が呼ばれるのが最初だったら、
                 constructor[i] = tempConstructor[i];
             }
             if (false == isFirst)
@@ -209,6 +221,7 @@ public class Interpret extends Frame implements ActionListener
                     {
                         continue checkMember;
                     }
+                    // TODO: あれ？重複してなかったら、二度目の呼び出しでもconstructorに格納する処理が必要な気がする。。。
                 }
             }
             choiceConstructor.add(tempConstructor[i].toString());
