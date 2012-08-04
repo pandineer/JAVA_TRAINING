@@ -58,14 +58,21 @@ public class Interpret extends Frame implements ActionListener
     private Class<?> c;
     private Constructor<?>[] constructor = new Constructor[100];
     private Type[] constructorArgument = new Type[100];
+    private Object[] constructorArgumentValue = new Object[100];
+    private Object[] createdObject = new Object[10];
+    private CreatedObjectDialog[] createdObjectDialog = new CreatedObjectDialog[10];
+    private int createdObjectNumber = 0;
 
-    private TextArea classNameTextArea = new TextArea();
+    private TextArea classNameTextArea = new TextArea("interpret.Interpret");
     private Button checkTheClassButton = new Button("Check the class");
     private Choice choiceConstructor = new Choice();
     private Button selectTheConstructorButton = new Button("Select the constructor");
     private Choice choiceConstructorArgs = new Choice();
+    private TextArea constructorArgumentTextArea = new TextArea();
+    private Button setConstructorArgumentButton = new Button("Set constructor argument");
     private Button createInstanceButton = new Button("Create instance");
     private Label errorLabel = new Label("Error message is shown here");
+
 
     public Interpret()
     {
@@ -83,6 +90,21 @@ public class Interpret extends Frame implements ActionListener
         commonInitialize();
     }
 
+    public Interpret(String title, int in)
+    {
+        // タイトルバーの設定
+        super(title + in);
+
+        commonInitialize();
+    }
+
+    public Interpret(String title, int in, double db)
+    {
+        // タイトルバーの設定
+        super(title + in + db);
+
+        commonInitialize();
+    }
 
     // 共通初期化部分。コンストラクタから呼ぶ
     private void commonInitialize()
@@ -97,13 +119,13 @@ public class Interpret extends Frame implements ActionListener
         });
 
         // レイアウトの設定
-        this.setLayout(new GridLayout(7, 2));
+        this.setLayout(new GridLayout(9, 2));
         {
-            // クラス名
+            // クラス名入力
             this.add(new Label("Input class name: "));
             this.add(classNameTextArea);
 
-            // クラスチェック
+            // クラスチェックボタン
             this.add(new Label(""));
             this.add(checkTheClassButton);
             checkTheClassButton.addActionListener(this);
@@ -112,14 +134,23 @@ public class Interpret extends Frame implements ActionListener
             this.add(new Label("Constructor: "));
             this.add(choiceConstructor);
 
-            // コンストラクタを選ぶ
+            // コンストラクタを選ぶボタン
             this.add(new Label("Select constructor"));
             this.add(selectTheConstructorButton);
             selectTheConstructorButton.addActionListener(this);
 
             // コンストラクタの引数リスト
-            this.add(new Label("Input construtctor argument"));
+            this.add(new Label("Select to input construtctor argument"));
             this.add(choiceConstructorArgs);
+
+            // コンストラクタの引数入力
+            this.add(new Label("Input constructor argument"));
+            this.add(constructorArgumentTextArea);
+
+            // コンストラクタの引数設定ボタン
+            this.add(new Label("Set constructor argument"));
+            this.add(setConstructorArgumentButton);
+            setConstructorArgumentButton.addActionListener(this);
 
             // インスタンス生成ボタン
             this.add(new Label("Create Instanace: "));
@@ -146,31 +177,89 @@ public class Interpret extends Frame implements ActionListener
             checkClass(classNameTextArea.getText());
         }
 
-        // Create instanceボタン
-        if ("Create instance" == e.getActionCommand())
+        // Select the constructorボタン
+        if ("Select the constructor" == e.getActionCommand())
         {
+            // 初期化
+            choiceConstructorArgs.removeAll();
+            for (int i = 0; i < constructorArgumentValue.length; i++)
+            {
+                constructorArgumentValue[i] = null;
+            }
+
+            if (choiceConstructor.getSelectedIndex() >= 0)
+            {
+                for(int i = 0; i < constructor[choiceConstructor.getSelectedIndex()].getGenericParameterTypes().length; i++)
+                {
+                    constructorArgument[i] = constructor[choiceConstructor.getSelectedIndex()].getGenericParameterTypes()[i];
+                    choiceConstructorArgs.add(constructorArgument[i].toString());
+                }
+            }
+        }
+
+        // Set constructor argumentボタン
+        if ("Set constructor argument" == e.getActionCommand())
+        {
+            if (choiceConstructorArgs.getSelectedIndex() >= 0)
+            {
+                constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = constructorArgumentTextArea.getText();
+            }
+        }
+
+        // Create instanceボタン
+        if ("Create instance" == e.getActionCommand() && choiceConstructor.getSelectedIndex() >= 0)
+        {
+            // コンストラクタ用引数を必要な数だけコピーしてからnewInstanceを実行する
+            Constructor<?> targetConstructor = c.getConstructors()[choiceConstructor.getSelectedIndex()];
+            Object[] tempConstructorArgument = new Object[targetConstructor.getGenericParameterTypes().length];
             try
             {
-                // c.newInstance();
-                // c.getConstructors()[1].newInstance("mogemoge");
-                System.out.println(choiceConstructor.getSelectedIndex());
-
-
+                for (int i = 0; i < targetConstructor.getGenericParameterTypes().length; i++)
+                {
+                    // 基本型でString以外のものは変換してから代入
+                    if (targetConstructor.getGenericParameterTypes()[i].toString().equals("byte"))
+                    {
+                        tempConstructorArgument[i] = Byte.valueOf(constructorArgumentValue[i].toString());
+                    }
+                    else if (targetConstructor.getGenericParameterTypes()[i].toString().equals("short"))
+                    {
+                        tempConstructorArgument[i] = Short.valueOf(constructorArgumentValue[i].toString());
+                    }
+                    else if (targetConstructor.getGenericParameterTypes()[i].toString().equals("int"))
+                    {
+                        tempConstructorArgument[i] = Integer.valueOf(constructorArgumentValue[i].toString());
+                    }
+                    else if (targetConstructor.getGenericParameterTypes()[i].toString().equals("long"))
+                    {
+                        tempConstructorArgument[i] = Long.valueOf(constructorArgumentValue[i].toString());
+                    }
+                    else if (targetConstructor.getGenericParameterTypes()[i].toString().equals("float"))
+                    {
+                        tempConstructorArgument[i] = Float.valueOf(constructorArgumentValue[i].toString());
+                    }
+                    else if (targetConstructor.getGenericParameterTypes()[i].toString().equals("double"))
+                    {
+                        tempConstructorArgument[i] = Double.valueOf(constructorArgumentValue[i].toString());
+                    }
+                    else
+                    {
+                        tempConstructorArgument[i] = constructorArgumentValue[i];
+                    }
+                }
+                if (createdObjectNumber < 10)
+                {
+                    createdObject[createdObjectNumber] = targetConstructor.newInstance(tempConstructorArgument);
+                    createdObjectDialog[createdObjectNumber] = new CreatedObjectDialog(this, createdObject[createdObjectNumber], c);
+                    createdObjectNumber++;
+                }
+                else
+                {
+                    this.errorLabel.setText("Limit of creatable object number");
+                }
             }
             catch(Exception ex)
             {
                 System.out.println(ex);
-            }
-        }
-
-        // Select the constructorボタン
-        if ("Select the constructor" == e.getActionCommand())
-        {
-            choiceConstructorArgs.removeAll();
-            for(int i = 0; i < constructor[choiceConstructor.getSelectedIndex()].getGenericParameterTypes().length; i++)
-            {
-                constructorArgument[i] = constructor[choiceConstructor.getSelectedIndex()].getGenericParameterTypes()[i];
-                choiceConstructorArgs.add(constructorArgument[i].toString());
             }
         }
     }
@@ -181,8 +270,7 @@ public class Interpret extends Frame implements ActionListener
         {
             // クラスが存在するかどうか調べて、コンストラクタを取得する
             c = Class.forName(className);
-            addConstructor(c.getConstructors(), true);
-            addConstructor(c.getDeclaredConstructors(), false);
+            addConstructor(c);
         }
         catch (ClassNotFoundException e)
         {
@@ -192,43 +280,46 @@ public class Interpret extends Frame implements ActionListener
     }
 
 
-    private void addConstructor(Constructor<?>[] tempConstructor, boolean isFirst)
+    private void addConstructor(Class<?> c)
     {
-        if (true == isFirst)
-        {
-            // addConstructor関数が呼ばれるのが最初だったら、コンストラクタようのセレクタをクリアする
-            choiceConstructor.removeAll();
-        }
+        Constructor<?>[] tempConstructor;
+        int i = 0;
 
-        checkMember: for (int i = 0; i < tempConstructor.length; i++)
-        {
-            if (tempConstructor[i].getDeclaringClass() == Object.class)
-            {
-                // コンストラクタが重複したら登録しない
-                continue;
-            }
+        // addConstructor関数が呼ばれるのが最初だったら、コンストラクタ用のセレクタをクリアする
+        choiceConstructor.removeAll();
 
-            if (true == isFirst)
-            {
-                // consutrcutor関数が呼ばれるのが最初だったら、
-                constructor[i] = tempConstructor[i];
-            }
-            if (false == isFirst)
-            {
-                for (int j = 0; j < constructor.length; j++)
-                {
-                    if (tempConstructor[i].toString().equals(constructor[j].toString()))
-                    {
-                        continue checkMember;
-                    }
-                    // TODO: あれ？重複してなかったら、二度目の呼び出しでもconstructorに格納する処理が必要な気がする。。。
-                }
-            }
+        tempConstructor = c.getConstructors();
+        for(i = 0; i < tempConstructor.length; i++)
+        {
+            constructor[i] = tempConstructor[i];
             choiceConstructor.add(tempConstructor[i].toString());
         }
+
+        tempConstructor = c.getDeclaredConstructors();
+
+        addDeclaredConstructor: for (int j =0; j < tempConstructor.length; j++)
+        {
+            // コンストラクタの重複チェック
+            for (int k = 0; k < i; k++)
+            {
+                if (tempConstructor[j].toString().equals(constructor[k].toString()))
+                {
+                    continue addDeclaredConstructor;
+                }
+            }
+
+            // 重複してなかったらconstructorに登録
+            constructor[i++] = tempConstructor[j];
+            choiceConstructor.add(tempConstructor[j].toString());
+        }
+
     }
 
 
+    public Class<?> getC()
+    {
+        return c;
+    }
 
 
     /**
