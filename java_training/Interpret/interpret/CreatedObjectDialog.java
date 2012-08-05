@@ -43,7 +43,6 @@ OKが出ない場合には、受講資格を失うこともありますので、
  */
 
 // TODO: 配列
-// TODO: setBackground
 
 package interpret;
 
