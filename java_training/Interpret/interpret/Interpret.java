@@ -43,8 +43,6 @@ OKが出ない場合には、受講資格を失うこともありますので、
  */
 
 
-// TODO: Interpret用のGUIと、他一般オブジェクト用にGUIを分けるのが吉なのかなぁ。。。
-
 
 package interpret;
 
@@ -162,7 +160,7 @@ public class Interpret extends Frame implements ActionListener
             this.add(errorLabel);
         }
 
-        setSize(640, 640);
+        setSize(800, 640);
         setResizable(false);
         setVisible(true);
     }
@@ -260,6 +258,7 @@ public class Interpret extends Frame implements ActionListener
             catch(Exception ex)
             {
                 System.out.println(ex);
+                this.errorLabel.setText(ex.toString());
             }
         }
     }
@@ -319,6 +318,16 @@ public class Interpret extends Frame implements ActionListener
     public Class<?> getC()
     {
         return c;
+    }
+
+    public int testIntMethod(int a)
+    {
+        return a;
+    }
+
+    public String testStringMethod(String a)
+    {
+        return a;
     }
 
 

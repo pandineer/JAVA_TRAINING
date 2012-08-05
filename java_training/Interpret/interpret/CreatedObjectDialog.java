@@ -42,6 +42,8 @@ OKが出ない場合には、受講資格を失うこともありますので、
  * フィールドを修正できるInterpretプログラムを作成しなさい
  */
 
+// TODO: メソッドリストを表示して、引数設定して実行できるようにする
+
 package interpret;
 
 import java.awt.*;
@@ -54,16 +56,40 @@ import java.lang.reflect.*;
 public class CreatedObjectDialog extends Dialog implements ActionListener
 {
     private static final long serialVersionUID = 1L;
+    private GridBagLayout gbl = new GridBagLayout();
+    private GridBagConstraints gbc = new GridBagConstraints();
+
     private Interpret interpret;
     private Object createdObject;
     private Class<?> c;
     private Field[] field = new Field[500];
+    private Method[] method = new Method[500];
+    private Object[] methodArgument = new Object[500];
 
+    private Label fieldLabel = new Label("Field: ");
     private Choice choiceField = new Choice();
-    private Label fieldValueLabel = new Label();
+    private Label selectFieldLabel = new Label("Select field: ");
     private Button getFieldValueButton = new Button("Get field value");
+    private Label fieldValueLabel = new Label();
+    private Label inputFieldValueLabel = new Label("Input field value: ");
     private TextArea inputFieldValueTextArea = new TextArea();
     private Button setFieldValueButton = new Button("Set field value");
+    private Label methodLabel = new Label("Method: ");
+    private Choice choiceMethod = new Choice();
+    private Button selectMethodButton = new Button("Select method");
+    private Label selectMethodArgumentLabel = new Label("Select method argument: ");
+    private Choice choiceMethodArgument = new Choice();
+    private Label inputMethodArgument = new Label("Input method argument");
+    private TextArea inputMethodArgumentTextArea = new TextArea();
+    private Button setMethodArgumentButton = new Button("Set method argument");
+    private Choice setMethodArgumentBooleanChoice = new Choice();
+    private Button setMethodArgumentBooleanButton = new Button("Set method argument boolean");
+    private Label invokeMethodLabel = new Label("Invoke Method");
+    private Button invokeMethodButton = new Button("Invoke method");
+    private Label returnValueOfMethodLabel = new Label("Return value of method: ");
+    private Label returnValueOfMethodValueLabel = new Label();
+    private Label errorLabel = new Label("Error message is shown here: ");
+    private Label errorValueLabel = new Label();
 
     public CreatedObjectDialog(Frame owner, Object ar_createdObject, Class<?> ar_c)
     {
@@ -83,42 +109,22 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
         });
 
         this.setTitle(interpret.getC().toString());
-        this.setSize(800, 180);
-        this.setResizable(false);
+        this.setSize(800, 640);
+        this.setResizable(true);
 
         // レイアウトの設定
-        this.setLayout(new GridLayout(5, 2));
+        boolean flag = true;
+        if (flag == true)
         {
-            // フィールド一覧
-            this.add(new Label("Field: "));
-            addChoiceObjectDialog();
-            this.add(choiceField);
-
-            // フィールド選択ボタン
-            this.add(new Label("Select field"));
-            this.add(getFieldValueButton);
-            getFieldValueButton.addActionListener(this);
-
-            // フィールドの値表示
-            this.add(new Label("Selected field value: "));
-            this.add(fieldValueLabel);
-
-            // フィールドの値変更値入力
-            this.add(new Label("Input field value: "));
-            this.add(inputFieldValueTextArea);
-
-            // フィールドの値変更確定ボタン
-            this.add(new Label("Set field value"));
-            this.add(setFieldValueButton);
-            setFieldValueButton.addActionListener(this);
-
+            setLayoutWithGridLayout();
         }
-        this.setVisible(true);
-
-
+        else
+        {
+            setLayoutWithGridBagLayout();
+        }
     }
 
-    private void addChoiceObjectDialog()
+    private void addFieldChoiceObjectDialog()
     {
         int i = 0;
         for (i = 0; i < c.getFields().length; i++)
@@ -140,6 +146,29 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             i++;
         }
 
+    }
+
+    private void addMethodChoiceObjectDialog()
+    {
+        int i = 0;
+        for (i = 0; i < c.getMethods().length; i++)
+        {
+            method[i] = c.getMethods()[i];
+            choiceMethod.add(method[i].toString());
+        }
+        declaredMethodLabel: for (int j = 0; j < c.getDeclaredMethods().length; j++)
+        {
+            for (int k =0; k < i; k++)
+            {
+                if (c.getDeclaredMethods()[j].toString().equals(method[k].toString()))
+                {
+                    continue declaredMethodLabel;
+                }
+            }
+            method[i] = c.getDeclaredMethods()[j];
+            choiceMethod.add(method[i].toString());
+            i++;
+        }
     }
 
     @Override
@@ -165,7 +194,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             field[choiceField.getSelectedIndex()].setAccessible(true);
             try
             {
-             // 基本型でString以外のものは変換してから代入
+                // 基本型でString以外のものは変換してから代入
                 if (field[choiceField.getSelectedIndex()].getGenericType().toString().equals("byte"))
                 {
                     field[choiceField.getSelectedIndex()].set(createdObject, Byte.valueOf(inputFieldValueTextArea.getText()));
@@ -176,7 +205,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
                 }
                 else if (field[choiceField.getSelectedIndex()].getGenericType().toString().equals("int"))
                 {
-                    field[choiceField.getSelectedIndex()].set(createdObject, Integer.valueOf(inputFieldValueTextArea.getText()));
+                    field[choiceField.getSelectedIndex()].set(createdObject, (int)Integer.valueOf(inputFieldValueTextArea.getText()));
                 }
                 else if (field[choiceField.getSelectedIndex()].getGenericType().toString().equals("long"))
                 {
@@ -202,6 +231,371 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
         }
 
+        // slectMethodButton
+        if ("Select method" == e.getActionCommand())
+        {
+            // 初期化
+            choiceMethodArgument.removeAll();
+            for (int i = 0; i < methodArgument.length; i++)
+            {
+                methodArgument[i] = null;
+            }
+
+            for (int i = 0; i < method[choiceMethod.getSelectedIndex()].getGenericParameterTypes().length; i++)
+            {
+                choiceMethodArgument.add(method[choiceMethod.getSelectedIndex()].getGenericParameterTypes()[i].toString());
+            }
+        }
+
+        // setMethodArgumentButon
+        if ("Set method argument" == e.getActionCommand())
+        {
+            // 基本型でString以外のものは変換してから代入
+            if (method[choiceMethod.getSelectedIndex()].getGenericParameterTypes()[choiceMethodArgument.getSelectedIndex()].toString().equals("byte"))
+            {
+                methodArgument[choiceMethodArgument.getSelectedIndex()] = Byte.valueOf(inputMethodArgumentTextArea.getText());
+            }
+            else if (method[choiceMethod.getSelectedIndex()].getGenericParameterTypes()[choiceMethodArgument.getSelectedIndex()].toString().equals("short"))
+            {
+                methodArgument[choiceMethodArgument.getSelectedIndex()] = Short.valueOf(inputMethodArgumentTextArea.getText());
+            }
+            else if (method[choiceMethod.getSelectedIndex()].getGenericParameterTypes()[choiceMethodArgument.getSelectedIndex()].toString().equals("int"))
+            {
+                methodArgument[choiceMethodArgument.getSelectedIndex()] = Integer.valueOf(inputMethodArgumentTextArea.getText());
+            }
+            else if (method[choiceMethod.getSelectedIndex()].getGenericParameterTypes()[choiceMethodArgument.getSelectedIndex()].toString().equals("long"))
+            {
+                methodArgument[choiceMethodArgument.getSelectedIndex()] = Long.valueOf(inputMethodArgumentTextArea.getText());
+            }
+            else if (method[choiceMethod.getSelectedIndex()].getGenericParameterTypes()[choiceMethodArgument.getSelectedIndex()].toString().equals("float"))
+            {
+                methodArgument[choiceMethodArgument.getSelectedIndex()] = Float.valueOf(inputMethodArgumentTextArea.getText());
+            }
+            else if (method[choiceMethod.getSelectedIndex()].getGenericParameterTypes()[choiceMethodArgument.getSelectedIndex()].toString().equals("double"))
+            {
+                methodArgument[choiceMethodArgument.getSelectedIndex()] = Double.valueOf(inputMethodArgumentTextArea.getText());
+            }
+            else
+            {
+                methodArgument[choiceMethodArgument.getSelectedIndex()] = inputMethodArgumentTextArea.getText();
+            }
+        }
+
+        // setMethodArgumentBoolButton
+        if ("Set method argument boolean" == e.getActionCommand())
+        {
+            if (0 == setMethodArgumentBooleanChoice.getSelectedIndex())
+            {
+                methodArgument[choiceMethodArgument.getSelectedIndex()] = true;
+            }
+            else if (1 == setMethodArgumentBooleanChoice.getSelectedIndex())
+            {
+                methodArgument[choiceMethodArgument.getSelectedIndex()] = false;
+            }
+            else
+            {
+                errorLabel.setText("bool set error");
+            }
+        }
+
+        // invokeMethodButton
+        if ("Invoke method" == e.getActionCommand())
+        {
+            // 実際に必要な長さの引数の配列を作る
+            Object[] actualMethodArgument = new Object[method[choiceMethod.getSelectedIndex()].getGenericParameterTypes().length];
+            for (int i = 0; i < actualMethodArgument.length; i++)
+            {
+                actualMethodArgument[i] = methodArgument[i];
+            }
+            try
+            {
+                returnValueOfMethodLabel.setText(method[choiceMethod.getSelectedIndex()].invoke(createdObject, actualMethodArgument).toString());
+            }
+            catch(Exception ex)
+            {
+                errorLabel.setText(ex.toString());
+            }
+        }
+    }
+
+
+
+
+
+    private void setLayoutWithGridLayout()
+    {
+        this.setLayout(new GridLayout(10, 3));
+
+        // フィールド一覧
+        this.add(fieldLabel);
+        addFieldChoiceObjectDialog();
+        this.add(choiceField);
+        this.add(new Label(""));
+
+        // フィールドの値取得
+        this.add(selectFieldLabel);
+        this.add(getFieldValueButton);
+        getFieldValueButton.addActionListener(this);
+        this.add(fieldValueLabel);
+
+        // フィールドの値変更値入力
+        this.add(inputFieldValueLabel);
+        this.add(inputFieldValueTextArea);
+        this.add(setFieldValueButton);
+        setFieldValueButton.addActionListener(this);
+
+        // メソッド一覧
+        this.add(methodLabel);
+        addMethodChoiceObjectDialog();
+        this.add(choiceMethod);
+        this.add(selectMethodButton);
+        selectMethodButton.addActionListener(this);
+
+        // メソッドの引数一覧
+        this.add(selectMethodArgumentLabel);
+        this.add(choiceMethodArgument);
+        this.add(new Label(""));
+
+
+        // メソッドの引数入力
+        this.add(inputMethodArgument);
+        this.add(inputMethodArgumentTextArea);
+        this.add(setMethodArgumentButton);
+        setMethodArgumentButton.addActionListener(this);
+
+        // メソッドの引数入力（bool）
+        this.add(new Label(""));
+        setMethodArgumentBooleanChoice.add("true");
+        setMethodArgumentBooleanChoice.add("false");
+        this.add(setMethodArgumentBooleanChoice);
+        this.add(setMethodArgumentBooleanButton);
+        setMethodArgumentBooleanButton.addActionListener(this);
+
+        // メソッド起動ボタン
+        this.add(invokeMethodLabel);
+        this.add(invokeMethodButton);
+        invokeMethodButton.addActionListener(this);
+        this.add(new Label(""));
+
+        // メソッドの戻り値表示
+        this.add(returnValueOfMethodLabel);
+        this.add(returnValueOfMethodValueLabel);
+        this.add(new Label(""));
+
+        // エラーメッセージ表示
+        this.add(errorLabel);
+        this.add(errorValueLabel);
+        this.add(new Label(""));
+
+        this.setVisible(true);
+    }
+
+    private void setLayoutWithGridBagLayout()
+    {
+
+        this.setLayout(gbl);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(fieldLabel, gbc);
+        this.add(fieldLabel);
+        addFieldChoiceObjectDialog();
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(choiceField, gbc);
+        this.add(choiceField);
+
+        // フィールドの値取得
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(selectFieldLabel, gbc);
+        this.add(selectFieldLabel);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(getFieldValueButton, gbc);
+        this.add(getFieldValueButton);
+        getFieldValueButton.addActionListener(this);
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(fieldValueLabel, gbc);
+        this.add(fieldValueLabel);
+
+        // フィールドの値変更値入力
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(inputFieldValueLabel, gbc);
+        this.add(inputFieldValueLabel);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(inputFieldValueTextArea, gbc);
+        this.add(inputFieldValueTextArea);
+        getFieldValueButton.addActionListener(this);
+        gbc.gridx = 2;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(setFieldValueButton, gbc);
+        this.add(setFieldValueButton);
+        setFieldValueButton.addActionListener(this);
+
+        // メソッド一覧
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(methodLabel, gbc);
+        this.add(methodLabel);
+        addMethodChoiceObjectDialog();
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 3;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(choiceMethod, gbc);
+        this.add(choiceMethod);
+        gbc.gridx = 2;
+        gbc.gridy = 5;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(selectMethodButton, gbc);
+        this.add(selectMethodButton);
+        selectMethodButton.addActionListener(this);
+
+        // メソッドの引数一覧
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(selectMethodArgumentLabel, gbc);
+        this.add(selectMethodArgumentLabel);
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(choiceMethodArgument, gbc);
+        this.add(choiceMethodArgument);
+
+
+        // メソッドの引数入力
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 2;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(inputMethodArgument, gbc);
+        this.add(inputMethodArgument);
+        gbc.gridx = 1;
+        gbc.gridy = 7;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(inputMethodArgumentTextArea, gbc);
+        this.add(inputMethodArgumentTextArea);
+        gbc.gridx = 2;
+        gbc.gridy = 7;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(setMethodArgumentButton, gbc);
+        this.add(setMethodArgumentButton);
+        selectMethodButton.addActionListener(this);
+        setMethodArgumentButton.addActionListener(this);
+
+        // メソッドの引数入力（bool）
+        setMethodArgumentBooleanChoice.add("true");
+        setMethodArgumentBooleanChoice.add("false");
+        gbc.gridx = 1;
+        gbc.gridy = 8;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(setMethodArgumentBooleanChoice, gbc);
+        this.add(setMethodArgumentBooleanChoice);
+        gbc.gridx = 2;
+        gbc.gridy = 8;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(setMethodArgumentBooleanButton, gbc);
+        this.add(setMethodArgumentBooleanButton);
+        setMethodArgumentBooleanButton.addActionListener(this);
+
+        // メソッド起動ボタン
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(invokeMethodLabel, gbc);
+        this.add(invokeMethodLabel);
+        gbc.gridx = 1;
+        gbc.gridy = 9;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(invokeMethodButton, gbc);
+        this.add(invokeMethodButton);
+        invokeMethodButton.addActionListener(this);
+
+        // メソッドの戻り値表示
+        gbc.gridx = 0;
+        gbc.gridy = 10;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(returnValueOfMethodLabel, gbc);
+        this.add(returnValueOfMethodLabel);
+        gbc.gridx = 1;
+        gbc.gridy = 10;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(returnValueOfMethodValueLabel, gbc);
+        this.add(returnValueOfMethodValueLabel);
+
+        // エラーメッセージ表示
+        gbc.gridx = 0;
+        gbc.gridy = 11;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbl.setConstraints(errorLabel, gbc);
+        this.add(errorLabel);
+        gbc.gridx = 1;
+        gbc.gridy = 11;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(errorValueLabel, gbc);
+        this.add(errorValueLabel);
+
+        this.setVisible(true);
     }
 
 }
