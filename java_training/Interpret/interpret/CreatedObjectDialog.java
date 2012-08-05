@@ -42,7 +42,8 @@ OKが出ない場合には、受講資格を失うこともありますので、
  * フィールドを修正できるInterpretプログラムを作成しなさい
  */
 
-// TODO: 配列
+// TODO: 配列を引数に渡せるようにする
+// TODO: intとかの配列も作れるようにする？
 
 package interpret;
 
@@ -327,11 +328,21 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             try
             {
-                returnValueOfMethodValueLabel.setText(method[choiceMethod.getSelectedIndex()].invoke(createdObject, actualMethodArgument).toString());
+                // returnValueOfMethodValueLabel.setText(method[choiceMethod.getSelectedIndex()].invoke(createdObject, actualMethodArgument).toString());
+                System.out.println("1");
+                Method tmpmethod = method[choiceMethod.getSelectedIndex()];
+                System.out.println("2");
+                if (createdObject == null)
+                {
+                    System.out.println("!");
+                }
+                String tmp = tmpmethod.invoke(createdObject, actualMethodArgument).toString();
+                System.out.println("3");
+                returnValueOfMethodValueLabel.setText(tmp);
             }
             catch(Exception ex)
             {
-                errorLabel.setText(ex.toString());
+                errorLabel.setText("Invoke method: " + ex.toString());
             }
         }
     }
