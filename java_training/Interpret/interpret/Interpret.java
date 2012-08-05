@@ -61,8 +61,13 @@ public class Interpret extends Frame implements ActionListener
     public Object[] createdObject = new Object[100];
     private CreatedObjectDialog[] createdObjectDialog = new CreatedObjectDialog[10];
     private int createdObjectNumber = 0;
+    private Object[][] createdArray = new Object[100][];
+    private CreatedObjectDialog[][] createdObjectArrayDialog = new CreatedObjectDialog[100][];
+    private int createdObjectArrayNumber = 0;
+    private String[] objectArrayName = new String[100];
+    private CreatedArrayController[] createdArrayController = new CreatedArrayController[100];
 
-    private TextArea classNameTextArea = new TextArea("interpret.Interpret");
+    private TextArea classNameTextArea = new TextArea("java.lang.String");
     private Button checkTheClassButton = new Button("Check the class");
     private Choice choiceConstructor = new Choice();
     private Button selectTheConstructorButton = new Button("Select the constructor");
@@ -75,6 +80,8 @@ public class Interpret extends Frame implements ActionListener
     private Button setConstructorArgumentObjectButton = new Button("Set constructor argument object");
     private TextArea setObjectNameTextArea = new TextArea();
     private Button createInstanceButton = new Button("Create instance");
+    private TextArea setArrayNumberTextArea = new TextArea();
+    private Button createInstanceArrayButton = new Button("Create instance array");
     private Label errorLabel = new Label("");
 
 
@@ -131,7 +138,7 @@ public class Interpret extends Frame implements ActionListener
         });
 
         // レイアウトの設定
-        this.setLayout(new GridLayout(9, 3));
+        this.setLayout(new GridLayout(11, 3));
         {
             // クラス名入力&チェックボタン
             this.add(new Label("Input class name: "));
@@ -181,6 +188,17 @@ public class Interpret extends Frame implements ActionListener
             createInstanceButton.addActionListener(this);
             this.add(new Label(""));
 
+            // 配列の要素数指定
+            this.add(new Label("Input array number"));
+            this.add(setArrayNumberTextArea);
+            this.add(new Label(""));
+
+            // インスタンス配列の生成ボタン
+            this.add(new Label("Create instance array"));
+            this.add(createInstanceArrayButton);
+            createInstanceArrayButton.addActionListener(this);
+            this.add(new Label(""));
+
             // エラーメッセージ表示
             this.add(new Label("Error is shown here: "));
             this.add(errorLabel);
@@ -227,7 +245,35 @@ public class Interpret extends Frame implements ActionListener
         {
             if (choiceConstructorArgs.getSelectedIndex() >= 0)
             {
-                constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = constructorArgumentTextArea.getText();
+                // 基本型でString以外のものは変換してから代入
+                if (constructorArgument[choiceConstructorArgs.getSelectedIndex()].toString().equals("byte"))
+                {
+                    constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = Byte.valueOf(constructorArgumentTextArea.getText());
+                }
+                else if (constructorArgument[choiceConstructorArgs.getSelectedIndex()].toString().equals("short"))
+                {
+                    constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = Short.valueOf(constructorArgumentTextArea.getText());
+                }
+                else if (constructorArgument[choiceConstructorArgs.getSelectedIndex()].toString().equals("int"))
+                {
+                    constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = Integer.valueOf(constructorArgumentTextArea.getText());
+                }
+                else if (constructorArgument[choiceConstructorArgs.getSelectedIndex()].toString().equals("long"))
+                {
+                    constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = Long.valueOf(constructorArgumentTextArea.getText());
+                }
+                else if (constructorArgument[choiceConstructorArgs.getSelectedIndex()].toString().equals("float"))
+                {
+                    constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = Float.valueOf(constructorArgumentTextArea.getText());
+                }
+                else if (constructorArgument[choiceConstructorArgs.getSelectedIndex()].toString().equals("double"))
+                {
+                    constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = Double.valueOf(constructorArgumentTextArea.getText());
+                }
+                else
+                {
+                    constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = constructorArgumentTextArea.getText();
+                }
             }
         }
 
@@ -271,37 +317,9 @@ public class Interpret extends Frame implements ActionListener
             {
                 for (int i = 0; i < targetConstructor.getGenericParameterTypes().length; i++)
                 {
-                    // 基本型でString以外のものは変換してから代入
-                    if (targetConstructor.getGenericParameterTypes()[i].toString().equals("byte"))
-                    {
-                        tempConstructorArgument[i] = Byte.valueOf(constructorArgumentValue[i].toString());
-                    }
-                    else if (targetConstructor.getGenericParameterTypes()[i].toString().equals("short"))
-                    {
-                        tempConstructorArgument[i] = Short.valueOf(constructorArgumentValue[i].toString());
-                    }
-                    else if (targetConstructor.getGenericParameterTypes()[i].toString().equals("int"))
-                    {
-                        tempConstructorArgument[i] = Integer.valueOf(constructorArgumentValue[i].toString());
-                    }
-                    else if (targetConstructor.getGenericParameterTypes()[i].toString().equals("long"))
-                    {
-                        tempConstructorArgument[i] = Long.valueOf(constructorArgumentValue[i].toString());
-                    }
-                    else if (targetConstructor.getGenericParameterTypes()[i].toString().equals("float"))
-                    {
-                        tempConstructorArgument[i] = Float.valueOf(constructorArgumentValue[i].toString());
-                    }
-                    else if (targetConstructor.getGenericParameterTypes()[i].toString().equals("double"))
-                    {
-                        tempConstructorArgument[i] = Double.valueOf(constructorArgumentValue[i].toString());
-                    }
-                    else
-                    {
-                        tempConstructorArgument[i] = constructorArgumentValue[i];
-                    }
+                    tempConstructorArgument[i] = constructorArgumentValue[i];
                 }
-                if (createdObjectNumber < 10)
+                if (createdObjectNumber < 100)
                 {
                     createdObject[createdObjectNumber] = targetConstructor.newInstance(tempConstructorArgument);
                     setConstructorArgumentObjectChoice.add(setObjectNameTextArea.getText());
@@ -319,6 +337,42 @@ public class Interpret extends Frame implements ActionListener
                 System.out.println(ex);
                 this.errorLabel.setText(ex.toString());
             }
+        }
+
+        // Create instance arrayボタン
+        if ("Create instance array" == e.getActionCommand() && choiceConstructor.getSelectedIndex() >= 0 && Integer.valueOf(setArrayNumberTextArea.getText()) > 0)
+        {
+            Object[] tmpObjectArray = new Object[Integer.valueOf(setArrayNumberTextArea.getText())];
+            createdObjectArrayDialog[createdObjectArrayNumber] = new CreatedObjectDialog[Integer.valueOf(setArrayNumberTextArea.getText())];
+
+            Constructor<?> targetConstructor = c.getConstructors()[choiceConstructor.getSelectedIndex()];
+            Object[] tempConstructorArgument = new Object[targetConstructor.getGenericParameterTypes().length];
+
+
+            for (int i = 0; i < targetConstructor.getGenericParameterTypes().length; i++)
+            {
+                tempConstructorArgument[i] = constructorArgumentValue[i];
+            }
+
+            for (int i = 0; i < Integer.valueOf(setArrayNumberTextArea.getText()); i++)
+            {
+                try
+                {
+                    tmpObjectArray[i] = targetConstructor.newInstance(tempConstructorArgument);
+                    System.out.println(tempConstructorArgument[0]);
+                    createdObjectArrayDialog[createdObjectArrayNumber][i] = new CreatedObjectDialog(this, tmpObjectArray[i], c);
+                    createdObjectArrayDialog[createdObjectArrayNumber][i].setVisible(false);
+                }
+                catch(Exception ex)
+                {
+                    System.out.println(ex);
+                    this.errorLabel.setText(ex.toString());
+                }
+            }
+            createdArray[createdObjectArrayNumber] = tmpObjectArray;
+            objectArrayName[createdObjectArrayNumber] = setObjectNameTextArea.getText();
+            createdArrayController[createdObjectArrayNumber] = new CreatedArrayController(this, createdObjectArrayDialog[createdObjectArrayNumber]);
+            createdObjectArrayNumber++;
         }
     }
 
