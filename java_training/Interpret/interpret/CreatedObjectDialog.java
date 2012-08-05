@@ -42,7 +42,8 @@ OKが出ない場合には、受講資格を失うこともありますので、
  * フィールドを修正できるInterpretプログラムを作成しなさい
  */
 
-// TODO: メソッドリストを表示して、引数設定して実行できるようにする
+// TODO: 配列
+// TODO: setBackground
 
 package interpret;
 
@@ -56,8 +57,8 @@ import java.lang.reflect.*;
 public class CreatedObjectDialog extends Dialog implements ActionListener
 {
     private static final long serialVersionUID = 1L;
-    private GridBagLayout gbl = new GridBagLayout();
-    private GridBagConstraints gbc = new GridBagConstraints();
+    // private GridBagLayout gbl = new GridBagLayout();
+    // private GridBagConstraints gbc = new GridBagConstraints();
 
     private Interpret interpret;
     private Object createdObject;
@@ -84,6 +85,9 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
     private Button setMethodArgumentButton = new Button("Set method argument");
     private Choice setMethodArgumentBooleanChoice = new Choice();
     private Button setMethodArgumentBooleanButton = new Button("Set method argument boolean");
+    private Choice setMethodArgumentObjectChoice = new Choice();
+    private Button setMethodArgumentObjectButton = new Button("Set method argument object");
+    private Button setMethodArgumentObjectCheckButton = new Button("Check created object");
     private Label invokeMethodLabel = new Label("Invoke Method");
     private Button invokeMethodButton = new Button("Invoke method");
     private Label returnValueOfMethodLabel = new Label("Return value of method: ");
@@ -113,15 +117,8 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
         this.setResizable(true);
 
         // レイアウトの設定
-        boolean flag = true;
-        if (flag == true)
-        {
-            setLayoutWithGridLayout();
-        }
-        else
-        {
-            setLayoutWithGridBagLayout();
-        }
+        setLayoutWithGridLayout();
+        // setLayoutWithGridBagLayout();
     }
 
     private void addFieldChoiceObjectDialog()
@@ -298,6 +295,28 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
         }
 
+        // Set method argument object
+        if ("Set method argument object" == e.getActionCommand())
+        {
+            methodArgument[choiceMethodArgument.getSelectedIndex()] = interpret.createdObject[setMethodArgumentObjectChoice.getSelectedIndex()];
+        }
+
+        // Check created object
+        if ("Check created object" == e.getActionCommand())
+        {
+            System.out.println("!");
+            setMethodArgumentObjectChoice.removeAll();
+            for (int i = 0; i < interpret.createdObject.length; i++)
+            {
+                if (null == interpret.createdObject[i])
+                {
+                    break;
+                }
+                setMethodArgumentObjectChoice.add(interpret.objectName[i]);
+            }
+
+        }
+
         // invokeMethodButton
         if ("Invoke method" == e.getActionCommand())
         {
@@ -309,7 +328,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             try
             {
-                returnValueOfMethodLabel.setText(method[choiceMethod.getSelectedIndex()].invoke(createdObject, actualMethodArgument).toString());
+                returnValueOfMethodValueLabel.setText(method[choiceMethod.getSelectedIndex()].invoke(createdObject, actualMethodArgument).toString());
             }
             catch(Exception ex)
             {
@@ -324,7 +343,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
 
     private void setLayoutWithGridLayout()
     {
-        this.setLayout(new GridLayout(10, 3));
+        this.setLayout(new GridLayout(12, 3));
 
         // フィールド一覧
         this.add(fieldLabel);
@@ -371,6 +390,26 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
         this.add(setMethodArgumentBooleanButton);
         setMethodArgumentBooleanButton.addActionListener(this);
 
+        // メソッドの引数object選択
+        this.add(new Label(""));
+        for (int i = 0; i < interpret.createdObject.length; i++)
+        {
+            if (null == interpret.createdObject[i])
+            {
+                break;
+            }
+            setMethodArgumentObjectChoice.add(interpret.objectName[i]);
+        }
+        this.add(setMethodArgumentObjectChoice);
+        this.add(setMethodArgumentObjectButton);
+        setMethodArgumentObjectButton.addActionListener(this);
+
+        // メソッドの引数objectチェック
+        this.add(new Label(""));
+        this.add(new Label(""));
+        this.add(setMethodArgumentObjectCheckButton);
+        setMethodArgumentObjectCheckButton.addActionListener(this);
+
         // メソッド起動ボタン
         this.add(invokeMethodLabel);
         this.add(invokeMethodButton);
@@ -390,9 +429,9 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
         this.setVisible(true);
     }
 
+    /*
     private void setLayoutWithGridBagLayout()
     {
-
         this.setLayout(gbl);
 
         gbc.gridx = 0;
@@ -597,5 +636,6 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
 
         this.setVisible(true);
     }
+    */
 
 }
