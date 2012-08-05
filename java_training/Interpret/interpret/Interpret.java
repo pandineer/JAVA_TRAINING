@@ -57,7 +57,8 @@ public class Interpret extends Frame implements ActionListener
     private Constructor<?>[] constructor = new Constructor[100];
     private Type[] constructorArgument = new Type[100];
     private Object[] constructorArgumentValue = new Object[100];
-    private Object[] createdObject = new Object[10];
+    public String[] objectName = new String[100];
+    public Object[] createdObject = new Object[100];
     private CreatedObjectDialog[] createdObjectDialog = new CreatedObjectDialog[10];
     private int createdObjectNumber = 0;
 
@@ -68,8 +69,13 @@ public class Interpret extends Frame implements ActionListener
     private Choice choiceConstructorArgs = new Choice();
     private TextArea constructorArgumentTextArea = new TextArea();
     private Button setConstructorArgumentButton = new Button("Set constructor argument");
+    private Choice setConstructorArgumentBooleanChoice = new Choice();
+    private Button setConstructorArgumentBooleanButton = new Button("Set constructor argument boolean");
+    public Choice setConstructorArgumentObjectChoice = new Choice();
+    private Button setConstructorArgumentObjectButton = new Button("Set constructor argument object");
+    private TextArea setObjectNameTextArea = new TextArea();
     private Button createInstanceButton = new Button("Create instance");
-    private Label errorLabel = new Label("Error message is shown here");
+    private Label errorLabel = new Label("");
 
 
     public Interpret()
@@ -104,6 +110,14 @@ public class Interpret extends Frame implements ActionListener
         commonInitialize();
     }
 
+    public Interpret(boolean boo)
+    {
+        // タイトルバーの設定
+        super("argument: " + boo);
+
+        commonInitialize();
+    }
+
     // 共通初期化部分。コンストラクタから呼ぶ
     private void commonInitialize()
     {
@@ -117,51 +131,64 @@ public class Interpret extends Frame implements ActionListener
         });
 
         // レイアウトの設定
-        this.setLayout(new GridLayout(9, 2));
+        this.setLayout(new GridLayout(9, 3));
         {
-            // クラス名入力
+            // クラス名入力&チェックボタン
             this.add(new Label("Input class name: "));
             this.add(classNameTextArea);
-
-            // クラスチェックボタン
-            this.add(new Label(""));
             this.add(checkTheClassButton);
             checkTheClassButton.addActionListener(this);
 
-            // コンストラクタの選択肢を表示する
+            // コンストラクタの選択
             this.add(new Label("Constructor: "));
             this.add(choiceConstructor);
-
-            // コンストラクタを選ぶボタン
-            this.add(new Label("Select constructor"));
             this.add(selectTheConstructorButton);
             selectTheConstructorButton.addActionListener(this);
 
             // コンストラクタの引数リスト
             this.add(new Label("Select to input construtctor argument"));
             this.add(choiceConstructorArgs);
+            this.add(new Label(""));
 
-            // コンストラクタの引数入力
+            // コンストラクタの引数手入力
             this.add(new Label("Input constructor argument"));
             this.add(constructorArgumentTextArea);
-
-            // コンストラクタの引数設定ボタン
-            this.add(new Label("Set constructor argument"));
             this.add(setConstructorArgumentButton);
             setConstructorArgumentButton.addActionListener(this);
+
+            // コンストラクタの引数boolean入力
+            this.add(new Label(""));
+            setConstructorArgumentBooleanChoice.add("true");
+            setConstructorArgumentBooleanChoice.add("false");
+            this.add(setConstructorArgumentBooleanChoice);
+            this.add(setConstructorArgumentBooleanButton);
+            setConstructorArgumentBooleanButton.addActionListener(this);
+
+            // コンストラクタの引数object選択
+            this.add(new Label(""));
+            this.add(setConstructorArgumentObjectChoice);
+            this.add(setConstructorArgumentObjectButton);
+            setConstructorArgumentObjectButton.addActionListener(this);
+
+            // オブジェクトの名前設定
+            this.add(new Label("Set object name: "));
+            this.add(setObjectNameTextArea);
+            this.add(new Label(""));
 
             // インスタンス生成ボタン
             this.add(new Label("Create Instanace: "));
             this.add(createInstanceButton);
             createInstanceButton.addActionListener(this);
+            this.add(new Label(""));
 
             // エラーメッセージ表示
+            this.add(new Label("Error is shown here: "));
             this.add(errorLabel);
-            this.add(errorLabel);
+            this.add(new Label(""));
         }
 
         setSize(800, 640);
-        setResizable(false);
+        setResizable(true);
         setVisible(true);
     }
 
@@ -201,6 +228,36 @@ public class Interpret extends Frame implements ActionListener
             if (choiceConstructorArgs.getSelectedIndex() >= 0)
             {
                 constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = constructorArgumentTextArea.getText();
+            }
+        }
+
+        // Set constructor argument booleanボタン
+        if ("Set constructor argument boolean" == e.getActionCommand())
+        {
+            if (choiceConstructorArgs.getSelectedIndex() >= 0)
+            {
+                if (0 == setConstructorArgumentBooleanChoice.getSelectedIndex())
+                {
+                    constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = true;
+                }
+                else if (1 == setConstructorArgumentBooleanChoice.getSelectedIndex())
+                {
+                    constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = false;
+                }
+                else
+                {
+                    errorLabel.setText("Set constructor argument boolean error");
+                }
+
+            }
+        }
+
+        // Set constructor argument objectボタン
+        if ("Set constructor argument object" == e.getActionCommand())
+        {
+            if (choiceConstructorArgs.getSelectedIndex() >= 0)
+            {
+                constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = createdObject[setConstructorArgumentObjectChoice.getSelectedIndex()];
             }
         }
 
@@ -247,6 +304,8 @@ public class Interpret extends Frame implements ActionListener
                 if (createdObjectNumber < 10)
                 {
                     createdObject[createdObjectNumber] = targetConstructor.newInstance(tempConstructorArgument);
+                    setConstructorArgumentObjectChoice.add(setObjectNameTextArea.getText());
+                    objectName[createdObjectNumber] = setObjectNameTextArea.getText();
                     createdObjectDialog[createdObjectNumber] = new CreatedObjectDialog(this, createdObject[createdObjectNumber], c);
                     createdObjectNumber++;
                 }
