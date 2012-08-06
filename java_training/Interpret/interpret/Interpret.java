@@ -61,10 +61,10 @@ public class Interpret extends Frame implements ActionListener
     public Object[] createdObject = new Object[100];
     private CreatedObjectDialog[] createdObjectDialog = new CreatedObjectDialog[10];
     private int createdObjectNumber = 0;
-    private Object[][] createdArray = new Object[100][];
+    public Object[][] createdArray = new Object[100][];
     private CreatedObjectDialog[][] createdObjectArrayDialog = new CreatedObjectDialog[100][];
     private int createdObjectArrayNumber = 0;
-    private String[] objectArrayName = new String[100];
+    public String[] objectArrayName = new String[100];
     private CreatedArrayController[] createdArrayController = new CreatedArrayController[100];
 
     private TextArea classNameTextArea = new TextArea("java.lang.String");
@@ -76,8 +76,10 @@ public class Interpret extends Frame implements ActionListener
     private Button setConstructorArgumentButton = new Button("Set constructor argument");
     private Choice setConstructorArgumentBooleanChoice = new Choice();
     private Button setConstructorArgumentBooleanButton = new Button("Set constructor argument boolean");
-    public Choice setConstructorArgumentObjectChoice = new Choice();
+    private Choice setConstructorArgumentObjectChoice = new Choice();
     private Button setConstructorArgumentObjectButton = new Button("Set constructor argument object");
+    private Choice setConstructorArgumentArrayChoice = new Choice();
+    private Button setConstructorArgumentArrayButton = new Button("Set constructor argument array");
     private TextArea setObjectNameTextArea = new TextArea();
     private Button createInstanceButton = new Button("Create instance");
     private TextArea setArrayNumberTextArea = new TextArea();
@@ -138,7 +140,7 @@ public class Interpret extends Frame implements ActionListener
         });
 
         // レイアウトの設定
-        this.setLayout(new GridLayout(11, 3));
+        this.setLayout(new GridLayout(12, 3));
         {
             // クラス名入力&チェックボタン
             this.add(new Label("Input class name: "));
@@ -176,6 +178,12 @@ public class Interpret extends Frame implements ActionListener
             this.add(setConstructorArgumentObjectChoice);
             this.add(setConstructorArgumentObjectButton);
             setConstructorArgumentObjectButton.addActionListener(this);
+
+            // コンストラクタの引数配列
+            this.add(new Label(""));
+            this.add(setConstructorArgumentArrayChoice);
+            this.add(setConstructorArgumentArrayButton);
+            setConstructorArgumentArrayButton.addActionListener(this);
 
             // オブジェクトの名前設定
             this.add(new Label("Set object name: "));
@@ -307,6 +315,15 @@ public class Interpret extends Frame implements ActionListener
             }
         }
 
+        //  Set constructor argument arrayボタン
+        if (" Set constructor argument array" == e.getActionCommand())
+        {
+            if (choiceConstructorArgs.getSelectedIndex() >= 0)
+            {
+                constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = createdArray[setConstructorArgumentArrayChoice.getSelectedIndex()];
+            }
+        }
+
         // Create instanceボタン
         if ("Create instance" == e.getActionCommand() && choiceConstructor.getSelectedIndex() >= 0)
         {
@@ -371,6 +388,7 @@ public class Interpret extends Frame implements ActionListener
             }
             createdArray[createdObjectArrayNumber] = tmpObjectArray;
             objectArrayName[createdObjectArrayNumber] = setObjectNameTextArea.getText();
+            setConstructorArgumentArrayChoice.add(objectArrayName[createdObjectArrayNumber]);
             createdArrayController[createdObjectArrayNumber] = new CreatedArrayController(this, createdObjectArrayDialog[createdObjectArrayNumber]);
             createdObjectArrayNumber++;
         }
