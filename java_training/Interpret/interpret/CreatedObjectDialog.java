@@ -42,7 +42,6 @@ OKが出ない場合には、受講資格を失うこともありますので、
  * フィールドを修正できるInterpretプログラムを作成しなさい
  */
 
-// TODO: 配列を引数に渡せるようにする
 // TODO: intとかの配列も作れるようにする？
 
 package interpret;
@@ -196,7 +195,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                System.out.println(ex);
+                errorLabel.setText(ex.toString());
             }
         }
 
@@ -398,7 +397,6 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
         // Check created object for method
         if ("Check created object for method" == e.getActionCommand())
         {
-            System.out.println("!");
             setMethodArgumentObjectChoice.removeAll();
             for (int i = 0; i < interpret.createdObject.length; i++)
             {
@@ -409,6 +407,26 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
                 setMethodArgumentObjectChoice.add(interpret.objectName[i]);
             }
 
+        }
+
+        // Set method argument array
+        if ("Set method argument array" == e.getActionCommand())
+        {
+            methodArgument[choiceMethodArgument.getSelectedIndex()] = interpret.createdArray[setMethodArgumentArrayChoice.getSelectedIndex()];
+        }
+
+        // Check created array for method argument
+        if ("Check created array for method" == e.getActionCommand())
+        {
+            setMethodArgumentArrayChoice.removeAll();
+            for (int i = 0; i < interpret.createdArray.length; i++)
+            {
+                if (null == interpret.createdArray[i])
+                {
+                    break;
+                }
+                setMethodArgumentArrayChoice.add(interpret.objectArrayName[i]);
+            }
         }
 
         // invokeMethodButton
@@ -423,15 +441,8 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             try
             {
                 // returnValueOfMethodValueLabel.setText(method[choiceMethod.getSelectedIndex()].invoke(createdObject, actualMethodArgument).toString());
-                System.out.println("1");
                 Method tmpmethod = method[choiceMethod.getSelectedIndex()];
-                System.out.println("2");
-                if (createdObject == null)
-                {
-                    System.out.println("!");
-                }
                 String tmp = tmpmethod.invoke(createdObject, actualMethodArgument).toString();
-                System.out.println("3");
                 returnValueOfMethodValueLabel.setText(tmp);
             }
             catch(Exception ex)
@@ -562,7 +573,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
         this.add(setMethodArgumentObjectCheckButton);
         setMethodArgumentObjectCheckButton.addActionListener(this);
 
-        // TODO: メソッドの引数に配列入力
+        // メソッドの引数に配列入力
         this.add(new Label(""));
         for (int i = 0; i < interpret.createdArray.length; i++)
         {
@@ -573,14 +584,14 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             setMethodArgumentArrayChoice.add(interpret.objectArrayName[i]);
         }
         this.add(setMethodArgumentArrayChoice);
-        this.add(setFieldArrayButton);
-        setFieldArrayButton.addActionListener(this);
+        this.add(setMethodArgumentArrayButton);
+        setMethodArgumentArrayButton.addActionListener(this);
 
-        // TODO: メソッドarrayチェック
+        // メソッドarrayチェック
         this.add(new Label(""));
         this.add(new Label(""));
-        this.add(checkFieldArrayButton);
-        checkFieldArrayButton.addActionListener(this);
+        this.add(setMethodArgumentArrayCheckButton);
+        setMethodArgumentArrayCheckButton.addActionListener(this);
 
         // メソッド起動ボタン
         this.add(invokeMethodLabel);

@@ -351,7 +351,6 @@ public class Interpret extends Frame implements ActionListener
             }
             catch(Exception ex)
             {
-                System.out.println(ex);
                 this.errorLabel.setText(ex.toString());
             }
         }
@@ -376,13 +375,11 @@ public class Interpret extends Frame implements ActionListener
                 try
                 {
                     tmpObjectArray[i] = targetConstructor.newInstance(tempConstructorArgument);
-                    System.out.println(tempConstructorArgument[0]);
                     createdObjectArrayDialog[createdObjectArrayNumber][i] = new CreatedObjectDialog(this, tmpObjectArray[i], c);
                     createdObjectArrayDialog[createdObjectArrayNumber][i].setVisible(false);
                 }
                 catch(Exception ex)
                 {
-                    System.out.println(ex);
                     this.errorLabel.setText(ex.toString());
                 }
             }
