@@ -44,6 +44,7 @@ OKが出ない場合には、受講資格を失うこともありますので、
 
 // TODO: intとかの配列も作れるようにする？
 // TODO: テスト用クラス作る？？
+// TODO: private method実行できないっけ？
 
 package interpret;
 
