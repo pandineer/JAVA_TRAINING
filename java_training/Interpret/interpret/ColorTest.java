@@ -18,6 +18,23 @@ public class ColorTest
         System.out.println("2");
     }
 
+    public ColorTest(Character[] aaa)
+    {
+        colorField = Color.black;
+        System.out.println(aaa);
+        System.out.println(String.valueOf(aaa));
+    }
+
+    public ColorTest(String[] bbb)
+    {
+        colorField = Color.black;
+        for(int i = 0; i < bbb.length; i++)
+        {
+
+            System.out.println(bbb[i]);
+        }
+    }
+
     private String returnColorNum()
     {
         return(colorField.toString());
