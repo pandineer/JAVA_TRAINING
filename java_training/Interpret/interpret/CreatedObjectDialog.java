@@ -83,8 +83,8 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
     private Button setFieldObjectButton = new Button("Set field object");
     private Button setFieldObjectCheckButton = new Button("Check created object for field");
     private Choice setFieldArrayChoice = new Choice();
-    private Button setFieldArrayButton = new Button("Set field array");
-    private Button checkFieldArrayButton = new Button("Check created array for field");
+    // private Button setFieldArrayButton = new Button("Set field array");
+    // private Button checkFieldArrayButton = new Button("Check created array for field");
 
     // method
     private Label methodLabel = new Label("Method: ");
@@ -101,8 +101,8 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
     private Button setMethodArgumentObjectButton = new Button("Set method argument object");
     private Button setMethodArgumentObjectCheckButton = new Button("Check created object for method");
     private Choice setMethodArgumentArrayChoice = new Choice();
-    private Button setMethodArgumentArrayButton = new Button("Set method argument array");
-    private Button setMethodArgumentArrayCheckButton = new Button("Check created array for method");
+    // private Button setMethodArgumentArrayButton = new Button("Set method argument array");
+    // private Button setMethodArgumentArrayCheckButton = new Button("Check created array for method");
     private Label invokeMethodLabel = new Label("Invoke Method");
     private Button invokeMethodButton = new Button("Invoke method");
     private Label returnValueOfMethodLabel = new Label("Return value of method: ");
@@ -232,6 +232,10 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
                 {
                     field[choiceField.getSelectedIndex()].set(createdObject, Double.valueOf(inputFieldValueTextArea.getText()));
                 }
+                else if (field[choiceField.getSelectedIndex()].getGenericType().toString().equals("char"))
+                {
+                    field[choiceField.getSelectedIndex()].set(createdObject, inputFieldValueTextArea.getText().charAt(0));
+                }
                 else
                 {
                     field[choiceField.getSelectedIndex()].set(createdObject, inputFieldValueTextArea.getText());
@@ -309,6 +313,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
         }
 
+        /*
         // Check created array for field
         if ("Check created array for field" == e.getActionCommand())
         {
@@ -322,6 +327,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
                 setFieldArrayChoice.add(interpret.objectArrayName[i]);
             }
         }
+        */
 
         // slectMethodButton
         if ("Select method" == e.getActionCommand())
@@ -366,6 +372,10 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             else if (method[choiceMethod.getSelectedIndex()].getGenericParameterTypes()[choiceMethodArgument.getSelectedIndex()].toString().equals("double"))
             {
                 methodArgument[choiceMethodArgument.getSelectedIndex()] = Double.valueOf(inputMethodArgumentTextArea.getText());
+            }
+            else if (method[choiceMethod.getSelectedIndex()].getGenericParameterTypes()[choiceMethodArgument.getSelectedIndex()].toString().equals("char"))
+            {
+                methodArgument[choiceMethodArgument.getSelectedIndex()] = inputMethodArgumentTextArea.getText().charAt(0);
             }
             else
             {
@@ -417,6 +427,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             methodArgument[choiceMethodArgument.getSelectedIndex()] = interpret.createdArray[setMethodArgumentArrayChoice.getSelectedIndex()];
         }
 
+        /*
         // Check created array for method argument
         if ("Check created array for method" == e.getActionCommand())
         {
@@ -430,6 +441,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
                 setMethodArgumentArrayChoice.add(interpret.objectArrayName[i]);
             }
         }
+        */
 
         // invokeMethodButton
         if ("Invoke method" == e.getActionCommand())
@@ -460,7 +472,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
 
     private void setLayoutWithGridLayout()
     {
-        this.setLayout(new GridLayout(19, 3));
+        this.setLayout(new GridLayout(15, 3));
 
         // フィールド一覧
         this.add(fieldLabel);
@@ -508,6 +520,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
         this.add(setFieldObjectCheckButton);
         setFieldObjectCheckButton.addActionListener(this);
 
+        /*
         // フィールドに配列入力
         this.add(new Label(""));
         for (int i = 0; i < interpret.createdArray.length; i++)
@@ -527,6 +540,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
         this.add(new Label(""));
         this.add(checkFieldArrayButton);
         checkFieldArrayButton.addActionListener(this);
+        */
 
         // メソッド一覧
         this.add(methodLabel);
@@ -575,6 +589,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
         this.add(setMethodArgumentObjectCheckButton);
         setMethodArgumentObjectCheckButton.addActionListener(this);
 
+        /*
         // メソッドの引数に配列入力
         this.add(new Label(""));
         for (int i = 0; i < interpret.createdArray.length; i++)
@@ -594,6 +609,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
         this.add(new Label(""));
         this.add(setMethodArgumentArrayCheckButton);
         setMethodArgumentArrayCheckButton.addActionListener(this);
+        */
 
         // メソッド起動ボタン
         this.add(invokeMethodLabel);
