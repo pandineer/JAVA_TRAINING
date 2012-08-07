@@ -456,8 +456,16 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             {
                 // returnValueOfMethodValueLabel.setText(method[choiceMethod.getSelectedIndex()].invoke(createdObject, actualMethodArgument).toString());
                 Method tmpmethod = method[choiceMethod.getSelectedIndex()];
-                String tmp = tmpmethod.invoke(createdObject, actualMethodArgument).toString();
-                returnValueOfMethodValueLabel.setText(tmp);
+                // String tmp = tmpmethod.invoke(createdObject, actualMethodArgument).toString();
+                Object tmp = tmpmethod.invoke(createdObject, actualMethodArgument);
+                if (tmp != null)
+                {
+                    returnValueOfMethodValueLabel.setText(tmp.toString());
+                }
+                else
+                {
+                    returnValueOfMethodValueLabel.setText("");
+                }
             }
             catch(Exception ex)
             {
