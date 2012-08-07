@@ -66,6 +66,8 @@ public class Interpret extends Frame implements ActionListener
     private int createdObjectArrayNumber = 0;
     // public String[] objectArrayName = new String[100];
     private CreatedArrayController[] createdArrayController = new CreatedArrayController[100];
+    private PrimitiveArrayController[] createdPrimitiveArrayController = new PrimitiveArrayController[100];
+    private int primitiveArrayNumber = 0;
 
     private TextArea classNameTextArea = new TextArea("java.lang.String");
     private Button checkTheClassButton = new Button("Check the class");
@@ -84,6 +86,9 @@ public class Interpret extends Frame implements ActionListener
     private Button createInstanceButton = new Button("Create instance");
     private TextArea setArrayNumberTextArea = new TextArea();
     private Button createInstanceArrayButton = new Button("Create instance array");
+    private Choice setPrimitiveTypeChoice = new Choice();
+    private TextArea setPrimitiveValueTextArea = new TextArea();
+    private Button createPrimitiveArrayButton = new Button("Create primitive array");
     private Label errorLabel = new Label("");
 
 
@@ -143,7 +148,7 @@ public class Interpret extends Frame implements ActionListener
         });
 
         // レイアウトの設定
-        this.setLayout(new GridLayout(11, 3));
+        this.setLayout(new GridLayout(15, 3));
         {
             // クラス名入力&チェックボタン
             this.add(new Label("Input class name: "));
@@ -202,15 +207,33 @@ public class Interpret extends Frame implements ActionListener
             this.add(new Label(""));
 
             // 配列の要素数指定
-            this.add(new Label("Input array number"));
+            this.add(new Label("Input array number: "));
             this.add(setArrayNumberTextArea);
             this.add(new Label(""));
 
             // インスタンス配列の生成ボタン
-            this.add(new Label("Create instance array"));
+            this.add(new Label("Create instance array: "));
             this.add(createInstanceArrayButton);
             createInstanceArrayButton.addActionListener(this);
             this.add(new Label(""));
+
+            // 基本型指定
+            this.add(new Label("Select Primitive type: "));
+            setPrimitiveTypeChoice.add("byte");
+            setPrimitiveTypeChoice.add("short");
+            setPrimitiveTypeChoice.add("int");
+            setPrimitiveTypeChoice.add("long");
+            setPrimitiveTypeChoice.add("float");
+            setPrimitiveTypeChoice.add("double");
+            setPrimitiveTypeChoice.add("char");
+            this.add(setPrimitiveTypeChoice);
+            this.add(new Label(""));
+
+            // 基本型配列の要素指定して生成
+            this.add(new Label("Set value and create: "));
+            this.add(setPrimitiveValueTextArea);
+            this.add(createPrimitiveArrayButton);
+            createPrimitiveArrayButton.addActionListener(this);
 
             // エラーメッセージ表示
             this.add(new Label("Error is shown here: "));
@@ -386,9 +409,7 @@ public class Interpret extends Frame implements ActionListener
                 }
                 setConstructorArgumentObjectChoice.add(setObjectNameTextArea.getText());
                 objectName[createdObjectNumber] = setObjectNameTextArea.getText();
-                System.out.println("!");
                 createdArrayController[createdObjectArrayNumber] = new CreatedArrayController(this, createDialogs((Object[])createdObject[createdObjectNumber]));
-                System.out.println("2");
                 createdObjectNumber++;
                 createdObjectArrayNumber++;
             }
@@ -434,6 +455,75 @@ public class Interpret extends Frame implements ActionListener
             createdObjectArrayNumber++;
         }
         */
+
+        if ("Create primitive array" == e.getActionCommand())
+        {
+            setConstructorArgumentObjectChoice.add(setObjectNameTextArea.getText());
+            switch (setPrimitiveTypeChoice.getSelectedIndex())
+            {
+                case 0: // byte
+                    createdObject[createdObjectNumber] = Array.newInstance(byte.class, Integer.valueOf(setArrayNumberTextArea.getText()));
+                    for (int i = 0; i < Integer.valueOf(setArrayNumberTextArea.getText()); i++)
+                    {
+                        ((byte[])createdObject[createdObjectNumber])[i] = Byte.valueOf(setPrimitiveValueTextArea.getText());
+                    }
+                    createdPrimitiveArrayController[primitiveArrayNumber] = new PrimitiveArrayController(this, (byte[])createdObject[createdObjectNumber]);
+                    break;
+                case 1: // short
+                    createdObject[createdObjectNumber] = Array.newInstance(short.class, Integer.valueOf(setArrayNumberTextArea.getText()));
+                    for (int i = 0; i < Integer.valueOf(setArrayNumberTextArea.getText()); i++)
+                    {
+                        ((short[])createdObject[createdObjectNumber])[i] = Short.valueOf(setPrimitiveValueTextArea.getText());
+                    }
+                    createdPrimitiveArrayController[primitiveArrayNumber] = new PrimitiveArrayController(this, (short[])createdObject[createdObjectNumber]);
+                    break;
+                case 2: // int
+                    createdObject[createdObjectNumber] = Array.newInstance(int.class, Integer.valueOf(setArrayNumberTextArea.getText()));
+                    for (int i = 0; i < Integer.valueOf(setArrayNumberTextArea.getText()); i++)
+                    {
+                        ((int[])createdObject[createdObjectNumber])[i] = Integer.valueOf(setPrimitiveValueTextArea.getText());
+                    }
+                    createdPrimitiveArrayController[primitiveArrayNumber] = new PrimitiveArrayController(this, (int[])createdObject[createdObjectNumber]);
+                    break;
+                case 3: // long
+                    createdObject[createdObjectNumber] = Array.newInstance(long.class, Integer.valueOf(setArrayNumberTextArea.getText()));
+                    for (int i = 0; i < Integer.valueOf(setArrayNumberTextArea.getText()); i++)
+                    {
+                        ((long[])createdObject[createdObjectNumber])[i] = Long.valueOf(setPrimitiveValueTextArea.getText());
+                    }
+                    createdPrimitiveArrayController[primitiveArrayNumber] = new PrimitiveArrayController(this, (long[])createdObject[createdObjectNumber]);
+                    break;
+                case 4: // float
+                    createdObject[createdObjectNumber] = Array.newInstance(float.class, Integer.valueOf(setArrayNumberTextArea.getText()));
+                    for (int i = 0; i < Integer.valueOf(setArrayNumberTextArea.getText()); i++)
+                    {
+                        ((float[])createdObject[createdObjectNumber])[i] = Float.valueOf(setPrimitiveValueTextArea.getText());
+                    }
+                    createdPrimitiveArrayController[primitiveArrayNumber] = new PrimitiveArrayController(this, (float[])createdObject[createdObjectNumber]);
+                    break;
+                case 5: // double
+                    createdObject[createdObjectNumber] = Array.newInstance(double.class, Integer.valueOf(setArrayNumberTextArea.getText()));
+                    for (int i = 0; i < Integer.valueOf(setArrayNumberTextArea.getText()); i++)
+                    {
+                        ((double[])createdObject[createdObjectNumber])[i] = Double.valueOf(setPrimitiveValueTextArea.getText());
+                    }
+                    createdPrimitiveArrayController[primitiveArrayNumber] = new PrimitiveArrayController(this, (double[])createdObject[createdObjectNumber]);
+                    break;
+                case 6: // char
+                    createdObject[createdObjectNumber] = Array.newInstance(char.class, Integer.valueOf(setArrayNumberTextArea.getText()));
+                    for (int i = 0; i < Integer.valueOf(setArrayNumberTextArea.getText()); i++)
+                    {
+                        ((char[])createdObject[createdObjectNumber])[i] = setPrimitiveValueTextArea.getText().charAt(0);
+                    }
+                    createdPrimitiveArrayController[primitiveArrayNumber] = new PrimitiveArrayController(this, (char[])createdObject[createdObjectNumber]);
+                    break;
+                default:
+                    errorLabel.setText("Create primitive array error");
+            }
+            objectName[createdObjectNumber] = setObjectNameTextArea.getText();
+            createdObjectNumber++;
+            primitiveArrayNumber++;
+        }
     }
 
     public void checkClass(String className)
