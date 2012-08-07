@@ -321,6 +321,7 @@ public class Interpret extends Frame implements ActionListener
             if (choiceConstructorArgs.getSelectedIndex() >= 0)
             {
                 constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()] = createdArray[setConstructorArgumentArrayChoice.getSelectedIndex()];
+                System.out.println(constructorArgumentValue[choiceConstructorArgs.getSelectedIndex()]);
             }
         }
 
@@ -338,7 +339,9 @@ public class Interpret extends Frame implements ActionListener
                 }
                 if (createdObjectNumber < 100)
                 {
-                    createdObject[createdObjectNumber] = targetConstructor.newInstance(tempConstructorArgument);
+                    // TODO: 要修正
+                    // createdObject[createdObjectNumber] = targetConstructor.newInstance(tempConstructorArgument);
+                    createdObject[createdObjectNumber] = targetConstructor.newInstance(createdArray[0]);
                     setConstructorArgumentObjectChoice.add(setObjectNameTextArea.getText());
                     objectName[createdObjectNumber] = setObjectNameTextArea.getText();
                     createdObjectDialog[createdObjectNumber] = new CreatedObjectDialog(this, createdObject[createdObjectNumber], c);

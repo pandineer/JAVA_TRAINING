@@ -11,6 +11,13 @@ public class ColorTest
         colorField = ar_color;
     }
 
+    public ColorTest(Color[] ar_color)
+    {
+        System.out.println("1");
+        colorField = ar_color[0];
+        System.out.println("2");
+    }
+
     private String returnColorNum()
     {
         return(colorField.toString());
