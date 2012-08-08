@@ -98,8 +98,6 @@ public class Interpret extends Frame implements ActionListener
         // タイトルバーの設定
         super("hoge");
 
-        System.out.println("!");
-
         commonInitialize();
     }
 
@@ -249,6 +247,8 @@ public class Interpret extends Frame implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        errorLabel.setText("");
+
         // Check the classボタン
         if ("Check the class" == e.getActionCommand())
         {
