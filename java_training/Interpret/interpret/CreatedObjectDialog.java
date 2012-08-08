@@ -187,6 +187,8 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        errorLabel.setText("");
+
         // getFieldValueButton
         if ("Get field value" == e.getActionCommand())
         {
