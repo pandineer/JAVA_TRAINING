@@ -69,7 +69,7 @@ public class Interpret extends Frame implements ActionListener
     private PrimitiveArrayController[] createdPrimitiveArrayController = new PrimitiveArrayController[100];
     private int primitiveArrayNumber = 0;
 
-    private TextArea classNameTextArea = new TextArea("java.lang.String");
+    private TextArea classNameTextArea = new TextArea("");
     private Button checkTheClassButton = new Button("Check the class");
     private Choice choiceConstructor = new Choice();
     private Button selectTheConstructorButton = new Button("Select the constructor");

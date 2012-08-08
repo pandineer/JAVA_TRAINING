@@ -56,6 +56,10 @@ public class ForTest
         stringPFValue = ar_string;
     }
 
+    public int objectArrayNumber(Object[] target)
+    {
+        return target.length;
+    }
 
 
 
