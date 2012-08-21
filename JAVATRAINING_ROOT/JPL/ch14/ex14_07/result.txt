@@ -1,0 +1,27 @@
+Windows XP
+Intel Core2 Duo 2.33GHz, 2.33GHz
+2.97GB RAM
+
+ほとんどの場合は以下のパターン：
+
+Did
+DidNot
+Did
+DidNot
+
+
+5回に1回くらい、
+
+Did
+Did
+DidNot
+DidNot
+
+や
+
+DidNot
+DidNot
+Did
+Did
+
+というパターンが現れる
