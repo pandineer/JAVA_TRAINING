@@ -1,0 +1,9 @@
+何回か実行した結果
+(スコアは低いほど良い)
+
+IncrementPlayer         20  20  25  10  7   9   11
+IncrementFivePlayer     9   6   4   2   6   4   4
+
+average
+IncrementPlayer: 14.6
+IncrementFivePlayer: 5
