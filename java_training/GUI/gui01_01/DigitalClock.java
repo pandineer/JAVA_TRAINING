@@ -6,7 +6,7 @@
  * ・デジタル時計の描画は、paintメソッド内でGraphicsを使用して行う。テキストラベルによる単なる表示は、不可。
  */
 
-package gui1_1;
+package gui01_01;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
