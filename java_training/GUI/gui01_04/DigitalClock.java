@@ -1,4 +1,20 @@
 /*
+ * 課題1-4
+ * 課題1-2のデジタル時計で、属性をダイアログで指定できるようにしましたが、ダイアログを作りなおして下さい。
+ * ・レイアウトマネージャは、GridBagLayoutを使用する。
+ * ・プロパティダイアログは、属性名+のリストメニューが縦に並ぶようにする。
+ * 　　　フォント　フォントのリスト
+ * フォントサイズ　サイズのリスト
+ * 　　　　文字色　色のリスト
+ * 　　　　背景色　色のリスト
+ * 　この場合「属性名」のラベルは右寄せして、「値の選択リスト」メニューは左寄せる。
+ * ・ダイアログの下には、「OK」「キャンセル」のバタンをダイアログの右下に寄せて表示し、それぞれのボタンを実装する。
+ * 　キャンセルされた場合には、正しく、元の値に戻るようにする。
+ * ・java.util.prefsパッケージを使用して、プロパティダイアログの内容の保存と、時計の終了時の位置を保存する。
+ * 　再度、時計を起動した場合に、それらの保存を復元して、デスクトップの元の位置に表示されるようにする。
+ */
+
+/*
  * 課題1-2
  * デジタル時計に次の機能追加を行ってください。
  * ・メニューを付けて、プロパティダイアログを開ける。
@@ -19,11 +35,12 @@
  * ・デジタル時計の描画は、paintメソッド内でGraphicsを使用して行う。テキストラベルによる単なる表示は、不可。
  */
 
-package gui1_2;
+package gui01_04;
 
 import java.awt.event.*;
 import java.awt.*;
 import java.util.Calendar;
+import java.util.prefs.Preferences;
 
 public class DigitalClock extends Frame implements Runnable, ActionListener
 {
@@ -41,16 +58,19 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     private Menu menuMenu;
     private MenuItem menuProperty;
     private MenuItem menuCapture;
+    private MenuItem menuShake;
     private Image imageBuffer;
     private Graphics graphicBuffer;
 
     private String fontType = "TimesRoman";
     private Integer fontSize = 48;
-    private Color fontColor = Color.blue;
-    private Color backgroundColor = Color.white;
+    private Color fontColor = PropertyDialog.colorColor[3];
+    private Color backgroundColor = PropertyDialog.colorColor[0];
 
-    private int windowSizeX = 48 * 8 + 50;
-    private int windowSizeY = 48 + 50;
+    private Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+
+    private int windowSizeX = prefs.getInt("miyahara_window_x", 48 * 8 + 50);
+    private int windowSizeY = prefs.getInt("miyahara_window_y", 48 * 50);
 
     private String timeString;
     private String captureTimeString = "00:00:00";
@@ -62,6 +82,8 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
     // フォントのデフォルトの設定
     private Font fontSetting = new Font("TimesRoman", Font.PLAIN, 48);
 
+
+
     public DigitalClock(String title)
     {
         // タイトルバーにタイトルを登録する
@@ -72,9 +94,28 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         {
             public void windowClosing(WindowEvent e)
             {
+                // windowを閉じるときにパラメータを保存する
+                prefs.putInt("miyahara_window_x", (int)getBounds().getX());
+                prefs.putInt("miyahara_window_y", (int)getBounds().getY());
+                prefs.putInt("miyahara_window_width", (int)getBounds().getWidth());
+                prefs.putInt("miyahara_window_height", (int)getBounds().getHeight());
+
+                prefs.put("miyahara_font_type", fontType);
+                prefs.putInt("miyahara_font_size", fontSize);
+                prefs.put("miyahara_font_color", PropertyDialog.changeColorToString(fontColor));
+                prefs.put("miyahara_bg_color", PropertyDialog.changeColorToString(backgroundColor));
+
                 System.exit(0);
             }
         });
+
+        // prefsからパラメータを読み込む
+        setBounds(prefs.getInt("miyahara_window_x", 500), prefs.getInt("miyahara_window_y", 100), prefs.getInt("miyahara_window_width", 500), prefs.getInt("miyahara_window_height", 200));
+        fontType = prefs.get("miyahara_font_type", "TimesRoman");
+        fontSize = prefs.getInt("miyahara_font_size", 48);
+        fontColor = PropertyDialog.changeStringToColor(prefs.get("miyahara_font_color", PropertyDialog.stringColor[3]));
+        backgroundColor = PropertyDialog.changeStringToColor(prefs.get("miyahara_bg_color", PropertyDialog.stringColor[0]));
+
 
         // メニューバーを作成する
         menuBar = new MenuBar();
@@ -93,6 +134,10 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         menuCapture = new MenuItem("Capture!");
         menuMenu.add(menuCapture);
 
+        // [Menu] - [Shake!!]
+        menuShake = new MenuItem("Shake!!");
+        menuMenu.add(menuShake);
+
         // ダイアログを生成する
         dialog = new PropertyDialog(this);
 
@@ -100,7 +145,6 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         hourInteger = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         minuteInteger = Calendar.getInstance().get(Calendar.MINUTE);
         secondInteger = Calendar.getInstance().get(Calendar.SECOND);
-
     }
 
     public void paint(Graphics g)
@@ -135,15 +179,29 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         timeString = hourString + ":" + minuteString + ":" + secondString;
 
         // ウィンドウサイズの計算
+        if (null != graphicBuffer)
+        {
         windowSizeX = graphicBuffer.getFontMetrics().stringWidth(timeString);
         windowSizeX += getInsets().left;
         windowSizeX += getInsets().right;
+        }
+        else
+        {
+            windowSizeX = 48 * 8 + 50;
+        }
 
+        if (null != graphicBuffer)
+        {
         windowSizeY = graphicBuffer.getFontMetrics().getAscent();
         windowSizeY += graphicBuffer.getFontMetrics().getDescent();
         windowSizeY += graphicBuffer.getFontMetrics().getLeading();
         windowSizeY *= 2; // キャプチャした時刻用
         windowSizeY += getInsets().top;
+        }
+        else
+        {
+            windowSizeY = 48 * 50;
+        }
 
         setSize(windowSizeX, windowSizeY);
 
@@ -284,12 +342,44 @@ public class DigitalClock extends Frame implements Runnable, ActionListener
         if (e.getActionCommand() == "Property")
         {
             // クリックしたのが「Property」だったら
+            dialog.resetParameter();
             dialog.setVisible(true);
         }
         else if (e.getActionCommand() == "Capture!")
         {
             // クリックしたのが「Capture!」だったら
             captureFlag = true;
+        }
+        else if (e.getActionCommand() == "Shake!!")
+        {
+            shake();
+        }
+        else
+        {
+            System.out.println("actionPerformed error");
+        }
+    }
+
+    public void shake()
+    {
+        int originalX = (int)getBounds().getX();
+        int originalY = (int)getBounds().getY();
+
+        try
+        {
+        setBounds(originalX-50, originalY-50, (int)getBounds().getWidth(), (int)getBounds().getHeight());
+        Thread.sleep(50);
+        setBounds(originalX+50, originalY+50, (int)getBounds().getWidth(), (int)getBounds().getHeight());
+        Thread.sleep(50);
+        setBounds(originalX-50, originalY+50, (int)getBounds().getWidth(), (int)getBounds().getHeight());
+        Thread.sleep(50);
+        setBounds(originalX+50, originalY+50, (int)getBounds().getWidth(), (int)getBounds().getHeight());
+        Thread.sleep(50);
+        setBounds(originalX, originalY, (int)getBounds().getWidth(), (int)getBounds().getHeight());
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
         }
     }
 
