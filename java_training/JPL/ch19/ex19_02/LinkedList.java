@@ -82,7 +82,7 @@ public class LinkedList
 
     /**
      * Create a new <code>LinkedList</code> object with associated object.
-     * @param associated object
+     * @param associatedObject Object for this LinkedList
      */
     LinkedList(Object associatedObject)
     {
