@@ -1,0 +1,1 @@
+toString()の戻り値をcompareToの結果でソートする
