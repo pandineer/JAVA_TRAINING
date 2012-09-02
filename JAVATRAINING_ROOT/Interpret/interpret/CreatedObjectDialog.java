@@ -199,7 +199,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText(ex.toString());
+                errorLabel.setText(ex.getCause().toString());
             }
         }
 
@@ -246,7 +246,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText(ex.toString());
+                errorLabel.setText(ex.getCause().toString());
             }
         }
 
@@ -270,7 +270,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText("Set field boolean error: " + ex.toString());
+                errorLabel.setText("Set field boolean error: " + ex.getCause().toString());
             }
         }
 
@@ -283,7 +283,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText("Set field object error: " + ex.toString());
+                errorLabel.setText("Set field object error: " + ex.getCause().toString());
             }
         }
 
@@ -311,7 +311,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText("Set field array error: " + ex.toString());
+                errorLabel.setText("Set field array error: " + ex.getCause().toString());
             }
         }
 
@@ -471,7 +471,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText("Invoke method: " + ex.toString());
+                errorLabel.setText("Invoke method: " + ex.getCause().toString());
             }
         }
     }

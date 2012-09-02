@@ -384,7 +384,7 @@ public class Interpret extends Frame implements ActionListener
             }
             catch(Exception ex)
             {
-                this.errorLabel.setText(ex.toString());
+                this.errorLabel.setText(ex.getCause().toString());
             }
         }
 
@@ -415,7 +415,7 @@ public class Interpret extends Frame implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText(ex.toString());
+                errorLabel.setText(ex.getCause().toString());
             }
         }
 
@@ -445,7 +445,7 @@ public class Interpret extends Frame implements ActionListener
                 }
                 catch(Exception ex)
                 {
-                    this.errorLabel.setText(ex.toString());
+                    this.errorLabel.setText(ex.getCause().toString());
                 }
             }
             createdArray[createdObjectArrayNumber] = tmpObjectArray;
