@@ -66,10 +66,12 @@ public class Interpret extends Frame implements ActionListener
     private int createdObjectArrayNumber = 0;
     // public String[] objectArrayName = new String[100];
     private CreatedArrayController[] createdArrayController = new CreatedArrayController[100];
+    private int createNullArrayNumber = 0;
+    private CreatedNullArrayController[] createdNullArrayController = new CreatedNullArrayController[100];
     private PrimitiveArrayController[] createdPrimitiveArrayController = new PrimitiveArrayController[100];
     private int primitiveArrayNumber = 0;
 
-    private TextArea classNameTextArea = new TextArea("");
+    private TextArea classNameTextArea = new TextArea("java.lang.String");
     private Button checkTheClassButton = new Button("Check the class");
     private Choice choiceConstructor = new Choice();
     private Button selectTheConstructorButton = new Button("Select the constructor");
@@ -86,6 +88,7 @@ public class Interpret extends Frame implements ActionListener
     private Button createInstanceButton = new Button("Create instance");
     private TextArea setArrayNumberTextArea = new TextArea();
     private Button createInstanceArrayButton = new Button("Create instance array");
+    private Button createNullArrayButton = new Button("Create null array");
     private Choice setPrimitiveTypeChoice = new Choice();
     private TextArea setPrimitiveValueTextArea = new TextArea();
     private Button createPrimitiveArrayButton = new Button("Create primitive array");
@@ -146,7 +149,7 @@ public class Interpret extends Frame implements ActionListener
         });
 
         // レイアウトの設定
-        this.setLayout(new GridLayout(15, 3));
+        this.setLayout(new GridLayout(16, 3));
         {
             // クラス名入力&チェックボタン
             this.add(new Label("Input class name: "));
@@ -213,6 +216,12 @@ public class Interpret extends Frame implements ActionListener
             this.add(new Label("Create instance array: "));
             this.add(createInstanceArrayButton);
             createInstanceArrayButton.addActionListener(this);
+            this.add(new Label(""));
+
+            // null配列の生成ボタン
+            this.add(new Label("Create null array: "));
+            this.add(createNullArrayButton);
+            createNullArrayButton.addActionListener(this);
             this.add(new Label(""));
 
             // 基本型指定
@@ -419,43 +428,18 @@ public class Interpret extends Frame implements ActionListener
             }
         }
 
-        /* 旧版。引数も渡せるけどね。
-        // Create instance arrayボタン
-        if ("Create instance array" == e.getActionCommand() && choiceConstructor.getSelectedIndex() >= 0 && Integer.valueOf(setArrayNumberTextArea.getText()) > 0)
+        // Create null arrayボタン
+        if ("Create null array" == e.getActionCommand())
         {
-            Object[] tmpObjectArray = new Object[Integer.valueOf(setArrayNumberTextArea.getText())];
-            createdObjectArrayDialog[createdObjectArrayNumber] = new CreatedObjectDialog[Integer.valueOf(setArrayNumberTextArea.getText())];
-
-            Constructor<?> targetConstructor = c.getConstructors()[choiceConstructor.getSelectedIndex()];
-            Object[] tempConstructorArgument = new Object[targetConstructor.getGenericParameterTypes().length];
-
-
-            for (int i = 0; i < targetConstructor.getGenericParameterTypes().length; i++)
-            {
-                tempConstructorArgument[i] = constructorArgumentValue[i];
-            }
-
-            for (int i = 0; i < Integer.valueOf(setArrayNumberTextArea.getText()); i++)
-            {
-                try
-                {
-                    tmpObjectArray[i] = targetConstructor.newInstance(tempConstructorArgument);
-                    createdObjectArrayDialog[createdObjectArrayNumber][i] = new CreatedObjectDialog(this, tmpObjectArray[i], c);
-                    createdObjectArrayDialog[createdObjectArrayNumber][i].setVisible(false);
-                }
-                catch(Exception ex)
-                {
-                    this.errorLabel.setText(ex.getCause().toString());
-                }
-            }
-            createdArray[createdObjectArrayNumber] = tmpObjectArray;
-            objectArrayName[createdObjectArrayNumber] = setObjectNameTextArea.getText();
-            setConstructorArgumentArrayChoice.add(objectArrayName[createdObjectArrayNumber]);
-            createdArrayController[createdObjectArrayNumber] = new CreatedArrayController(this, createdObjectArrayDialog[createdObjectArrayNumber]);
-            createdObjectArrayNumber++;
+        	createdObject[createdObjectNumber] = Array.newInstance(c, Integer.valueOf(setArrayNumberTextArea.getText()));
+        	objectName[createdObjectNumber] = setObjectNameTextArea.getText();
+        	createdNullArrayController[createNullArrayNumber] = new CreatedNullArrayController(this, (Object[])createdObject[createdObjectNumber]);
+        	setConstructorArgumentObjectChoice.add(setObjectNameTextArea.getText());
+        	createdObjectNumber++;
+        	createNullArrayNumber++;
         }
-        */
 
+        // Create primitive arrayボタン
         if ("Create primitive array" == e.getActionCommand())
         {
             setConstructorArgumentObjectChoice.add(setObjectNameTextArea.getText());

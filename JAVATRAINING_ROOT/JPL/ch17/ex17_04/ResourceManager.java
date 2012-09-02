@@ -3,7 +3,7 @@
  * 刈り取りスレッドを修正して、すべての割り当てられたリソースが開放されるまで、シャットダウンの後も
  * 生き続けるようにしなさい。
  */
-
+/*
 package ch17.ex17_04;
 
 import java.lang.ref.PhantomReference;
@@ -80,3 +80,4 @@ public final class ResourceManager
         }
     }
 }
+*/
