@@ -13,10 +13,11 @@ import java.io.*;
 
 public class TranslateByte
 {
-    // TODO: InputStreamの内容をOutputStreamに変換する
     public static void translateByte(String fromString, String toString) throws IOException
     {
         InputStream in;
+        FileOutputStream outFile = new FileOutputStream("JPL/ch20/ex20_01/output.txt");
+        OutputStreamWriter out = new OutputStreamWriter(outFile, "UTF-8");
 
         in = System.in;
 
@@ -26,7 +27,8 @@ public class TranslateByte
         // while ((b = System.in.read()) != -1)
         while((b = in.read()) != -1)
         {
-            System.out.write(b == from ? to : b);
+            out.write(b == from ? to : b);
+            out.flush();
         }
     }
 
