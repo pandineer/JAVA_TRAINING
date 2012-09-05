@@ -30,6 +30,7 @@ public class TranslateByte
             out.write(b == from ? to : b);
             out.flush();
         }
+        out.close();
     }
 
     public static void main(String[] args)
