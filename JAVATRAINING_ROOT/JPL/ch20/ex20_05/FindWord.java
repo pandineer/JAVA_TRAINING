@@ -15,9 +15,26 @@ public class FindWord
         FileReader fileIn = new FileReader(args[1]);
         LineNumberReader in = new LineNumberReader(fileIn);
         int ch;
+        String line = "";
         int count = 0;
-        while((ch = in.read()) != -1)
+        int previousLine = 0;
+        boolean findFlag = false;
+        while ((ch = in.read()) != -1)
         {
+            if (in.getLineNumber() != previousLine)
+            {
+                if (findFlag == true)
+                {
+                    System.out.println(previousLine + ": " + line);
+                }
+                line = "";
+                findFlag = false;
+            }
+            previousLine = in.getLineNumber();
+            if (ch != '\n')
+            {
+                line = line + String.valueOf((char) ch);
+            }
             if (ch == match.charAt(count))
             {
                 count++;
@@ -28,10 +45,17 @@ public class FindWord
             }
             if (match.length() == count)
             {
-                System.out.println("Find!! at: " + (in.getLineNumber() + 1));
+                findFlag = true;
                 count = 0;
             }
         }
+        if (findFlag == true)
+        {
+            System.out.println(previousLine + ": " + line);
+        }
+        line = "";
+        findFlag = false;
+
     }
 
 }
