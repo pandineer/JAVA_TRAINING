@@ -54,6 +54,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.*;
+import java.util.Comparator;
 
 public class CreatedObjectDialog extends Dialog implements ActionListener
 {
@@ -111,7 +112,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
     private Label errorLabel = new Label("Error message is shown here: ");
     private Label errorValueLabel = new Label();
 
-    public CreatedObjectDialog(Frame owner, Object ar_createdObject, Class<?> ar_c)
+    public CreatedObjectDialog(Frame owner, Object ar_createdObject, Class<?> ar_c, String givenName)
     {
         super(owner);
         interpret = (Interpret)owner;
@@ -128,7 +129,7 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
         });
 
-        this.setTitle(interpret.getC().toString());
+        this.setTitle(givenName + " " + interpret.getC().toString());
         this.setSize(800, 640);
         this.setResizable(true);
 
@@ -137,6 +138,45 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
         // setLayoutWithGridBagLayout();
     }
 
+
+    // ソートするバージョン
+    private void addFieldChoiceObjectDialog()
+    {
+        int i = 0;
+        for (i = 0; i < c.getFields().length; i++)
+        {
+            field[i] = c.getFields()[i];
+        }
+        declaredFieldLabel: for (int j = 0; j < c.getDeclaredFields().length; j++)
+        {
+            for (int k =0; k < i; k++)
+            {
+                if (c.getDeclaredFields()[j].toString().equals(field[k].toString()))
+                {
+                    continue declaredFieldLabel;
+                }
+            }
+            field[i] = c.getDeclaredFields()[j];
+            i++;
+        }
+        Field[] tmpField = new Field[i - 1];
+        for (int j = 0; j < i - 1; j++)
+        {
+            tmpField[j] = field[j];
+        }
+        java.util.Arrays.sort(tmpField, new MyComparator());
+        for (int j = 0; j < i - 1; j++)
+        {
+            field[j] = tmpField[j];
+        }
+        for (int j = 0; j < i - 1; j++)
+        {
+            choiceField.add(field[j].toString());
+        }
+    }
+
+    /*
+    // ソートしないバージョン
     private void addFieldChoiceObjectDialog()
     {
         int i = 0;
@@ -158,9 +198,48 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             choiceField.add(field[i].toString());
             i++;
         }
+    }
+    */
 
+    // ソートするバージョン
+    private void addMethodChoiceObjectDialog()
+    {
+        int i = 0;
+        for (i = 0; i < c.getMethods().length; i++)
+        {
+            method[i] = c.getMethods()[i];
+        }
+        declaredMethodLabel: for (int j = 0; j < c.getDeclaredMethods().length; j++)
+        {
+            for (int k =0; k < i; k++)
+            {
+                if (c.getDeclaredMethods()[j].toString().equals(method[k].toString()))
+                {
+                    continue declaredMethodLabel;
+                }
+            }
+            method[i] = c.getDeclaredMethods()[j];
+            i++;
+        }
+        Method[] tmpMethod = new Method[i - 1];
+        for (int j = 0; j < i - 1; j++)
+        {
+            tmpMethod[j] = method[j];
+        }
+        java.util.Arrays.sort(tmpMethod, new MyComparator());
+        for (int j = 0; j < i - 1; j++)
+        {
+            method[j] = tmpMethod[j];
+        }
+        for (int j = 0; j < i - 1; j++)
+        {
+            choiceMethod.add(method[j].toString());
+
+        }
     }
 
+    /*
+    // ソートしないバージョン
     private void addMethodChoiceObjectDialog()
     {
         int i = 0;
@@ -183,6 +262,8 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             i++;
         }
     }
+    */
+
 
     @Override
     public void actionPerformed(ActionEvent e)
@@ -199,7 +280,14 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText(ex.getCause().toString());
+                if (ex.getCause() != null)
+                {
+                    errorLabel.setText(ex.getCause().toString());
+                }
+                else
+                {
+                    errorLabel.setText(ex.toString());
+                }
             }
         }
 
@@ -246,7 +334,14 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText(ex.getCause().toString());
+                if (ex.getCause() != null)
+                {
+                    errorLabel.setText(ex.getCause().toString());
+                }
+                else
+                {
+                    errorLabel.setText(ex.toString());
+                }
             }
         }
 
@@ -270,7 +365,14 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText("Set field boolean error: " + ex.getCause().toString());
+                if (ex.getCause() != null)
+                {
+                    errorLabel.setText(ex.getCause().toString());
+                }
+                else
+                {
+                    errorLabel.setText(ex.toString());
+                }
             }
         }
 
@@ -283,7 +385,14 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText("Set field object error: " + ex.getCause().toString());
+                if (ex.getCause() != null)
+                {
+                    errorLabel.setText(ex.getCause().toString());
+                }
+                else
+                {
+                    errorLabel.setText(ex.toString());
+                }
             }
         }
 
@@ -311,7 +420,14 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText("Set field array error: " + ex.getCause().toString());
+                if (ex.getCause() != null)
+                {
+                    errorLabel.setText(ex.getCause().toString());
+                }
+                else
+                {
+                    errorLabel.setText(ex.toString());
+                }
             }
         }
 
@@ -471,7 +587,14 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
             }
             catch(Exception ex)
             {
-                errorLabel.setText("Invoke method: " + ex.getCause().toString());
+                if (ex.getCause() != null)
+                {
+                    errorLabel.setText(ex.getCause().toString());
+                }
+                else
+                {
+                    errorLabel.setText(ex.toString());
+                }
             }
         }
     }
@@ -848,5 +971,13 @@ public class CreatedObjectDialog extends Dialog implements ActionListener
         this.setVisible(true);
     }
     */
+
+    class MyComparator implements Comparator<Object>
+    {
+        public int compare(Object o1, Object o2)
+        {
+            return o1.toString().compareTo(o2.toString());
+        }
+    }
 
 }
