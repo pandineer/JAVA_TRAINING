@@ -71,7 +71,7 @@ public class Interpret extends Frame implements ActionListener
     private PrimitiveArrayController[] createdPrimitiveArrayController = new PrimitiveArrayController[100];
     private int primitiveArrayNumber = 0;
 
-    private TextArea classNameTextArea = new TextArea("java.lang.String");
+    private TextArea classNameTextArea = new TextArea("");
     private Button checkTheClassButton = new Button("Check the class");
     private Choice choiceConstructor = new Choice();
     private Button selectTheConstructorButton = new Button("Select the constructor");
@@ -383,7 +383,7 @@ public class Interpret extends Frame implements ActionListener
                     createdObject[createdObjectNumber] = targetConstructor.newInstance(tempConstructorArgument);
                     setConstructorArgumentObjectChoice.add(setObjectNameTextArea.getText());
                     objectName[createdObjectNumber] = setObjectNameTextArea.getText();
-                    createdObjectDialog[createdObjectNumber] = new CreatedObjectDialog(this, createdObject[createdObjectNumber], c);
+                    createdObjectDialog[createdObjectNumber] = new CreatedObjectDialog(this, createdObject[createdObjectNumber], c, setObjectNameTextArea.getText());
                     createdObjectNumber++;
                 }
                 else
@@ -393,7 +393,14 @@ public class Interpret extends Frame implements ActionListener
             }
             catch(Exception ex)
             {
-                this.errorLabel.setText(ex.getCause().toString());
+                if (ex.getCause() != null)
+                {
+                    errorLabel.setText(ex.getCause().toString());
+                }
+                else
+                {
+                    errorLabel.setText(ex.toString());
+                }
             }
         }
 
@@ -418,13 +425,20 @@ public class Interpret extends Frame implements ActionListener
                 }
                 setConstructorArgumentObjectChoice.add(setObjectNameTextArea.getText());
                 objectName[createdObjectNumber] = setObjectNameTextArea.getText();
-                createdArrayController[createdObjectArrayNumber] = new CreatedArrayController(this, createDialogs((Object[])createdObject[createdObjectNumber]));
+                createdArrayController[createdObjectArrayNumber] = new CreatedArrayController(this, createDialogs((Object[])createdObject[createdObjectNumber], setObjectNameTextArea.getText()));
                 createdObjectNumber++;
                 createdObjectArrayNumber++;
             }
             catch(Exception ex)
             {
-                errorLabel.setText(ex.getCause().toString());
+                if (ex.getCause() != null)
+                {
+                    errorLabel.setText(ex.getCause().toString());
+                }
+                else
+                {
+                    errorLabel.setText(ex.toString());
+                }
             }
         }
 
@@ -561,12 +575,12 @@ public class Interpret extends Frame implements ActionListener
 
     }
 
-    public CreatedObjectDialog[] createDialogs(Object[] target)
+    public CreatedObjectDialog[] createDialogs(Object[] target, String givenName)
     {
         CreatedObjectDialog[] tmp = new CreatedObjectDialog[target.length];
         for(int i = 0; i < target.length; i++)
         {
-            tmp[i] = new CreatedObjectDialog(this, target[i], c);
+            tmp[i] = new CreatedObjectDialog(this, target[i], c, i + " " + givenName);
             tmp[i].setVisible(false);
         }
         return tmp;
