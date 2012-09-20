@@ -8,8 +8,11 @@
 
 package gui02_01;
 
+import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JFrame;
 
@@ -17,6 +20,9 @@ public class DigitalClock extends JFrame implements Runnable
 {
     private static final long serialVersionUID = 1L;
     private Thread th;
+
+    private Date currentDate;
+    private SimpleDateFormat simpleDataFormat = new SimpleDateFormat("HH:mm:ss");
 
     // Constructor
     public DigitalClock()
@@ -34,18 +40,38 @@ public class DigitalClock extends JFrame implements Runnable
         });
 
         // Initialize
+
+        // Initialaize window
         this.setSize(220, 150);
         this.setResizable(false);
         this.setVisible(true);
+
+        // Initialize time
+        currentDate = new Date();
     }
 
     @Override
     public void run()
     {
-        // TODO 自動生成されたメソッド・スタブ
+        while(true)
+        {
+            repaint();
+            try
+            {
+                Thread.sleep(1000);
+            }
+            catch(Exception e)
+            {
+                System.out.println("Error occurs at sleep: " + e);
+            }
 
+        }
     }
 
+    public void paintComponent(Graphics g)
+    {
+        g.drawString(simpleDataFormat.format(currentDate), 10, 10);
+    }
 
     /**
      * @param args
