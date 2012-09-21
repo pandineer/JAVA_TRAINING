@@ -15,11 +15,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class DigitalClock extends JFrame implements Runnable
 {
     private static final long serialVersionUID = 1L;
     private Thread th;
+    private JPanel drawPanel;
 
     private Date currentDate;
     private SimpleDateFormat simpleDataFormat = new SimpleDateFormat("HH:mm:ss");
@@ -46,6 +48,9 @@ public class DigitalClock extends JFrame implements Runnable
         this.setResizable(false);
         this.setVisible(true);
 
+        // Initialize drawPanel
+        drawPanel = new JPanel();
+
         // Initialize time
         currentDate = new Date();
     }
@@ -55,7 +60,8 @@ public class DigitalClock extends JFrame implements Runnable
     {
         while(true)
         {
-            repaint();
+            drawPanel.repaint();
+            System.out.println("!");
             try
             {
                 Thread.sleep(1000);
@@ -68,8 +74,11 @@ public class DigitalClock extends JFrame implements Runnable
         }
     }
 
-    public void paintComponent(Graphics g)
+    @Override
+    public void paintComponents(Graphics g)
     {
+        System.out.println("1");
+        super.paintComponents(g);
         g.drawString(simpleDataFormat.format(currentDate), 10, 10);
     }
 
