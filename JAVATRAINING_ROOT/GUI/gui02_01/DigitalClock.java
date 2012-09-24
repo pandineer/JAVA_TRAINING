@@ -8,6 +8,8 @@
 
 package gui02_01;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -21,10 +23,16 @@ public class DigitalClock extends JFrame implements Runnable
 {
     private static final long serialVersionUID = 1L;
     private Thread th;
-    private JPanel drawPanel;
+    private DrawPanel drawPanel;
 
     private Date currentDate;
     private SimpleDateFormat simpleDataFormat = new SimpleDateFormat("HH:mm:ss");
+
+    private String fontType = "Broadway BT";
+    private int fontStyle = Font.PLAIN;
+    private Integer fontSize = 60;
+    private Color fontColor = Color.black;
+    private Font fontSetting = new Font(fontType, fontStyle, fontSize);
 
     // Constructor
     public DigitalClock()
@@ -44,12 +52,13 @@ public class DigitalClock extends JFrame implements Runnable
         // Initialize
 
         // Initialaize window
-        this.setSize(220, 150);
+        this.setSize(400, 240);
         this.setResizable(false);
         this.setVisible(true);
 
         // Initialize drawPanel
-        drawPanel = new JPanel();
+        drawPanel = new DrawPanel();
+        this.add(drawPanel);
 
         // Initialize time
         currentDate = new Date();
@@ -61,7 +70,6 @@ public class DigitalClock extends JFrame implements Runnable
         while(true)
         {
             drawPanel.repaint();
-            System.out.println("!");
             try
             {
                 Thread.sleep(1000);
@@ -74,13 +82,29 @@ public class DigitalClock extends JFrame implements Runnable
         }
     }
 
-    @Override
-    public void paintComponents(Graphics g)
+    public class DrawPanel extends JPanel
     {
-        System.out.println("1");
-        super.paintComponents(g);
-        g.drawString(simpleDataFormat.format(currentDate), 10, 10);
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+
+            // get current time
+            currentDate = new Date();
+
+            // set font setting
+            fontSetting = new Font(fontType, fontStyle, fontSize);
+
+            // show current time
+            g.setFont(fontSetting);
+            g.setColor(fontColor);
+            g.drawString(simpleDataFormat.format(currentDate), 20, 120);
+        }
     }
+
+
 
     /**
      * @param args
