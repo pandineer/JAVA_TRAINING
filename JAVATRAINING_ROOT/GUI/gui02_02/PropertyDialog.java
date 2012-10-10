@@ -1,50 +1,41 @@
 /*
- * 課題1-4
- * 課題1-2のデジタル時計で、属性をダイアログで指定できるようにしましたが、ダイアログを作りなおして下さい。
- * ・レイアウトマネージャは、GridBagLayoutを使用する。
- * ・プロパティダイアログは、属性名+のリストメニューが縦に並ぶようにする。
- * 　　　フォント　フォントのリスト
- * フォントサイズ　サイズのリスト
- * 　　　　文字色　色のリスト
- * 　　　　背景色　色のリスト
- * 　この場合「属性名」のラベルは右寄せして、「値の選択リスト」メニューは左寄せる。
- * ・ダイアログの下には、「OK」「キャンセル」のバタンをダイアログの右下に寄せて表示し、それぞれのボタンを実装する。
- * 　キャンセルされた場合には、正しく、元の値に戻るようにする。
- * ・java.util.prefsパッケージを使用して、プロパティダイアログの内容の保存と、時計の終了時の位置を保存する。
- * 　再度、時計を起動した場合に、それらの保存を復元して、デスクトップの元の位置に表示されるようにする。
+ * 課題2-2
+ *  デジタル時計に次の機能追加を行なってください
+ *   - メニューを付けて、プロパティダイアログを開ける
+ *   - プロパティダイアログでは、以下の項目を設定できる
+ *     1. フォントの指定
+ *     2. フォントサイズの指定
+ *     3. 文字色の指定（色がわかるようにカラーチップも表示すること）
+ *     4. 時計の背景色の指定
+ *   - フォントとフォントサイズを変更すると、時計を表示すべきフレームの大きさを適切に自動変更して、正しく表示されるようにする
  */
 
 /*
- * 課題1-2
- * デジタル時計に次の機能追加を行ってください。
- * ・メニューを付けて、プロパティダイアログを開ける。
- * ・プロパティダイアログでは、以下の項目を設定できる。
- * 　1. フォントの指定
- * 　2. フォントサイズの指定
- * 　3. 文字色の指定
- * 　4. 時計の背景色の指定
- * ・描画に際して、ちらつきをなくすようにダブルバッファリングする。
- * ・フォントとフォントサイズを変更すると、時計を表示すべきフレームの大きさを適切に自動変更して、正しく表示されるようにする。
- */
-
-/*
- * 課題1-1
- * AWTのFrameを使用して、時間を表示するデジタル時計（アナログ時計は不可）を作成してください。
- * ・java.awt.Frameを使用する。
- * ・Windowsの普通のアプリケーションと同様にタイトルバーの「×」ボタンをクリックすると終了する。
- * ・デジタル時計の描画は、paintメソッド内でGraphicsを使用して行う。テキストラベルによる単なる表示は、不可。
+ * 課題2-1
+ * SwingのJFrameを使用して、時間を表示するデジタル時計（アナログ時計は不可）を作成してください。
+ *  - javax.swing.JFrameを使用する
+ *  - Windowsの普通のアプリケーションと同様にタイトルバーの「X」ボタンをクリックすると終了する。
+ *  - デジタル時計の描画は、paintComponentメソッド内でGraphicsを使用して行う。テキストラベルによる単なる表示は、不可。
  */
 
 package gui02_02;
 
+import java.awt.Color;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.*;
 
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class PropertyDialog extends JDialog implements ActionListener,
+public class PropertyDialog extends JDialog implements ActionListener, ChangeListener,
         ItemListener
 {
     private JComboBox choiceFontType = new JComboBox();
@@ -60,6 +51,8 @@ public class PropertyDialog extends JDialog implements ActionListener,
     private String defaultFontColor;
     private String defaultBackgroundColor;
 
+    private JColorChooser colorChooser = new JColorChooser();
+
     private String fonts[] = GraphicsEnvironment
             .getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 
@@ -68,8 +61,8 @@ public class PropertyDialog extends JDialog implements ActionListener,
     private Color newFontColor = Color.black;
     private Color newBackgroundColor = Color.white;
 
-    private Button OKButton = new Button("OK");
-    private Button cancelButton = new Button("Cancel");
+    private JButton OKButton = new JButton("OK");
+    private JButton cancelButton = new JButton("Cancel");
 
     private GridBagConstraints gbc = new GridBagConstraints();
 
@@ -84,7 +77,7 @@ public class PropertyDialog extends JDialog implements ActionListener,
         { Color.black, Color.white, Color.red, Color.green, Color.blue, Color.cyan,
                 Color.magenta, Color.yellow, Color.orange };
 
-    public PropertyDialog(Frame owner)
+    public PropertyDialog(JFrame owner)
     {
 
         super(owner);
@@ -121,9 +114,9 @@ public class PropertyDialog extends JDialog implements ActionListener,
         // choice
         for (int i = 0; i < fonts.length; i++)
         {
-            choiceFontType.add(fonts[i]);
+            choiceFontType.addItem(fonts[i]);
         }
-        choiceFontType.select(digitalClock.getFontType());
+        choiceFontType.setSelectedItem(digitalClock.getFontType());
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -142,9 +135,9 @@ public class PropertyDialog extends JDialog implements ActionListener,
         // choice
         for (Integer i = 50; i < 300; i = i + 30)
         {
-            choiceFontSize.add(i.toString());
+            choiceFontSize.addItem(i.toString());
         }
-        choiceFontSize.select(digitalClock.getFontSize().toString());
+        choiceFontSize.setSelectedItem(digitalClock.getFontSize().toString());
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
@@ -166,15 +159,17 @@ public class PropertyDialog extends JDialog implements ActionListener,
         // choice
         for (int i = 0; i < stringColor.length; i++)
         {
-            choiceFontColor.add(stringColor[i]);
+            choiceFontColor.addItem(stringColor[i]);
         }
-        choiceFontColor.select(defaultFontColor);
+        choiceFontColor.setSelectedItem(defaultFontColor);
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.gridheight = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbl.setConstraints(choiceFontColor, gbc);
+        // gbl.setConstraints(choiceFontColor, gbc);
+        colorChooser.getSelectionModel().addChangeListener(this);
+        gbl.setConstraints(colorChooser, gbc);
 
 
         // 背景色
@@ -190,9 +185,9 @@ public class PropertyDialog extends JDialog implements ActionListener,
         // choice
         for (int i = 0; i < stringColor.length; i++)
         {
-            choiceBackgroundColor.add(stringColor[i]);
+            choiceBackgroundColor.addItem(stringColor[i]);
         }
-        choiceBackgroundColor.select(defaultBackgroundColor);
+        choiceBackgroundColor.setSelectedItem(defaultBackgroundColor);
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
@@ -229,7 +224,8 @@ public class PropertyDialog extends JDialog implements ActionListener,
         this.add(labelBackgroundColor);
         this.add(choiceFontType);
         this.add(choiceFontSize);
-        this.add(choiceFontColor);
+        // this.add(choiceFontColor);
+        this.add(colorChooser);
         this.add(choiceBackgroundColor);
         this.add(OKButton);
         this.add(cancelButton);
@@ -245,14 +241,14 @@ public class PropertyDialog extends JDialog implements ActionListener,
         newFontColor = digitalClock.getFontColor();
         newBackgroundColor = digitalClock.getBackgroundColor();
 
-        choiceFontType.select(digitalClock.getFontType());
-        choiceFontSize.select(digitalClock.getFontSize().toString());
+        choiceFontType.setSelectedItem(digitalClock.getFontType());
+        choiceFontSize.setSelectedItem(digitalClock.getFontSize().toString());
         // フォントカラーの初期選択値をStringで取得する
         defaultFontColor = changeColorToString(digitalClock.getFontColor());
-        choiceFontColor.select(defaultFontColor);
+        choiceFontColor.setSelectedItem(defaultFontColor);
         // 背景色の初期選択値をStringで取得する
         defaultBackgroundColor = changeColorToString(digitalClock.getBackgroundColor());
-        choiceBackgroundColor.select(defaultBackgroundColor);
+        choiceBackgroundColor.setSelectedItem(defaultBackgroundColor);
     }
 
     @Override
@@ -322,6 +318,13 @@ public class PropertyDialog extends JDialog implements ActionListener,
             System.out.println("Error occurs at select property!");
             System.out.println(e);
         }
+
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e)
+    {
+        // TODO 自動生成されたメソッド・スタブ
 
     }
 }
