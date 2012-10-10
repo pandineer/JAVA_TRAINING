@@ -9,6 +9,7 @@ package ch17.ex17_03;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
+import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,13 +54,13 @@ public class ResourceManager
     private static class ResourceImpl implements Resource
     {
         // int keyHash;
-        Object implKey;
+        SoftReference<Object> implKey; // Referenceオブジェクトがキーへの強い参照を保持していないことが重要
         boolean needsRelease = false;
 
         ResourceImpl(Object key)
         {
             // keyHash = System.identityHashCode(key);
-            implKey = key;
+            implKey = new SoftReference<Object>(key);
 
             // .. 外部リソースの設定
 
