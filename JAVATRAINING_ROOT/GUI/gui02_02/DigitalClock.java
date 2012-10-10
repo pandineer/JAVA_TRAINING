@@ -20,8 +20,6 @@
 
 package gui02_02;
 
-import gui01_04.PropertyDialog;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -139,6 +137,10 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
             // set font setting
             fontSetting = new Font(fontType, fontStyle, fontSize);
 
+            // set background
+            g.setColor(backgroundColor);
+            g.fillRect(0, 0, 400, 240);
+
             // show current time
             g.setFont(fontSetting);
             g.setColor(fontColor);
@@ -146,6 +148,22 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
         }
     }
 
+
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        if (e.getActionCommand() == "Property")
+        {
+            // クリックしたのが「Property」だったら
+            dialog.resetParameter();
+            dialog.setVisible(true);
+        }
+        else
+        {
+            System.out.println("actionPerformed error");
+        }
+    }
 
 
     public String getFontType()
@@ -209,10 +227,5 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
         window.th.start(); // スレッドスタート
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        // TODO 自動生成されたメソッド・スタブ
 
-    }
 }
