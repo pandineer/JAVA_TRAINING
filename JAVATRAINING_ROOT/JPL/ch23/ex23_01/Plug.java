@@ -6,10 +6,12 @@
 package ch23.ex23_01;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 
 public class Plug
@@ -34,13 +36,18 @@ public class Plug
     {
         class PlugThread implements Runnable
         {
-            int b;
+            // int b;
+            String s;
             InputStream in;
+            BufferedReader br;
             OutputStream out;
+            BufferedWriter bw;
             PlugThread(InputStream a_in, OutputStream a_out)
             {
                 in = a_in;
                 out = a_out;
+                br = new BufferedReader(new InputStreamReader(in));
+                bw = new BufferedWriter(new OutputStreamWriter(out));
             }
             public void run()
             {
@@ -48,9 +55,12 @@ public class Plug
                 {
                     try
                     {
-                        while ((b = in.read()) != -1)
+                        // while ((b = in.read()) != -1)
+                        while ((s = br.readLine()) != null)
                         {
-                            out.write(b);
+                            // out.write(b);
+                            bw.write(s);
+                            System.out.println(s);
                         }
                     }
                     catch(Exception e)
@@ -107,9 +117,10 @@ public class Plug
     {
         try
         {
-            Plug.userProg("ping -n 3 127.0.0.1");
+            // Plug.userProg("ping -n 3 127.0.0.1");
             // Plug.userProg("sort.exe");
             // Plug.userProg("notepad.exe");
+            Plug.userProg("cmd.exe");
         }
         catch(Exception e)
         {
