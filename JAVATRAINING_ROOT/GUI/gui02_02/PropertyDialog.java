@@ -26,23 +26,37 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.*;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class PropertyDialog extends JDialog implements ActionListener, ItemListener
+public class PropertyDialog extends JDialog implements ActionListener, ItemListener, ChangeListener
 {
+
+    static public String stringColor[] =
+        { "Black", "White", "Red", "Green", "Blue", "Cyan", "Magenta", "Yellow",
+                "Orange" };
+    static public Color colorColor[] =
+        { Color.black, Color.white, Color.red, Color.green, Color.blue, Color.cyan,
+                Color.magenta, Color.yellow, Color.orange };
+
     private JComboBox choiceFontType = new JComboBox();
     private JComboBox choiceFontSize = new JComboBox();
-    private JComboBox choiceFontColor = new JComboBox();
+    // private JComboBox choiceFontColor = new JComboBox();
+    private JRadioButton radioButtonFontColor[] = new JRadioButton[stringColor.length];
+    private ButtonGroup bg = new ButtonGroup();
     private JComboBox choiceBackgroundColor = new JComboBox();
 
     private JLabel labelFontType = new JLabel("Font Type: ");
     private JLabel labelFontSize = new JLabel("Font Size: ");
     private JLabel labelFontColor = new JLabel("Font Color: ");
-    private JLabel labelFontColorSample = new JLabel("■Sample: 15:00");
+    // private JLabel labelFontColorSample = new JLabel("■Sample: 15:00");
     private JLabel labelBackgroundColor = new JLabel("Background Color: ");
     private JLabel labelBackgroundColorSample = new JLabel("■Sample: 15:00");
 
@@ -66,12 +80,7 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
 
     private DigitalClock digitalClock;
 
-    static public String stringColor[] =
-        { "Black", "White", "Red", "Green", "Blue", "Cyan", "Magenta", "Yellow",
-                "Orange" };
-    static public Color colorColor[] =
-        { Color.black, Color.white, Color.red, Color.green, Color.blue, Color.cyan,
-                Color.magenta, Color.yellow, Color.orange };
+
 
     public PropertyDialog(JFrame owner)
     {
@@ -94,7 +103,12 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
         // リスナー登録
         choiceFontType.addItemListener(this);
         choiceFontSize.addItemListener(this);
-        choiceFontColor.addItemListener(this);
+        // choiceFontColor.addItemListener(this);
+        for (int i = 0; i < stringColor.length; i++)
+        {
+            radioButtonFontColor[i].addChangeListener(this);
+            bg.add(radioButtonFontColor[i]); // ついでにボタングループ登録も行う
+        }
         choiceBackgroundColor.addItemListener(this);
         OKButton.addActionListener(this);
         cancelButton.addActionListener(this);
@@ -155,16 +169,18 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
         // choice
         for (int i = 0; i < stringColor.length; i++)
         {
-            choiceFontColor.addItem(stringColor[i]);
+            // choiceFontColor.addItem(stringColor[i]);
         }
-        choiceFontColor.setSelectedItem(defaultFontColor);
+        // choiceFontColor.setSelectedItem(defaultFontColor);
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbl.setConstraints(choiceFontColor, gbc);
+        // gbl.setConstraints(choiceFontColor, gbc);
+        gbl.setConstraints(radioButtonFontColor[0], gbc);
         // sample color chip
+        /*
         gbc.gridx = 2;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
@@ -172,6 +188,7 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
         gbc.anchor = GridBagConstraints.WEST;
         labelFontColorSample.setForeground(digitalClock.getFontColor());
         gbl.setConstraints(labelFontColorSample, gbc);
+        */
 
 
         // 背景色
@@ -205,6 +222,7 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
         gbc.anchor = GridBagConstraints.WEST;
         labelBackgroundColorSample.setForeground(digitalClock.getFontColor());
         labelBackgroundColorSample.setBackground(digitalClock.getBackgroundColor());
+        labelBackgroundColorSample.setOpaque(true);
         gbl.setConstraints(labelBackgroundColorSample, gbc);
 
         // OKボタン
@@ -233,12 +251,13 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
         this.add(labelFontType);
         this.add(labelFontSize);
         this.add(labelFontColor);
-        this.add(labelFontColorSample);
+        // this.add(labelFontColorSample);
         this.add(labelBackgroundColor);
         this.add(labelBackgroundColorSample);
         this.add(choiceFontType);
         this.add(choiceFontSize);
-        this.add(choiceFontColor);
+        // this.add(choiceFontColor);
+        this.add(radioButtonFontColor[0]);
         this.add(choiceBackgroundColor);
         this.add(OKButton);
         this.add(cancelButton);
@@ -258,7 +277,7 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
         choiceFontSize.setSelectedItem(digitalClock.getFontSize().toString());
         // フォントカラーの初期選択値をStringで取得する
         defaultFontColor = changeColorToString(digitalClock.getFontColor());
-        choiceFontColor.setSelectedItem(defaultFontColor);
+        // choiceFontColor.setSelectedItem(defaultFontColor);
         // 背景色の初期選択値をStringで取得する
         defaultBackgroundColor = changeColorToString(digitalClock.getBackgroundColor());
         choiceBackgroundColor.setSelectedItem(defaultBackgroundColor);
@@ -318,12 +337,14 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
         {
             newFontSize = Integer.parseInt(e.getItem().toString());
         }
+        /*
         else if (choiceFontColor == e.getSource())
         {
             newFontColor = changeStringToColor((String)e.getItem());
             labelFontColorSample.setForeground(newFontColor);
             labelBackgroundColorSample.setForeground(newFontColor);
         }
+        */
         else if (choiceBackgroundColor == e.getSource())
         {
             newBackgroundColor = changeStringToColor((String)e.getItem());
@@ -334,6 +355,13 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
             System.out.println("Error occurs at select property!");
             System.out.println(e);
         }
+
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e)
+    {
+        // TODO 自動生成されたメソッド・スタブ
 
     }
 
