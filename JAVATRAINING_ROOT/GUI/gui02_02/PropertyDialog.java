@@ -57,6 +57,7 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
     private JLabel labelFontSize = new JLabel("Font Size: ");
     private JLabel labelFontColor = new JLabel("Font Color: ");
     // private JLabel labelFontColorSample = new JLabel("■Sample: 15:00");
+    private JLabel labelRadioButtonSampleColorChip[] = new JLabel[colorColor.length];
     private JLabel labelBackgroundColor = new JLabel("Background Color: ");
     private JLabel labelBackgroundColorSample = new JLabel("■Sample: 15:00");
 
@@ -170,16 +171,35 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
         // radio button
         for (int i = 0; i < stringColor.length; i++)
         {
+            // カラーチップの生成
+            labelRadioButtonSampleColorChip[i] = new JLabel("■");
+            labelRadioButtonSampleColorChip[i].setForeground(colorColor[i]);
+            gbc.gridx = 1;
+            gbc.gridy = gridyCount;
+            gbc.gridwidth = 1;
+            gbc.gridheight = 1;
+            gbc.anchor = GridBagConstraints.EAST;
+            gbl.setConstraints(labelRadioButtonSampleColorChip[i], gbc);
+
+
             radioButtonFontColor[i] = new JRadioButton(stringColor[i]);
             radioButtonFontColor[i].addChangeListener(this); // 初期値の関係で、ここでリスナー登録する
             bg.add(radioButtonFontColor[i]); // ついでにボタングループ登録も行う
 
-            gbc.gridx = 1;
+
+            gbc.gridx = 2;
             gbc.gridy = gridyCount++;
             gbc.gridwidth = 1;
             gbc.gridheight = 1;
             gbc.anchor = GridBagConstraints.WEST;
             gbl.setConstraints(radioButtonFontColor[i], gbc);
+        }
+        for (int i = 0; i < stringColor.length; i++)
+        {
+            if (defaultFontColor.equals(stringColor[i]))
+            {
+                radioButtonFontColor[i].setSelected(true);
+            }
         }
         System.out.println(gridyCount);
         gridyCount--;
@@ -271,6 +291,7 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
         // this.add(choiceFontColor);
         for (int i = 0; i < stringColor.length; i++)
         {
+            this.add(labelRadioButtonSampleColorChip[i]);
             this.add(radioButtonFontColor[i]);
         }
         this.add(choiceBackgroundColor);
@@ -376,8 +397,14 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
     @Override
     public void stateChanged(ChangeEvent e)
     {
-        // TODO 自動生成されたメソッド・スタブ
-
+        for (int i = 0; i < stringColor.length; i++)
+        {
+            if (radioButtonFontColor[i].isSelected())
+            {
+                newFontColor = colorColor[i];
+                labelBackgroundColorSample.setForeground(newFontColor);
+            }
+        }
     }
 
 
