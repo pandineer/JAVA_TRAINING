@@ -16,94 +16,179 @@ public class SimpleCalculator
 
         for (int i = 0; i < splitString.length; i++)
         {
-            
-            
+            switch (splitString[i].charAt(0))
+            {
+                case '+':
+                    tmp = stack.pop().toString();
+                    stack.push(Double.valueOf(stack.pop().toString()) + Double.valueOf(tmp));
+                    continue;
+                case '-':
+                    tmp = stack.pop().toString();
+                    stack.push(Double.valueOf(stack.pop().toString()) - Double.valueOf(tmp));
+                    continue;
+                case '*':
+                    tmp = stack.pop().toString();
+                    stack.push(Double.valueOf(stack.pop().toString()) * Double.valueOf(tmp));
+                    continue;
+                case '/':
+                    tmp = stack.pop().toString();
+                    stack.push(Double.valueOf(stack.pop().toString()) / Double.valueOf(tmp));
+                    continue;
+                case '%':
+                    tmp = stack.pop().toString();
+                    stack.push(Double.valueOf(stack.pop().toString()) % Double.valueOf(tmp));
+                    continue;
+            }
+
+            if (splitString[i].equals("sin"))
+            {
+                stack.push(Math.sin(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("cos"))
+            {
+                stack.push(Math.cos(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("tan"))
+            {
+                stack.push(Math.tan(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("asin"))
+            {
+                stack.push(Math.asin(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("acos"))
+            {
+                stack.push(Math.acos(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("atan"))
+            {
+                stack.push(Math.atan(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("atan2"))
+            {
+                tmp = stack.pop().toString();
+                stack.push(Math.atan2(Double.valueOf(stack.pop().toString()), Double.valueOf(tmp)));
+                continue;
+            }
+            if (splitString[i].equals("toRadians"))
+            {
+                stack.push(Math.toRadians(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("toDegrees"))
+            {
+                stack.push(Math.toDegrees(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("exp"))
+            {
+                stack.push(Math.exp(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("sinh"))
+            {
+                stack.push(Math.sinh(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("cosh"))
+            {
+                stack.push(Math.cosh(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("tanh"))
+            {
+                stack.push(Math.tanh(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("pow"))
+            {
+                tmp = stack.pop().toString();
+                stack.push(Math.pow(Double.valueOf(stack.pop().toString()), Double.valueOf(tmp)));
+                continue;
+            }
+            if (splitString[i].equals("log"))
+            {
+                stack.push(Math.log(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("log10"))
+            {
+                stack.push(Math.log10(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("sqrt"))
+            {
+                stack.push(Math.sqrt(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("cbrt"))
+            {
+                stack.push(Math.cbrt(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("signum"))
+            {
+                stack.push(Math.signum(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("ceil"))
+            {
+                stack.push(Math.ceil(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("floor"))
+            {
+                stack.push(Math.floor(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("rint"))
+            {
+                stack.push(Math.rint(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("round"))
+            {
+                stack.push(Math.round(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("abs"))
+            {
+                stack.push(Math.abs(Double.valueOf(stack.pop().toString())));
+                continue;
+            }
+            if (splitString[i].equals("max"))
+            {
+                tmp = stack.pop().toString();
+                stack.push(Math.max(Double.valueOf(stack.pop().toString()), Double.valueOf(tmp)));
+                continue;
+            }
+            if (splitString[i].equals("min"))
+            {
+                tmp = stack.pop().toString();
+                stack.push(Math.min(Double.valueOf(stack.pop().toString()), Double.valueOf(tmp)));
+                continue;
+            }
+            if (splitString[i].equals("hypot"))
+            {
+                tmp = stack.pop().toString();
+                stack.push(Math.hypot(Double.valueOf(stack.pop().toString()), Double.valueOf(tmp)));
+                continue;
+            }
+
             stack.push(splitString[i]);
         }
 
-       //  return calcReversedPolish();
+       return Double.valueOf(stack.pop().toString());
     }
 
-    static double calcReversedPolish()
-    {
-        tmp = stack.pop().toString();
-
-        switch (tmp.toString().charAt(0))
-        {
-            case '+':
-                return (calcReversedPolish() + calcReversedPolish());
-            case '-':
-                return (calcReversedPolish() - calcReversedPolish());
-            case '*':
-                return (calcReversedPolish() * calcReversedPolish());
-            case '/':
-                return (calcReversedPolish() / calcReversedPolish());
-            case '%':
-                return (calcReversedPolish() % calcReversedPolish());
-        }
-
-        if (tmp.equals("sin"))
-            return Math.sin(calcReversedPolish());
-        if (tmp.equals("cos"))
-            return Math.cos(calcReversedPolish());
-        if (tmp.equals("tan"))
-            return Math.tan(calcReversedPolish());
-        if (tmp.equals("asin"))
-            return Math.asin(calcReversedPolish());
-        if (tmp.equals("acos"))
-            return Math.acos(calcReversedPolish());
-        if (tmp.equals("atan"))
-            return Math.atan(calcReversedPolish());
-        if (tmp.equals("atan2"))
-            return Math.atan2(calcReversedPolish(), calcReversedPolish());
-        if (tmp.equals("toRadians"))
-            return Math.toRadians(calcReversedPolish());
-        if (tmp.equals("toDegrees"))
-            return Math.toDegrees(calcReversedPolish());
-        if (tmp.equals("exp"))
-            return Math.exp(calcReversedPolish());
-        if (tmp.equals("sinh"))
-            return Math.sinh(calcReversedPolish());
-        if (tmp.equals("cosh"))
-            return Math.cosh(calcReversedPolish());
-        if (tmp.equals("tanh"))
-            return Math.tanh(calcReversedPolish());
-        if (tmp.equals("pow"))
-            return Math.pow(calcReversedPolish(), calcReversedPolish());
-        if (tmp.equals("log"))
-            return Math.log(calcReversedPolish());
-        if (tmp.equals("log10"))
-            return Math.log10(calcReversedPolish());
-        if (tmp.equals("sqrt"))
-            return Math.sqrt(calcReversedPolish());
-        if (tmp.equals("cbrt"))
-            return Math.cbrt(calcReversedPolish());
-        if (tmp.equals("signum"))
-            return Math.signum(calcReversedPolish());
-        if (tmp.equals("ceil"))
-            return Math.ceil(calcReversedPolish());
-        if (tmp.equals("floor"))
-            return Math.floor(calcReversedPolish());
-        if (tmp.equals("rint"))
-            return Math.rint(calcReversedPolish());
-        if (tmp.equals("round"))
-            return Math.round(calcReversedPolish());
-        if (tmp.equals("abs"))
-            return Math.abs(calcReversedPolish());
-        if (tmp.equals("max"))
-            return Math.max(calcReversedPolish(), calcReversedPolish());
-        if (tmp.equals("min"))
-            return Math.min(calcReversedPolish(), calcReversedPolish());
-        if (tmp.equals("hypot"))
-            return Math.hypot(calcReversedPolish(), calcReversedPolish());
 
 
-        return Double.valueOf(tmp);
-    }
-
-    /**
-     * @param args
-     */
     public static void main(String[] args)
     {
         System.out.println(SimpleCalculator.calc("1 2 + 3 4 - +"));
