@@ -45,12 +45,15 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
     private Date currentDate;
     private SimpleDateFormat simpleDataFormat = new SimpleDateFormat("HH:mm:ss");
 
-    private String fontType = "Broadway BT";
+    private String fontType = "TimesRoman";
     private int fontStyle = Font.PLAIN;
-    private Integer fontSize = 60;
+    private Integer fontSize = 48;
     private Color fontColor = Color.black;
     private Font fontSetting = new Font(fontType, fontStyle, fontSize);
     private Color backgroundColor = Color.white;
+
+    private int windowSizeX = 48 * 8 + 50;
+    private int windowSizeY = 48 + 50;
 
     private PropertyDialog dialog;
 
@@ -76,8 +79,8 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
         // Initialize
 
         // Initialaize window
-        this.setSize(400, 240);
-        this.setResizable(false);
+        this.setSize(windowSizeX, windowSizeY);
+        this.setResizable(true);
         this.setVisible(true);
 
         // Initialize drawPanel
@@ -110,6 +113,7 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
         while(true)
         {
             drawPanel.repaint();
+            this.setSize(windowSizeX, windowSizeY);
             try
             {
                 Thread.sleep(1000);
@@ -137,14 +141,35 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
             // set font setting
             fontSetting = new Font(fontType, fontStyle, fontSize);
 
-            // set background
-            g.setColor(backgroundColor);
-            g.fillRect(0, 0, 400, 240);
-
-            // show current time
+            // set settings
             g.setFont(fontSetting);
             g.setColor(fontColor);
-            g.drawString(simpleDataFormat.format(currentDate), 20, 120);
+
+            // ウィンドウサイズの計算
+            if (null != g)
+            {
+            windowSizeX = g.getFontMetrics().stringWidth(simpleDataFormat.format(currentDate));
+            windowSizeX += getInsets().left;
+            windowSizeX += getInsets().right;
+            System.out.println("WindowSizeX: " + windowSizeX);
+            }
+
+            if (null != g)
+            {
+            windowSizeY = g.getFontMetrics().getAscent();
+            windowSizeY += g.getFontMetrics().getDescent();
+            windowSizeY += g.getFontMetrics().getLeading();
+            // windowSizeY *= 2; // キャプチャした時刻用
+            windowSizeY += getInsets().top;
+            System.out.println("WindowSizeY: " + windowSizeY);
+            }
+            // this.setSize(500, 500);
+
+            // set background
+            g.setColor(backgroundColor);
+            g.fillRect(0, 0, windowSizeX, windowSizeY);
+
+            g.drawString(simpleDataFormat.format(currentDate), 30, 120);
         }
     }
 

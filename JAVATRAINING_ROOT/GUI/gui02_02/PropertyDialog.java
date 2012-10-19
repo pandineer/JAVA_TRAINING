@@ -201,7 +201,6 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
                 radioButtonFontColor[i].setSelected(true);
             }
         }
-        System.out.println(gridyCount);
         gridyCount--;
         // choice
         /*
