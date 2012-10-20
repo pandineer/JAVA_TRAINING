@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-public class ListShortStrings extends ShortStrings implements ListIterator<String>
+public class ListShortStrings implements ListIterator<String>
 {
     private ListIterator<String> strings; // 元の文字列
     private String nextShort; // 次が不明ならばnull
@@ -22,7 +22,6 @@ public class ListShortStrings extends ShortStrings implements ListIterator<Strin
 
     public ListShortStrings(ListIterator<String> strings, int maxLen)
     {
-        super(strings, maxLen);
         this.strings = strings;
         this.maxLen = maxLen;
     }
