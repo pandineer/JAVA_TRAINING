@@ -41,6 +41,7 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
     private static final long serialVersionUID = 1L;
     private Thread th;
     private DrawPanel drawPanel;
+    private DigitalClock me;
 
     private Date currentDate;
     private SimpleDateFormat simpleDataFormat = new SimpleDateFormat("HH:mm:ss");
@@ -67,6 +68,9 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
         // Set title
         super("JDigitalClock");
 
+        // reference for this object to use inner class
+        me = this;
+
         // To close window
         addWindowListener(new WindowAdapter()
         {
@@ -80,7 +84,7 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
 
         // Initialaize window
         this.setSize(windowSizeX, windowSizeY);
-        this.setResizable(true);
+        this.setResizable(false);
         this.setVisible(true);
 
         // Initialize drawPanel
@@ -143,25 +147,23 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
 
             // set settings
             g.setFont(fontSetting);
-            g.setColor(fontColor);
 
             // ウィンドウサイズの計算
             if (null != g)
             {
             windowSizeX = g.getFontMetrics().stringWidth(simpleDataFormat.format(currentDate));
-            windowSizeX += getInsets().left;
-            windowSizeX += getInsets().right;
-            System.out.println("WindowSizeX: " + windowSizeX);
+            windowSizeX += me.getInsets().left;
+            windowSizeX += me.getInsets().right;
             }
 
             if (null != g)
             {
-            windowSizeY = g.getFontMetrics().getAscent();
-            windowSizeY += g.getFontMetrics().getDescent();
-            windowSizeY += g.getFontMetrics().getLeading();
+                windowSizeY = g.getFontMetrics().getHeight();
+            // windowSizeY = g.getFontMetrics().getAscent();
+            // windowSizeY += g.getFontMetrics().getDescent();
+            // windowSizeY += g.getFontMetrics().getLeading();
             // windowSizeY *= 2; // キャプチャした時刻用
-            windowSizeY += getInsets().top;
-            System.out.println("WindowSizeY: " + windowSizeY);
+            windowSizeY += me.getInsets().top;
             }
             // this.setSize(500, 500);
 
@@ -169,7 +171,10 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
             g.setColor(backgroundColor);
             g.fillRect(0, 0, windowSizeX, windowSizeY);
 
-            g.drawString(simpleDataFormat.format(currentDate), 30, 120);
+            // draw date
+            g.setColor(fontColor);
+            g.drawString(simpleDataFormat.format(currentDate), 0, g.getFontMetrics().getAscent());
+            // g.drawLine(0, g.getFontMetrics().getAscent(), 100, g.getFontMetrics().getAscent()); // base line
         }
     }
 
