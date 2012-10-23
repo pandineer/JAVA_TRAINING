@@ -8,25 +8,17 @@ package ch24.ex24_01;
 
 import java.util.ListResourceBundle;
 
-public class GlobalRes extends ListResourceBundle
+public class GlobalRes_zh_CN extends ListResourceBundle
 {
-    public static final String HELLO = "hello";
-    public static final String GOODBYE = "goodbye";
+    // 親バンドルの英語ロケールとほとんど同じ
 
-    public Object[][] getContesnts()
+    public Object[][] getContents()
     {
         return contents;
     }
 
     private static final Object[][] contents =
         {
-        {GlobalRes.HELLO, "Ciao"},
-        {GlobalRes.GOODBYE, "Ciao"},
+        {GlobalRes.HELLO, "ni hao"},
         };
-
-    @Override
-    protected Object[][] getContents()
-    {
-        return contents;
-    }
 }
