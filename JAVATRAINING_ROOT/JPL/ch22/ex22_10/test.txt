@@ -1,0 +1,3 @@
+panda is good.
+panda is very good.# but, lesser panda is ...
+panda is gread.
