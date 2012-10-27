@@ -32,6 +32,10 @@ public class EX2211
     {
         StreamTokenizer st = new StreamTokenizer(source);
         st.quoteChar(',');
+        st.ordinaryChars('0', '9');
+        st.wordChars('0', '9');
+        st.wordChars('.', '.');
+        st.wordChars('-', '-');
         st.eolIsSignificant(true);
         List<String[]> vals = new ArrayList<String[]>();
         int count = 0;
@@ -51,18 +55,6 @@ public class EX2211
                 if (st.ttype == StreamTokenizer.TT_WORD || st.ttype == ',')
                 {
                     cells[count++] = st.sval;
-                }
-                else if (st.ttype == StreamTokenizer.TT_NUMBER)
-                {
-                    if ((st.nval - Math.floor(st.nval)) == 0)
-                    {
-                        cells[count++] = String.valueOf((int)st.nval);
-                    }
-                    else
-                    {
-                        cells[count++] = String.valueOf(st.nval);
-                    }
-
                 }
                 st.nextToken();
             }
@@ -87,7 +79,7 @@ public class EX2211
         // StringReader test = new StringReader("a,b,c\nd,e,f\n\ng,h,i\n\n"); // input format error case
         // StringReader test = new StringReader("a,b,c,d\ne,f,g\nh,i,j\n\n"); // comma number incorrect case
         // StringReader test = new StringReader("a,b\ne,f,g\nh,i,j\n\n"); // comma number incorrect case
-        StringReader test = new StringReader("a,b,c\nd,e,f\n7,8,9\n\n"); // normal case
+        StringReader test = new StringReader("a,b,c\nd,e,f\n70.0,8,9\n\n"); // normal case
 
         List<String[]> result = null;
         try
