@@ -1,0 +1,3 @@
+panda=100
+dog=20#dog is OK
+lesser panda=20#lesser panda is OK too, but...
