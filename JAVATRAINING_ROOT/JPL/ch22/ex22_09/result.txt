@@ -1,0 +1,16 @@
+Short, method1
+Time: 15
+Long, method1
+Time: 63
+Short, method2
+Time: 0
+Long, method2
+Time: 47
+Short, method2
+Time: 0
+Long, method2
+Time: 46
+Short, method2
+Time: 0
+Long, method2
+Time: 47
