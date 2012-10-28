@@ -27,12 +27,8 @@ public class EachUpperCharacter
         {
             for (j = 0; j < ((int) Math.pow(2, 8) - 1); j++)
             {
-                if ((str.charAt(i) & j << 8) > 0)
+                if ((str.charAt(i) & j << 8) > 0 || (j == 0 && str.charAt(i) >> 8 == 0 ))
                 {
-                    System.out.println(j);
-                    System.out.println(i);
-                    System.out.println(str.charAt(i));
-                    System.out.println(str.charAt(i) & 255);
                     tmp[j].set(str.charAt(i) & 255);
                     break;
                 }
@@ -62,7 +58,7 @@ public class EachUpperCharacter
 
     public static void main(String[] args)
     {
-        EachUpperCharacter test = new EachUpperCharacter("test");
+        EachUpperCharacter test = new EachUpperCharacter("!/][\test\\ªఌฬℍ");
         for (int i = 0; i < (int) Math.pow(2, 8); i++)
         {
             test.showSpecifiedSet(i);
