@@ -288,11 +288,11 @@ public class EX2209
 
     public static void test(Reader target, int cellNumber, String comment, int method)
     {
-        List<String[]> result = null;
+        // List<String[]> result = null;
         long start = 0;
         long stop = 0;
 
-        result = null;
+        // result = null;
         start = 0;
         stop = 0;
 
@@ -303,10 +303,20 @@ public class EX2209
             switch (method)
             {
                 case 1:
-                    result = EX2209.readCSVTable1(target,  cellNumber);
+                    // result = EX2209.readCSVTable1(target,  cellNumber);
+                    EX2209.readCSVTable1(target,  cellNumber);
                     break;
                 case 2:
-                    result = EX2209.readCSVTable2(target,  cellNumber);
+                    // result = EX2209.readCSVTable2(target,  cellNumber);
+                    EX2209.readCSVTable2(target,  cellNumber);
+                    break;
+                case 3:
+                    // result = EX2209.readCSVTable3(target,  cellNumber);
+                    EX2209.readCSVTable3(target,  cellNumber);
+                    break;
+                case 4:
+                    // result = EX2209.readCSVTable4(target,  cellNumber);
+                    EX2209.readCSVTable4(target,  cellNumber);
                     break;
             }
 
@@ -351,14 +361,14 @@ public class EX2209
             FileReader testShort3 = new FileReader("JPL/ch22/ex22_09/testShort.csv");
             FileReader testLong3 = new FileReader("JPL/ch22/ex22_09/testLong.csv");
 
-            EX2209.test(testShort3, 3, "Short, method2", 2);
-            EX2209.test(testLong3, 3, "Long, method2", 2);
+            EX2209.test(testShort3, 3, "Short, method3", 3);
+            EX2209.test(testLong3, 3, "Long, method3", 3);
 
             FileReader testShort4 = new FileReader("JPL/ch22/ex22_09/testShort.csv");
             FileReader testLong4 = new FileReader("JPL/ch22/ex22_09/testLong.csv");
 
-            EX2209.test(testShort4, 3, "Short, method2", 2);
-            EX2209.test(testLong4, 3, "Long, method2", 2);
+            EX2209.test(testShort4, 3, "Short, method4", 4);
+            EX2209.test(testLong4, 3, "Long, method4", 4);
 
         }
         catch(Exception e)

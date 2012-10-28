@@ -6,11 +6,11 @@ Short, method2
 Time: 0
 Long, method2
 Time: 47
-Short, method2
+Short, method3
 Time: 0
-Long, method2
+Long, method3
 Time: 46
-Short, method2
+Short, method4
 Time: 0
-Long, method2
+Long, method4
 Time: 47
