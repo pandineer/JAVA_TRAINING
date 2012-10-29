@@ -28,6 +28,10 @@ public class Checker implements Observer
     {
         AttributedImpl test = new AttributedImpl();
         Checker checker = new Checker(test);
+
+        System.out.println(checker);
+
         test.add(new Attr("test_name", "test_value"));
+        test.remove("test_name");
     }
 }

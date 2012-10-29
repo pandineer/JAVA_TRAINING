@@ -23,6 +23,7 @@ public class AttributedImpl extends Observable implements Attributed, Iterable<A
     @Override
     public void add(Attr newAttr)
     {
+        setChanged();
         notifyObservers(newAttr.getName() + " is added. ");
         attrTable.put(newAttr.getName(), newAttr);
     }
@@ -36,6 +37,8 @@ public class AttributedImpl extends Observable implements Attributed, Iterable<A
     @Override
     public Attr remove(String name)
     {
+        setChanged();
+        notifyObservers(name + " is removed. ");
         return attrTable.remove(name);
     }
 
