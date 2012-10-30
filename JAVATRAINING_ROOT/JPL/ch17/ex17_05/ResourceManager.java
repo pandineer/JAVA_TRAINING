@@ -10,38 +10,48 @@
  * リソース実装クラスを書き直しなさい。
  */
 
-package ch17.ex17_04;
+package ch17.ex17_05;
 
 import java.lang.ref.PhantomReference;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class ResourceManager
 {
     final ReferenceQueue<Object> queue;
     final Map<Reference<?>, Resource> refs;
-    final Thread reaper;
+    // final Thread reaper;
     boolean shutdown = false;
 
     public ResourceManager()
     {
         queue = new ReferenceQueue<Object>();
         refs = new HashMap<Reference<?>, Resource>();
-        reaper = new ReaperThread();
-        reaper.start();
+        // reaper = new ReaperThread();
+        // reaper.start();
 
         // ... リソースの初期化 ...
     }
 
+    // shutdown実行時に、すべてのリソースを開放する
     public synchronized void shutdown()
     {
         if (!shutdown)
         {
             shutdown = true;
-            reaper.interrupt();
+            // reaper.interrupt();
+
+            Iterator<Reference<?>> it = refs.keySet().iterator();
+
+            while(it.hasNext())
+            {
+                Reference<?> tmp = (Reference<?>)it.next();
+                refs.get(tmp).release();
+            }
         }
     }
 
@@ -90,6 +100,7 @@ public class ResourceManager
                 needsRelease = false;
 
                 // ... リソースの解放 ...
+
                 // implKey.clear();
                 implKey = null;
             }
@@ -102,7 +113,6 @@ public class ResourceManager
         public void run()
         {
             Reference<?> ref = null;
-            boolean threadShutdown = false;
             // 割り込まれるまで実行
             while(true)
             {
@@ -121,10 +131,8 @@ public class ResourceManager
                 catch (InterruptedException ex)
                 {
                     // break; // すべて終了
-                    threadShutdown = true;
                     if (refs.size() == 0)
                     {
-                        System.out.println("all resouces are released. ");
                         break;
                     }
                     else
@@ -132,7 +140,7 @@ public class ResourceManager
                         System.out.println("waiting all resources are released. ");
                     }
                 }
-                if (refs.size() == 0 && threadShutdown)
+                if (refs.size() == 0 && shutdown)
                 {
                     System.out.println("all resouces are released. ");
                     break;
@@ -158,9 +166,9 @@ public class ResourceManager
             resources[i].use(tmp, (Object[])null);
         }
 
-        System.out.println("100 resources are used: " + Runtime.getRuntime().freeMemory());
+        System.out.println("10000 resources are used: " + Runtime.getRuntime().freeMemory());
 
-        for (int i = 0; i < ((resources.length) / 2); i++)
+        for (int i = 0; i < resources.length / 2; i++)
         {
             resources[i].release();
         }
@@ -172,10 +180,6 @@ public class ResourceManager
 
         System.out.println("Shutdown ResourceManager");
 
-        for(int i = ((resources.length) / 2); i < resources.length; i++)
-        {
-            resources[i].release();
-        }
 
         Runtime.getRuntime().gc();
         System.out.println("Rest resources are released: " + Runtime.getRuntime().freeMemory());

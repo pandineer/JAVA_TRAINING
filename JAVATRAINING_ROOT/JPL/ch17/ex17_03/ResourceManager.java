@@ -70,7 +70,7 @@ public class ResourceManager
         public void use(Object key, Object... args)
         {
             // if (System.identityHashCode(key) != keyHash)
-            if (implKey.equals(key))
+            if (!implKey.get().equals(key))
             {
                 throw new IllegalArgumentException("wrong key");
             }
@@ -84,6 +84,9 @@ public class ResourceManager
                 needsRelease = false;
 
                 // ... リソースの解放 ...
+
+                // implKey.clear();
+                implKey = null;
             }
         }
     }
@@ -118,6 +121,22 @@ public class ResourceManager
 
     public static void main(String[] args)
     {
-        // テスト…？
+        ResourceManager test = new ResourceManager();
+
+        System.out.println("resource1");
+
+        String key1 = "key1";
+
+        Resource resource1 = test.getResource(key1);
+        resource1.use(key1);
+        resource1.release();
+
+        System.out.println("resource2");
+
+        String key2 = "key2";
+
+        Resource resource2 = test.getResource(key2);
+        resource2.use(key1);
+        resource2.release();
     }
 }
