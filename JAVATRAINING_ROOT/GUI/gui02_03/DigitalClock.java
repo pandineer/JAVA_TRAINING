@@ -72,16 +72,16 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
     private int windowSizeX = 60 * 8 + 50;
     private int windowSizeY = 60 + 50;
 
-    public PopupMenu popup = new PopupMenu();
+    public JPopupMenu popup = new JPopupMenu();
 
-    private Menu property = new Menu("Property");
-    private MenuItem menuItemExit = new MenuItem("Exit");
+    private JMenu property = new JMenu("Property");
+    private JMenuItem menuItemExit = new JMenuItem("Exit");
 
-    private Menu menuFontType = new Menu("Font Type");
-    private Menu menuFontStyle = new Menu("Font Style");
-    private Menu menuFontSize = new Menu("Font Size");
-    private Menu menuFontColor = new Menu("Font Color");
-    private Menu menuBackgroundColor = new Menu("BackgroundColor");
+    private JMenu menuFontType = new JMenu("Font Type");
+    private JMenu menuFontStyle = new JMenu("Font Style");
+    private JMenu menuFontSize = new JMenu("Font Size");
+    private JMenu menuFontColor = new JMenu("Font Color");
+    private JMenu menuBackgroundColor = new JMenu("BackgroundColor");
 
     static private String fonts[] = GraphicsEnvironment
             .getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
@@ -134,14 +134,14 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
         {
             for (int i = 0; i < stringColor.length; i++)
             {
-                menuFontColor.add(new MenuItem(stringColor[i]));
+                menuFontColor.add(new JMenuItem(stringColor[i]));
             }
         }
         property.add(menuBackgroundColor);
         {
             for (int i = 0; i < stringColor.length; i++)
             {
-                menuBackgroundColor.add(new MenuItem(stringColor[i]));
+                menuBackgroundColor.add(new JMenuItem(stringColor[i]));
             }
         }
         popup.add(property);
@@ -154,7 +154,7 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
         menuBackgroundColor.addActionListener(this);
         menuItemExit.addActionListener(this);
 
-        add(popup);
+        this.add(popup);
 
         mouse = new LeftDrag(this);
 
@@ -216,6 +216,7 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
         this.fontStyle = fontStyle;
     }
 
+    /*
     @Override
     public void update(Graphics g)
     {
@@ -223,6 +224,7 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
         // (画面がクリアされないようにする)
         paint(g);
     }
+    */
 
     @Override
     public void run()
@@ -346,7 +348,6 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
         }
         else if ("Exit" == e.getActionCommand())
         {
-            System.out.println(e);
             System.exit(0);
         }
         else
@@ -462,7 +463,8 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
             }
             else if (3 == e.getButton())
             {
-                digitalClock.popup.show(e.getComponent(), e.getX(), e.getY());
+                // digitalClock.popup.show(e.getComponent(), e.getX(), e.getY());
+                digitalClock.popup.show(e.getComponent(), 100, 100);
             }
         }
     }
