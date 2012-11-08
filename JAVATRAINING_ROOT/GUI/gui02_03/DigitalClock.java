@@ -35,9 +35,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
-import java.awt.Menu;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -113,35 +110,45 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
         {
             for (int i = 0; i < fonts.length; i++)
             {
-                menuFontType.add(fonts[i]);
+                JMenuItem tmp = new JMenuItem(fonts[i]);
+                menuFontType.add(tmp);
+                tmp.addActionListener(this);
             }
         }
         property.add(menuFontStyle);
         {
             for (int i = 0; i < stringFontStyle.length; i++)
             {
-                menuFontStyle.add(stringFontStyle[i]);
+                JMenuItem tmp = new JMenuItem(stringFontStyle[i]);
+                menuFontStyle.add(tmp);
+                tmp.addActionListener(this);
             }
         }
         property.add(menuFontSize);
         {
             for (Integer i = 10; i < 300; i += 30)
             {
-                menuFontSize.add(i.toString());
+                JMenuItem tmp = new JMenuItem(i.toString());
+                menuFontSize.add(tmp);
+                tmp.addActionListener(this);
             }
         }
         property.add(menuFontColor);
         {
             for (int i = 0; i < stringColor.length; i++)
             {
-                menuFontColor.add(new JMenuItem(stringColor[i]));
+                JMenuItem tmp = new JMenuItem(stringColor[i]);
+                menuFontColor.add(tmp);
+                tmp.addActionListener(this);
             }
         }
         property.add(menuBackgroundColor);
         {
             for (int i = 0; i < stringColor.length; i++)
             {
-                menuBackgroundColor.add(new JMenuItem(stringColor[i]));
+                JMenuItem tmp = new JMenuItem(stringColor[i]);
+                menuBackgroundColor.add(tmp);
+                tmp.addActionListener(this);
             }
         }
         mouse = new LeftDrag(this);
@@ -154,14 +161,15 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
         popup.add(menuItemExit);
 
 
+
+        /*
         menuFontType.addActionListener(this);
         menuFontStyle.addActionListener(this);
         menuFontSize.addActionListener(this);
         menuFontColor.addActionListener(this);
         menuBackgroundColor.addActionListener(this);
+        */
         menuItemExit.addActionListener(this);
-
-
         // this.add(popup);
 
 
@@ -326,6 +334,8 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
     public void actionPerformed(ActionEvent e)
     {
         System.out.println(e);
+        System.out.println(e.getActionCommand());
+        System.out.println(e.getSource());
         if (menuFontType == e.getSource())
         {
             setFontType(e.getActionCommand());
@@ -448,8 +458,6 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
             }
             else if (3 == e.getButton())
             {
-                System.out.println(e.getComponent());
-                System.out.println(e.isPopupTrigger());
                 digitalClock.popup.show(e.getComponent(), e.getX(), e.getY());
             }
         }
@@ -465,17 +473,16 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
 
         public void mousePressed(MouseEvent e)
         {
-            System.out.println(e);
             if (1 == e.getButton())
             {
                 startMouse = e;
             }
             else if (3 == e.getButton())
             {
-                System.out.println(e.getComponent());
-                System.out.println(e.isPopupTrigger());
-                // digitalClock.popup.show(e.getComponent(), e.getX(), e.getY());
-                // digitalClock.popup.show(e.getComponent(), 100, 100);
+                if (e.isPopupTrigger())
+                {
+                    digitalClock.popup.show(e.getComponent(), e.getX(), e.getY());
+                }
             }
         }
     }
