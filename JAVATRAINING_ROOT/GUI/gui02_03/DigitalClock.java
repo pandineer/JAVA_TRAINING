@@ -51,6 +51,8 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
 {
     private static final long serialVersionUID = 1L;
 
+    private int clockState = 0;
+
     private Date currentDate;
     private SimpleDateFormat simpleDataFormat = new SimpleDateFormat("HH:mm:ss");
 
@@ -60,7 +62,7 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
     private Image imageBuffer;
     private Graphics graphicBuffer;
 
-    private String fontType = "Broadway BT";
+    private String fontType = "TimesRoman";
     private int fontStyle = Font.PLAIN;
     private Integer fontSize = 60;
     private Color fontColor = Color.black;
@@ -87,13 +89,20 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
     { "Plain", "Bold", "Italic", "Bold and Italic" };
     static private int intFontStyle[] =
     { Font.PLAIN, Font.BOLD, Font.ITALIC, Font.BOLD | Font.ITALIC };
+    static private int intFontSize[] = {30, 60, 90, 120, 150, 180, 210, 240, 270, 300};
 
-    static private String stringColor[] =
-    { "Black", "White", "Red", "Green", "Blue", "Cyan", "Magenta", "Yellow",
-            "Orange" };
-    static private Color colorColor[] =
+    static private String stringFontColor[] =
+    { "Font:Black", "Font:White", "Font:Red", "Font:Green", "Font:Blue", "Font:Cyan", "Font:Magenta", "Font:Yellow",
+            "Font:Orange" };
+    static private String stringBGColor[] =
+        { "BG:Black", "BG:White", "BG:Red", "BG:Green", "BG:Blue", "BG:Cyan", "BG:Magenta", "BG:Yellow",
+                "BG:Orange" };
+    static private Color colorFontColor[] =
     { Color.black, Color.white, Color.red, Color.green, Color.blue, Color.cyan,
             Color.magenta, Color.yellow, Color.orange };
+    static private Color colorBGColor[] =
+        { Color.black, Color.white, Color.red, Color.green, Color.blue, Color.cyan,
+                Color.magenta, Color.yellow, Color.orange };
 
     private LeftDrag mouse;
 
@@ -126,27 +135,27 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
         }
         property.add(menuFontSize);
         {
-            for (Integer i = 10; i < 300; i += 30)
+            for (int i = 0; i < intFontSize.length; i++)
             {
-                JMenuItem tmp = new JMenuItem(i.toString());
+                JMenuItem tmp = new JMenuItem(String.valueOf(intFontSize[i]));
                 menuFontSize.add(tmp);
                 tmp.addActionListener(this);
             }
         }
         property.add(menuFontColor);
         {
-            for (int i = 0; i < stringColor.length; i++)
+            for (int i = 0; i < stringFontColor.length; i++)
             {
-                JMenuItem tmp = new JMenuItem(stringColor[i]);
+                JMenuItem tmp = new JMenuItem(stringFontColor[i]);
                 menuFontColor.add(tmp);
                 tmp.addActionListener(this);
             }
         }
         property.add(menuBackgroundColor);
         {
-            for (int i = 0; i < stringColor.length; i++)
+            for (int i = 0; i < stringBGColor.length; i++)
             {
-                JMenuItem tmp = new JMenuItem(stringColor[i]);
+                JMenuItem tmp = new JMenuItem(stringBGColor[i]);
                 menuBackgroundColor.add(tmp);
                 tmp.addActionListener(this);
             }
@@ -162,16 +171,15 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
 
 
 
-        /*
+
         menuFontType.addActionListener(this);
         menuFontStyle.addActionListener(this);
         menuFontSize.addActionListener(this);
         menuFontColor.addActionListener(this);
         menuBackgroundColor.addActionListener(this);
-        */
+
         menuItemExit.addActionListener(this);
         // this.add(popup);
-
 
     }
 
@@ -182,6 +190,10 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
 
         // 時刻用文字列の生成
         stringCurrentTime = " Current: " + simpleDataFormat.format(currentDate);
+        if (clockState == 0)
+        {
+            stringCurrentTime = "HELLO!";
+        }
 
         if (null != graphicBuffer)
         {
@@ -217,6 +229,19 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
 
         // バッファのコピー
         g.drawImage(imageBuffer, 0, 0, this);
+
+        if (clockState == 0)
+        {
+            try
+            {
+                Thread.sleep(2000);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+            clockState = 1;
+        }
     }
 
     public int getFontStyle()
@@ -333,9 +358,10 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        System.out.println(e);
-        System.out.println(e.getActionCommand());
-        System.out.println(e.getSource());
+        // System.out.println(e);
+        // System.out.println(e.getActionCommand());
+        // System.out.println(e.getSource());
+        /*
         if (menuFontType == e.getSource())
         {
             setFontType(e.getActionCommand());
@@ -362,17 +388,59 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
         {
             setBackgroundColor(changeStringToColor(e.getActionCommand()));
         }
-        else if ("Exit" == e.getActionCommand())
+        */
+        for (int i = 0; i < fonts.length; i++)
+        {
+            if (fonts[i] == e.getActionCommand())
+            {
+                setFontType(e.getActionCommand());
+            }
+        }
+
+        for (int i = 0; i < stringFontStyle.length; i++)
+        {
+            if (e.getActionCommand() == stringFontStyle[i])
+            {
+                setFontStyle(intFontStyle[i]);
+            }
+        }
+
+        for (int i = 0; i < intFontSize.length; i++)
+        {
+            if (e.getActionCommand().equals(String.valueOf(intFontSize[i])))
+            {
+                setFontSize(Integer.valueOf(e.getActionCommand()));
+            }
+        }
+
+        for (int i = 0; i < stringFontColor.length; i++)
+        {
+            if (e.getActionCommand() == stringFontColor[i])
+            {
+                setFontColor(colorFontColor[i]);
+            }
+        }
+
+        for (int i = 0; i < stringBGColor.length; i++)
+        {
+            if (e.getActionCommand() == stringBGColor[i])
+            {
+                setBackgroundColor(colorBGColor[i]);
+            }
+        }
+
+        if ("Exit" == e.getActionCommand())
         {
             System.exit(0);
         }
         else
         {
-            System.out.println(e.getSource());
-            System.out.println("This action is not implemented!");
+            // System.out.println(e.getSource());
+            // System.out.println("This action is not implemented!");
         }
     }
 
+    /*
     public Color changeStringToColor(String colorString)
     {
         for (int i = 0; i < stringColor.length; i++)
@@ -384,6 +452,7 @@ public class DigitalClock extends JWindow implements Runnable, ActionListener
         }
         return Color.black;
     }
+    */
 
     public void setWindowLocation(int x, int y)
     {
