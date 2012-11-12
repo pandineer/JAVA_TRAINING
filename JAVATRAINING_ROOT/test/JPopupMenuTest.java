@@ -1,8 +1,11 @@
-import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
 class JPopupMenuTest extends JFrame implements ActionListener, MouseListener {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     JPopupMenu popup = new JPopupMenu();
     JPopupMenuTest() {
         JMenuItem menuA = new JMenuItem("menuA");
