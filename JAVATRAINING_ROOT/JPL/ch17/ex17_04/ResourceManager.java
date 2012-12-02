@@ -60,7 +60,8 @@ public class ResourceManager
     private static class ResourceImpl implements Resource
     {
         // int keyHash;
-        SoftReference<Object> implKey; // Referenceオブジェクトがキーへの強い参照を保持していないことが重要
+        SoftReference<Object> implKey;
+
         boolean needsRelease = false;
 
         ResourceImpl(Object key)
@@ -81,6 +82,7 @@ public class ResourceManager
                 throw new IllegalArgumentException("wrong key");
             }
             // ... リソースの使用 ...
+            // System.out.println(key.toString() + " is used. ");
         }
 
         public synchronized void release()
@@ -90,8 +92,7 @@ public class ResourceManager
                 needsRelease = false;
 
                 // ... リソースの解放 ...
-                // implKey.clear();
-                implKey = null;
+                implKey.clear();
             }
         }
     }
@@ -101,14 +102,13 @@ public class ResourceManager
     {
         public void run()
         {
-            Reference<?> ref = null;
             boolean threadShutdown = false;
             // 割り込まれるまで実行
             while(true)
             {
                 try
                 {
-                    ref = queue.remove();
+                    Reference<?> ref = queue.remove();
                     Resource res = null;
                     synchronized(ResourceManager.this)
                     {
@@ -125,7 +125,9 @@ public class ResourceManager
                     if (refs.size() == 0)
                     {
                         System.out.println("all resouces are released. ");
-                        break;
+                        Runtime.getRuntime().gc();
+                        System.out.println("Shutdown finished: " + Runtime.getRuntime().freeMemory());
+                        return;
                     }
                     else
                     {
@@ -135,7 +137,9 @@ public class ResourceManager
                 if (refs.size() == 0 && threadShutdown)
                 {
                     System.out.println("all resouces are released. ");
-                    break;
+                    Runtime.getRuntime().gc();
+                    System.out.println("Shutdown finished: " + Runtime.getRuntime().freeMemory());
+                    return;
                 }
             }
         }
@@ -158,7 +162,7 @@ public class ResourceManager
             resources[i].use(tmp, (Object[])null);
         }
 
-        System.out.println("100 resources are used: " + Runtime.getRuntime().freeMemory());
+        System.out.println("10000 resources are used: " + Runtime.getRuntime().freeMemory());
 
         for (int i = 0; i < ((resources.length) / 2); i++)
         {
@@ -171,6 +175,15 @@ public class ResourceManager
         test.shutdown();
 
         System.out.println("Shutdown ResourceManager");
+
+        try
+        {
+            Thread.sleep(100);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
 
         for(int i = ((resources.length) / 2); i < resources.length; i++)
         {
