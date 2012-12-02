@@ -54,7 +54,8 @@ public class ResourceManager
     private static class ResourceImpl implements Resource
     {
         // int keyHash;
-        SoftReference<Object> implKey; // Referenceオブジェクトがキーへの強い参照を保持していないことが重要
+        SoftReference<Object> implKey;
+
         boolean needsRelease = false;
 
         ResourceImpl(Object key)
@@ -75,6 +76,7 @@ public class ResourceManager
                 throw new IllegalArgumentException("wrong key");
             }
             // ... リソースの使用 ...
+            System.out.println(key.toString() + " is used. ");
         }
 
         public synchronized void release()
@@ -84,9 +86,7 @@ public class ResourceManager
                 needsRelease = false;
 
                 // ... リソースの解放 ...
-
-                // implKey.clear();
-                implKey = null;
+                implKey.clear();
             }
         }
     }
@@ -110,6 +110,7 @@ public class ResourceManager
                     }
                     res.release();
                     ref.clear();
+                    System.out.println("reaper!");
                 }
                 catch (InterruptedException ex)
                 {
@@ -135,8 +136,17 @@ public class ResourceManager
 
         String key2 = "key2";
 
-        Resource resource2 = test.getResource(key2);
-        resource2.use(key1);
-        resource2.release();
+        try
+        {
+            Resource resource2 = test.getResource(key2);
+            resource2.use(key1);
+            resource2.release();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+
+        test.shutdown();
     }
 }
