@@ -25,6 +25,9 @@ public class Test
         System.out.println(Pattern.compile(regex).matcher(str));
         System.out.println(Pattern.compile(regex).matcher(str).replaceFirst(repStr));
         System.out.println(Pattern.compile(regex).matcher(str).matches());
+
+        System.out.println();
+        System.out.println(System.in.getClass());
     }
 
 }
