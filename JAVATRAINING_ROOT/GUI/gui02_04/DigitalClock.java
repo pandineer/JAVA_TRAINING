@@ -50,6 +50,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 public class DigitalClock extends JFrame implements Runnable, ActionListener
@@ -74,9 +77,9 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
 
     private PropertyDialog dialog;
 
-    private Menu menuMenu;
-    private MenuBar menuBar;
-    private MenuItem menuProperty;
+    private JMenu menuMenu;
+    private JMenuBar menuBar;
+    private JMenuItem menuProperty;
 
     // Constructor
     public DigitalClock()
@@ -111,16 +114,17 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
         currentDate = new Date();
 
         // create menu bar
-        menuBar = new MenuBar();
-        setMenuBar(menuBar);
+        menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
 
         // [Menu]
-        menuMenu = new Menu("Menu");
+        menuMenu = new JMenu("Menu");
         menuMenu.addActionListener(this);
         menuBar.add(menuMenu);
 
         // [Menu] - [Property]
-        menuProperty = new MenuItem("Property");
+        menuProperty = new JMenuItem("Property");
+        menuProperty.addActionListener(this);
         menuMenu.add(menuProperty);
 
         // create property dialog
@@ -178,8 +182,9 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
             // windowSizeY = g.getFontMetrics().getAscent();
             // windowSizeY += g.getFontMetrics().getDescent();
             // windowSizeY += g.getFontMetrics().getLeading();
-            // windowSizeY *= 2; // キャプチャした時刻用
+            windowSizeY *= 2; // キャプチャした時刻用
             windowSizeY += me.getInsets().top;
+            System.out.println(g.getFontMetrics().getHeight());
             }
             // this.setSize(500, 500);
 
@@ -189,8 +194,12 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
 
             // draw date
             g.setColor(fontColor);
-            g.drawString(simpleDataFormat.format(currentDate), 0, g.getFontMetrics().getAscent());
+            // g.drawString(simpleDataFormat.format(currentDate), 0, g.getFontMetrics().getAscent());
+            g.drawString(simpleDataFormat.format(currentDate), 0, g.getFontMetrics().getHeight());
+            // g.drawString(simpleDataFormat.format(currentDate), 0, me.getInsets().top);
+            System.out.println(g.getFontMetrics().getHeight());
             // g.drawLine(0, g.getFontMetrics().getAscent(), 100, g.getFontMetrics().getAscent()); // base line
+            g.drawLine(0, g.getFontMetrics().getHeight(), 100, g.getFontMetrics().getHeight()); // base line
         }
     }
 
@@ -199,7 +208,9 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if (e.getActionCommand() == "Property")
+        System.out.println(e);
+        System.out.println(e.getSource());
+        if (e.getSource() == menuProperty)
         {
             // クリックしたのが「Property」だったら
             dialog.resetParameter();
