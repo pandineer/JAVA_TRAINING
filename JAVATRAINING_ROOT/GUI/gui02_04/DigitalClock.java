@@ -67,7 +67,7 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
 
     private String fontType = "TimesRoman";
     private int fontStyle = Font.PLAIN;
-    private Integer fontSize = 48;
+    private Integer fontSize = 40;
     private Color fontColor = Color.black;
     private Font fontSetting = new Font(fontType, fontStyle, fontSize);
     private Color backgroundColor = Color.white;
@@ -134,7 +134,7 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
     @Override
     public void run()
     {
-        while(true)
+        while (true)
         {
             drawPanel.repaint();
             this.setSize(windowSizeX, windowSizeY);
@@ -142,7 +142,7 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
             {
                 Thread.sleep(1000);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 System.out.println("Error occurs at sleep: " + e);
             }
@@ -171,20 +171,22 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
             // ウィンドウサイズの計算
             if (null != g)
             {
-            windowSizeX = g.getFontMetrics().stringWidth(simpleDataFormat.format(currentDate));
-            windowSizeX += me.getInsets().left;
-            windowSizeX += me.getInsets().right;
+                windowSizeX = g.getFontMetrics().stringWidth(
+                        simpleDataFormat.format(currentDate));
+                windowSizeX += me.getInsets().left;
+                windowSizeX += me.getInsets().right;
             }
 
             if (null != g)
             {
-                windowSizeY = g.getFontMetrics().getHeight();
-            // windowSizeY = g.getFontMetrics().getAscent();
-            // windowSizeY += g.getFontMetrics().getDescent();
-            // windowSizeY += g.getFontMetrics().getLeading();
-            windowSizeY *= 2; // キャプチャした時刻用
-            windowSizeY += me.getInsets().top;
-            System.out.println(g.getFontMetrics().getHeight());
+                // windowSizeY = g.getFontMetrics().getHeight();
+                windowSizeY = g.getFontMetrics().getMaxAscent(); // 最大の高さ
+                // windowSizeY = g.getFontMetrics().getAscent(); // 高さ。はみ出すかも。
+                windowSizeY += g.getFontMetrics().getDescent(); // ベースラインから下の深さ
+                // windowSizeY += g.getFontMetrics().getLeading(); // 行間
+                // windowSizeY *= 2; // キャプチャした時刻用
+                windowSizeY += me.getInsets().top;
+                windowSizeY += menuBar.getHeight();
             }
             // this.setSize(500, 500);
 
@@ -194,16 +196,10 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
 
             // draw date
             g.setColor(fontColor);
-            // g.drawString(simpleDataFormat.format(currentDate), 0, g.getFontMetrics().getAscent());
-            g.drawString(simpleDataFormat.format(currentDate), 0, g.getFontMetrics().getHeight());
-            // g.drawString(simpleDataFormat.format(currentDate), 0, me.getInsets().top);
-            System.out.println(g.getFontMetrics().getHeight());
-            // g.drawLine(0, g.getFontMetrics().getAscent(), 100, g.getFontMetrics().getAscent()); // base line
-            g.drawLine(0, g.getFontMetrics().getHeight(), 100, g.getFontMetrics().getHeight()); // base line
+            g.drawString(simpleDataFormat.format(currentDate), 0, g.getFontMetrics().getMaxAscent());
+            // g.drawLine(0, g.getFontMetrics().getMaxAscent(), 100, g.getFontMetrics().getMaxAscent()); // base line
         }
     }
-
-
 
     @Override
     public void actionPerformed(ActionEvent e)
@@ -221,7 +217,6 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
             System.out.println("actionPerformed error");
         }
     }
-
 
     public String getFontType()
     {
@@ -273,7 +268,6 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
         this.backgroundColor = backgroundColor;
     }
 
-
     /**
      * @param args
      */
@@ -283,6 +277,5 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
         window.th = new Thread(window);
         window.th.start(); // スレッドスタート
     }
-
 
 }
