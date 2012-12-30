@@ -21,18 +21,26 @@
 package gui02_04;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JRadioButton;
+import javax.swing.ListCellRenderer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -48,10 +56,12 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
 
     private JComboBox choiceFontType = new JComboBox();
     private JComboBox choiceFontSize = new JComboBox();
-    private JComboBox choiceFontColor = new JComboBox();
+    private JComboBox choiceFontColor;//  = new JComboBox();
     private JRadioButton radioButtonFontColor[] = new JRadioButton[stringColor.length];
     private ButtonGroup bg = new ButtonGroup();
     private JComboBox choiceBackgroundColor = new JComboBox();
+    private BufferedImage iconImage[] = new BufferedImage[stringColor.length];
+    private ImageIcon icon[] = new ImageIcon[stringColor.length];
 
     private JLabel labelFontType = new JLabel("Font Type: ");
     private JLabel labelFontSize = new JLabel("Font Size: ");
@@ -60,6 +70,9 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
     private JLabel labelRadioButtonSampleColorChip[] = new JLabel[colorColor.length];
     private JLabel labelBackgroundColor = new JLabel("Background Color: ");
     private JLabel labelBackgroundColorSample = new JLabel("■Sample: 15:00");
+    private JLabel testLabel = new JLabel();
+
+    private DefaultComboBoxModel fontColorModel = new DefaultComboBoxModel();
 
     private String defaultFontColor;
     private String defaultBackgroundColor;
@@ -204,11 +217,42 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
         gridyCount--;
         */
         // choice
+        /*
+        testLabel.setText("TEST");
+        // iconImage.setRGB(20, 20, (0 >>> 24 | 0 >>> 16 | 0 >>> 8 | 255));
+        for (int y = 0; y < 20; y++)
+        {
+            for (int x = 0; x < 20; x++)
+            {
+                iconImage.setRGB(x, y, 255);
+            }
+        }
+
+        icon = new ImageIcon(iconImage);
+        testLabel.setIcon(icon);
+        */
         for (int i = 0; i < stringColor.length; i++)
         {
-            choiceFontColor.setForeground(colorColor[i]);
-            choiceFontColor.addItem(stringColor[i]);
+            // TODO
+            iconImage[i] = new BufferedImage(16, 16, BufferedImage.TYPE_INT_BGR);
+            for (int y = 0; y < 16; y++)
+            {
+                for (int x = 0; x < 16; x++)
+                {
+                    iconImage[i].setRGB(x, y, colorColor[i].getRGB());
+                }
+            }
+            icon[i] = new ImageIcon(iconImage[i]);
+            fontColorModel.addElement(new ComboLabel(stringColor[i], icon[i]));
+            // choiceFontColor.setForeground(colorColor[i]);
+            // choiceFontColor.addItem(stringColor[i]);
+            // choiceFontColor.addItem(testLabel);
+            // choiceFontColor.add(testLabel);
+            // choiceFontColor.addItem(icon);
+            // choiceFontColor.addItem("test");
         }
+        choiceFontColor = new JComboBox(fontColorModel);
+        choiceFontColor.setRenderer(new MyCellRenderer());
         choiceFontColor.setSelectedItem(defaultFontColor);
         gbc.gridx = 1;
         gbc.gridy = gridyCount;
@@ -404,6 +448,45 @@ public class PropertyDialog extends JDialog implements ActionListener, ItemListe
                 newFontColor = colorColor[i];
                 labelBackgroundColorSample.setForeground(newFontColor);
             }
+        }
+    }
+
+
+    public class MyCellRenderer extends JLabel implements ListCellRenderer
+    {
+        private static final long serialVersionUID = -1252365831452353943L;
+
+        public Component getListCellRendererComponent(JList list, Object value,
+                int index, boolean isSelected, boolean cellHasFocus)
+        {
+
+            ComboLabel data = (ComboLabel) value;
+            setText(data.getText());
+            setIcon(data.getIcon());
+
+            return this;
+        }
+    }
+
+    public class ComboLabel
+    {
+        String text;
+        Icon icon;
+
+        ComboLabel(String text, Icon icon)
+        {
+            this.text = text;
+            this.icon = icon;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+
+        public Icon getIcon()
+        {
+            return icon;
         }
     }
 
