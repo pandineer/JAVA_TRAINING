@@ -45,6 +45,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -62,21 +63,23 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
     private Date currentDate;
     private SimpleDateFormat simpleDataFormat = new SimpleDateFormat("HH:mm:ss");
 
-    private String fontType = "TimesRoman";
+    private String fontType = "Times New Roman";
     private int fontStyle = Font.PLAIN;
-    private Integer fontSize = 40;
+    private Integer fontSize = 80;
     private Color fontColor = Color.black;
     private Font fontSetting = new Font(fontType, fontStyle, fontSize);
     private Color backgroundColor = Color.white;
-
-    private int windowSizeX = 48 * 8 + 50;
-    private int windowSizeY = 48 + 50;
 
     private PropertyDialog dialog;
 
     private JMenu menuMenu;
     private JMenuBar menuBar;
     private JMenuItem menuProperty;
+
+    private Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+
+    private int windowSizeX = prefs.getInt("miyahara_window_width", 80 * 8 + 50);
+    private int windowSizeY = prefs.getInt("miyahara_window_height", 80 + 50);
 
     // Constructor
     public DigitalClock()
@@ -92,16 +95,36 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
         {
             public void windowClosing(WindowEvent e)
             {
+                // windowを閉じるときにパラメータを保存する
+                prefs.putInt("miyahara_window_x", (int)getBounds().getX());
+                prefs.putInt("miyahara_window_y", (int)getBounds().getY());
+                prefs.putInt("miyahara_window_width", (int)getBounds().getWidth());
+                prefs.putInt("miyahara_window_height", (int)getBounds().getHeight());
+
+                prefs.put("miyahara_font_type", fontType);
+                prefs.putInt("miyahara_font_size", fontSize);
+                prefs.put("miyahara_font_color", PropertyDialog.changeColorToString(fontColor));
+                prefs.put("miyahara_bg_color", PropertyDialog.changeColorToString(backgroundColor));
+
                 System.exit(0);
             }
         });
 
         // Initialize
 
+
+
         // Initialaize window
         this.setSize(windowSizeX, windowSizeY);
         this.setResizable(false);
         this.setVisible(true);
+
+        // prefsからパラメータを読み込む
+        setBounds(prefs.getInt("miyahara_window_x", 500), prefs.getInt("miyahara_window_y", 100), prefs.getInt("miyahara_window_width", 80 * 8 + 50), prefs.getInt("miyahara_window_height", 80 + 50));
+        fontType = prefs.get("miyahara_font_type", "Times New Roman");
+        fontSize = prefs.getInt("miyahara_font_size", 80);
+        fontColor = PropertyDialog.changeStringToColor(prefs.get("miyahara_font_color", PropertyDialog.stringColor[3]));
+        backgroundColor = PropertyDialog.changeStringToColor(prefs.get("miyahara_bg_color", PropertyDialog.stringColor[0]));
 
         // Initialize drawPanel
         drawPanel = new DrawPanel();
@@ -120,7 +143,7 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
         menuBar.add(menuMenu);
 
         // [Menu] - [Property]
-        menuProperty = new JMenuItem("Property");
+        menuProperty = new JMenuItem("Property...");
         menuProperty.addActionListener(this);
         menuMenu.add(menuProperty);
 
@@ -185,7 +208,6 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
                 windowSizeY += me.getInsets().top;
                 windowSizeY += menuBar.getHeight();
             }
-            // this.setSize(500, 500);
 
             // set background
             g.setColor(backgroundColor);
@@ -201,8 +223,6 @@ public class DigitalClock extends JFrame implements Runnable, ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        System.out.println(e);
-        System.out.println(e.getSource());
         if (e.getSource() == menuProperty)
         {
             // クリックしたのが「Property」だったら
