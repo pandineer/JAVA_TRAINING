@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.regex.Pattern;
 
 
@@ -28,6 +29,9 @@ public class Test
 
         System.out.println();
         System.out.println(System.in.getClass());
+
+        Random random = new Random();
+        random.nextDouble();
     }
 
 }
