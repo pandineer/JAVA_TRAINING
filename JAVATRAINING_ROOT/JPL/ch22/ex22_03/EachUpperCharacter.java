@@ -4,8 +4,6 @@
  * 各BitSetオブジェクトは、特定の上位バイトを持っている文字の下位バイトを保存します。
  */
 
-// TODO: 途中…
-
 package ch22.ex22_03;
 
 import java.util.BitSet;
