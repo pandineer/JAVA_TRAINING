@@ -1,4 +1,4 @@
-package plugin;
+package old_plugin;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -83,15 +83,17 @@ public class SamplePluginApp extends JFrame {
     public ArrayList<SamplePluginAppPlugin> getPlugins() {
         ArrayList <SamplePluginAppPlugin>plugins =
                 new ArrayList<SamplePluginAppPlugin>();
-        // String cpath = System.getProperty("user.dir") + File.separator + "plugins";
-        String cpath = "C:\\home\\miyahara\\90_warehouse\\01_git\\JAVA_TRAINING2\\JAVA_TRAINING\\JAVATRAINING_ROOT\\test\\plugin\\plugins";
+        String cpath = System.getProperty("user.dir") + File.separator + "plugins";
+        // String cpath = System.getProperty("user.dir") + "\\test\\plugin" + File.separator + "plugins";
+        System.out.println(cpath);
+        // String cpath = "C:\\home\\miyahara\\90_warehouse\\01_git\\JAVA_TRAINING2\\JAVA_TRAINING\\JAVATRAINING_ROOT\\test\\plugin\\plugins";
         try {
             File f = new File(cpath);
             String[] files = f.list();
             for (int i = 0; i < files.length; i++) {
                 if (files[i].endsWith(".jar")) {
-                    // File file = new File(cpath + File.separator + files[i]);
-                    File file = new File("C:\\home\\miyahara\\90_warehouse\\01_git\\JAVA_TRAINING2\\JAVA_TRAINING\\JAVATRAINING_ROOT\\test\\plugin\\plugins\\average.jar");
+                    File file = new File(cpath + File.separator + files[i]);
+                    // File file = new File("C:\\home\\miyahara\\90_warehouse\\01_git\\JAVA_TRAINING2\\JAVA_TRAINING\\JAVATRAINING_ROOT\\test\\plugin\\plugins\\average.jar");
                     JarFile jar = new JarFile(file);
                     Manifest mf = jar.getManifest();
                     Attributes att = mf.getMainAttributes();

@@ -1,4 +1,4 @@
-package plugin;
+package old_plugin;
 
 import java.awt.Rectangle;
 import javax.swing.*;
