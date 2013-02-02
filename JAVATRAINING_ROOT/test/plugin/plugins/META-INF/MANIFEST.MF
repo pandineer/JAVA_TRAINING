@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Plugin-Class: AveragePlugin
-Created-By: 1.7.0_11 (Oracle Corporation)
-
