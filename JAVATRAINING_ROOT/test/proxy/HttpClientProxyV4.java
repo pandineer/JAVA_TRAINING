@@ -19,11 +19,11 @@ public class HttpClientProxyV4 {
      // HttpHost proxy = new HttpHost("192.168.0.101", 8080);
      // httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 
-     Credentials credentials = new UsernamePasswordCredentials("user","hoge");
-     AuthScope scope = new AuthScope("proxy_hostname", PORT);
-     httpClient.getCredentialsProvider().setCredentials(scope, credentials);
+     // Credentials credentials = new UsernamePasswordCredentials("user","hoge");
+     // AuthScope scope = new AuthScope("proxy_hostname", PORT);
+     // httpClient.getCredentialsProvider().setCredentials(scope, credentials);
 
-     HttpGet request = new HttpGet("http://google.com");
+     HttpGet request = new HttpGet("http://panda.holy.jp");
      HttpResponse httpResponse = null;
      try {
          System.out.println("start");

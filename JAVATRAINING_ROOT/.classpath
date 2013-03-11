@@ -4,6 +4,14 @@
 	<classpathentry kind="src" path="GUI"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="Interpret"/>
+	<classpathentry kind="src" path="Final"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="F:/90_Temporary/00_Download/httpcomponents-client-4.2.3/lib/httpmime-4.2.3.jar"/>
+	<classpathentry kind="lib" path="F:/90_Temporary/00_Download/httpcomponents-client-4.2.3/lib/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="F:/90_Temporary/00_Download/httpcomponents-client-4.2.3/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="F:/90_Temporary/00_Download/httpcomponents-client-4.2.3/lib/fluent-hc-4.2.3.jar"/>
+	<classpathentry kind="lib" path="F:/90_Temporary/00_Download/httpcomponents-client-4.2.3/lib/httpclient-4.2.3.jar"/>
+	<classpathentry kind="lib" path="F:/90_Temporary/00_Download/httpcomponents-client-4.2.3/lib/httpclient-cache-4.2.3.jar"/>
+	<classpathentry kind="lib" path="F:/90_Temporary/00_Download/httpcomponents-client-4.2.3/lib/httpcore-4.2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
