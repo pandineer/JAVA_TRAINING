@@ -26,6 +26,19 @@ public class ImagePanel extends JPanel {
         }
     }
 
+    public void changeImage(String path)
+    {
+    	try
+    	{
+    		this.image = ImageIO.read(getClass().getResource(path));
+    	}
+    	catch(IOException ex)
+    	{
+    		ex.printStackTrace();
+    		this.image = null;
+    	}
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2D = (Graphics2D) g;

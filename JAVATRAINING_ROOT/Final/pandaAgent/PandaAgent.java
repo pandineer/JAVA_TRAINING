@@ -14,8 +14,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class PandaAgent extends JFrame
+public class PandaAgent extends JFrame implements Runnable
 {
+	private static final long serialVersionUID = -6637964777080358948L;
+
     // Parameter
     private final int windowSizeX = 640;
     private final int windowSizeY = 420;
@@ -29,6 +31,7 @@ public class PandaAgent extends JFrame
     private final ImagePanel balloonPanel = new ImagePanel("/pandaAgent/balloon.png");
     private final ImagePanel pandaPanel = new ImagePanel("/pandaAgent/panda_agent_close.png");
 
+    // Constructor
     public PandaAgent()
     {
         // Set title
@@ -62,17 +65,35 @@ public class PandaAgent extends JFrame
         balloonPanel.add(new JLabel("Test"));
     }
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -6637964777080358948L;
+    @Override
+    public void run()
+    {
+    	System.out.println("1");
+    	while(true)
+    	{
+    		try
+    		{
+    			System.out.println("2");
+    			Thread.sleep(1000);
+    			pandaPanel.changeImage("/pandaAgent/panda_agent_open.png");
+    			pandaPanel.repaint();
+    			Thread.sleep(1000);
+    			pandaPanel.changeImage("/pandaAgent/panda_agent_close.png");
+    			pandaPanel.repaint();
+    		}
+    		catch(Exception e)
+    		{
+    			System.out.println(e);
+    		}
+    	}
 
-    /**
-     * @param args
-     */
+    }
+
     public static void main(String[] args)
     {
         PandaAgent panda = new PandaAgent();
+        Thread mainThread = new Thread(panda);
+        mainThread.start();
     }
 
 }
