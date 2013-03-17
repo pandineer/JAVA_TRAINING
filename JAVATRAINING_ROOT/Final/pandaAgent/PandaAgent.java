@@ -28,6 +28,10 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     private final int speakSpeed = 50;
     private final int speakQueueSize = 10;
     private final int speakMouthSwitchSpeed = 3;
+    private final int pandaSleep = 100;
+
+    // String
+    private final String helloString = "Hello, how are you??";
 
     // Component
     private final BorderLayout balloonInternalLayout = new BorderLayout();
@@ -165,7 +169,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         {
             try
             {
-                Thread.sleep(100);
+                Thread.sleep(pandaSleep);
             }
             catch(Exception e)
             {
@@ -188,7 +192,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     {
         if (e.getSource() == menuItemHello)
         {
-            speakRequest("Hello, how are you??");
+            speakRequest(helloString);
         }
     }
 
@@ -196,7 +200,6 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     public static void main(String[] args)
     {
         PandaAgent panda = new PandaAgent();
-        // panda.speak("testtesttest");
         Thread mainThread = new Thread(panda);
         mainThread.start();
     }
