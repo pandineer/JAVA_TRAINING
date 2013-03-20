@@ -17,14 +17,28 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JWindow;
+
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import pandaAgent.extension.GoogleCalendarToday;
 
 public class PandaAgent extends JFrame implements Runnable, ActionListener
 {
     // Parameter
     private final int windowSizeX = 640;
     private final int windowSizeY = 420;
+    private final int clockPanelSizeX = 240;
+    private final int clockPanelSizeY = 40;
     private final int pandaSizeX = 240;
-    private final int pandaSizeY = 420;
+    private final int pandaSizeY = 380;
     private final int speakSpeed = 50;
     private final int speakQueueSize = 10;
     private final int speakMouthSwitchSpeed = 3;
@@ -38,6 +52,8 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     private final FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 0, 0);
     private final Container contentPane = this.getContentPane();
     private final ImagePanel balloonPanel = new ImagePanel("/pandaAgent/balloon.png");
+    private final JPanel rightPanel = new JPanel();
+    private final ClockPanel clockPanel = new ClockPanel();
     private final ImagePanel pandaPanel = new ImagePanel("/pandaAgent/panda_agent_close.png");
     private final JLabel pandaMessageLabel = new JLabel();
     private final JPanel balloonLeftPadding = new JPanel();
@@ -48,10 +64,12 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     private final JMenuItem menuItemHello = new JMenuItem("Hello");
     private final JMenu menuPreference = new JMenu("Preference");
     private final JMenuItem menuItemNetwork = new JMenuItem("Network...");
+    private final JMenuItem menuItemForTest1 = new JMenuItem("Test1");
 
     // Other
     private static final long serialVersionUID = -6637964777080358948L;
     private final Queue<String> speakQueue = new LinkedList<String>();
+    private final Thread clockThread = new Thread(clockPanel);
 
     /**
      * Request panda to speak.
@@ -76,6 +94,36 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         }
     }
 
+    /**
+     * getHttpRequestReponse
+     */
+    public HttpResponse getHttpResponse()
+    {
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+
+        // TODO: プロクシ関係の実装
+        // HttpHost proxy = null;
+        // proxy = new HttpHost(PROXY_HOST, PROXY_PORT, "http");
+        // httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+
+        // Credentials credentials = new UsernamePasswordCredentials("proxy_username", "proxu_password");
+        // AuthScope scope = new AuthScope(PROXY_HOST, PROXY_PORT);
+        // httpClient.getCredentialsProvider().setCredentials(scope, credentials);
+
+        // HttpGet request = new HttpGet("http://google.com");
+        HttpGet request = new HttpGet("http://panda.holy.jp");
+        HttpResponse httpResponse = null;
+        try
+        {
+            httpResponse = httpClient.execute(request);
+        }
+        catch (Exception e)
+        {
+            System.out.println("http request execute error. ");
+        }
+        return httpResponse;
+    }
+
     // Constructor
     public PandaAgent()
     {
@@ -91,6 +139,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
             }
         });
 
+
         // Initialize menu bar
         menuBar.add(menuPanda);
         menuBar.add(menuPreference);
@@ -99,6 +148,11 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         menuPreference.add(menuItemNetwork);
         menuItemNetwork.addActionListener(this);
 
+        // For Test
+        menuPanda.add(menuItemForTest1);
+        menuItemForTest1.addActionListener(this);
+
+        setUndecorated(true);
         // Initialaize window
         this.setVisible(true);
         this.setVisible(false);
@@ -108,19 +162,31 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         this.setVisible(true);
 
         contentPane.setLayout(layout);
+        this.setLayout(layout);
 
         // Create Panel
         balloonPanel.setPreferredSize(new Dimension(windowSizeX - pandaSizeX - 5, windowSizeY));
         contentPane.add(balloonPanel);
 
+        rightPanel.setPreferredSize(new Dimension(pandaSizeX, windowSizeY));
+        contentPane.add(rightPanel);
+
+        clockPanel.setPreferredSize(new Dimension(clockPanelSizeX, clockPanelSizeY));
+        clockThread.start();
+        rightPanel.setLayout(layout);
+        rightPanel.add(clockPanel);
+
         pandaPanel.setPreferredSize(new Dimension(pandaSizeX, pandaSizeY));
-        contentPane.add(pandaPanel);
+        rightPanel.add(pandaPanel);
 
         balloonPanel.setLayout(balloonInternalLayout);
         balloonLeftPadding.setPreferredSize(new Dimension(100, 100));
         balloonLeftPadding.setOpaque(false);
         balloonPanel.add("West", balloonLeftPadding);
         balloonPanel.add("Center", pandaMessageLabel);
+
+
+
     }
 
     private void speak(String givenPhrase)
@@ -193,6 +259,15 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         if (e.getSource() == menuItemHello)
         {
             speakRequest(helloString);
+        }
+        if (e.getSource() == menuItemNetwork)
+        {
+            // TODO: please implement
+        }
+        if (e.getSource() == menuItemForTest1)
+        {
+            GoogleCalendarToday tmp = new GoogleCalendarToday(this);
+            tmp.test();
         }
     }
 
