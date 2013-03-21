@@ -15,13 +15,13 @@ public class Mouse extends MouseAdapter
 
     public void mouseReleased(MouseEvent e)
     {
-        if (1 == e.getButton())
+        if (MouseEvent.BUTTON1 == e.getButton())
         {
             pandaAgent.setLocation(pandaAgent.getLocation().x + e.getX() - startMouse.getX(),
                     pandaAgent.getLocation().y + e.getY() - startMouse.getY());
             startMouse = null;
         }
-        else if (3 == e.getButton())
+        else if (MouseEvent.BUTTON3 == e.getButton())
         {
             ;
         }
@@ -38,11 +38,11 @@ public class Mouse extends MouseAdapter
 
     public void mousePressed(MouseEvent e)
     {
-        if (1 == e.getButton())
+        if (MouseEvent.BUTTON1 == e.getButton())
         {
             startMouse = e;
         }
-        else if (3 == e.getButton())
+        else if (MouseEvent.BUTTON3 == e.getButton())
         {
             if (e.isPopupTrigger())
             {

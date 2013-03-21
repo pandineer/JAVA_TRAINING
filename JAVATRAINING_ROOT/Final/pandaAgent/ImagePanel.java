@@ -43,14 +43,14 @@ public class ImagePanel extends JPanel {
     public void paintComponent(Graphics g) {
         Graphics2D g2D = (Graphics2D) g;
 
-        double imageWidth = image.getWidth();
-        double imageHeight = image.getHeight();
-        double panelWidth = this.getWidth();
-        double panelHeight = this.getHeight();
+        // double imageWidth = image.getWidth();
+        // double imageHeight = image.getHeight();
+        // double panelWidth = this.getWidth();
+        // double panelHeight = this.getHeight();
 
         // 画像がコンポーネントの何倍の大きさか計算
-        double sx = (panelWidth / imageWidth);
-        double sy = (panelHeight / imageHeight);
+        // double sx = (panelWidth / imageWidth);
+        // double sy = (panelHeight / imageHeight);
 
         // スケーリング
         // AffineTransform af = AffineTransform.getScaleInstance(sx, sy);
