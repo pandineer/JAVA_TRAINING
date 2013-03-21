@@ -19,6 +19,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 
+/*
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -27,6 +28,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
+*/
 
 import pandaAgent.extension.GoogleCalendarToday;
 
@@ -70,6 +72,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     private static final long serialVersionUID = -6637964777080358948L;
     private final Queue<String> speakQueue = new LinkedList<String>();
     private final Thread clockThread = new Thread(clockPanel);
+    private final Mouse mouse;
 
     /**
      * Request panda to speak.
@@ -97,6 +100,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     /**
      * getHttpRequestReponse
      */
+    /*
     public HttpResponse getHttpResponse()
     {
         DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -123,6 +127,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         }
         return httpResponse;
     }
+    */
 
     // Constructor
     public PandaAgent()
@@ -185,7 +190,10 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         balloonPanel.add("West", balloonLeftPadding);
         balloonPanel.add("Center", pandaMessageLabel);
 
-
+        // Other
+        mouse = new Mouse(this);
+        this.addMouseListener(mouse);
+        this.addMouseMotionListener(mouse);
 
     }
 
