@@ -17,7 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JWindow;
+
 
 /*
 import org.apache.http.HttpHost;
@@ -157,10 +157,11 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         menuPanda.add(menuItemForTest1);
         menuItemForTest1.addActionListener(this);
 
-        setUndecorated(true);
         // Initialaize window
+        this.setUndecorated(true);
         this.setVisible(true);
         this.setVisible(false);
+        this.setAlwaysOnTop(true);
         this.setSize(windowSizeX + this.getInsets().left + this.getInsets().right, windowSizeY + this.getInsets().top);
         this.setResizable(false);
         this.setJMenuBar(menuBar);
@@ -194,6 +195,10 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         mouse = new Mouse(this);
         this.addMouseListener(mouse);
         this.addMouseMotionListener(mouse);
+
+        // refresh
+        this.setVisible(false);
+        this.setVisible(true);
 
     }
 

@@ -3,14 +3,9 @@ package pandaAgent;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class ClockPanel extends JPanel implements Runnable
@@ -39,7 +34,7 @@ public class ClockPanel extends JPanel implements Runnable
         g.fillRect(0, 0, 240, 80);
 
         // draw date
-        g.setColor(Color.black);
+        g.setColor(fontColor);
         g.setFont(fontSetting);
         g.drawString(simpleDataFormat.format(currentDate), 0, g.getFontMetrics().getMaxAscent());
         g.setColor(Color.black);
