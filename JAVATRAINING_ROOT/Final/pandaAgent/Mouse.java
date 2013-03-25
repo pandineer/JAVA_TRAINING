@@ -36,10 +36,11 @@ public class Mouse extends MouseAdapter
         }
     }
 
-    public void mousePressed(MouseEvent e)
+    public synchronized void mousePressed(MouseEvent e)
     {
         if (MouseEvent.BUTTON1 == e.getButton())
         {
+            pandaAgent.setPandaSpeakStop(false);
             startMouse = e;
         }
     }
