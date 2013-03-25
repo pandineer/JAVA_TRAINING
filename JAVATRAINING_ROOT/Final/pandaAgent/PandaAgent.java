@@ -6,9 +6,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import javax.swing.JFrame;
@@ -17,7 +19,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
+import twitter4j.*;
 
 /*
 import org.apache.http.HttpHost;
@@ -36,7 +40,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
 {
     // Parameter
     private final int windowSizeX = 640;
-    private final int windowSizeY = 420;
+    private final int windowSizeY = 400;
     private final int clockPanelSizeX = 240;
     private final int clockPanelSizeY = 40;
     private final int pandaSizeX = 240;
@@ -51,7 +55,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
 
     // Component
     private final BorderLayout balloonInternalLayout = new BorderLayout();
-    private final FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 0, 0);
+    private final FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER, 0, 0);
     private final Container contentPane = this.getContentPane();
     private final ImagePanel balloonPanel = new ImagePanel("/pandaAgent/balloon.png");
     private final JPanel rightPanel = new JPanel();
@@ -67,12 +71,29 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     private final JMenu menuPreference = new JMenu("Preference");
     private final JMenuItem menuItemNetwork = new JMenuItem("Network...");
     private final JMenuItem menuItemForTest1 = new JMenuItem("Test1");
+    private final JMenuItem menuItemExit = new JMenuItem("Good bye");
+
+    // Popup
+    private final JPopupMenu pandaPopup = new JPopupMenu();
 
     // Other
     private static final long serialVersionUID = -6637964777080358948L;
     private final Queue<String> speakQueue = new LinkedList<String>();
     private final Thread clockThread = new Thread(clockPanel);
     private final Mouse mouse;
+
+
+
+    /**
+     * Show popup menu
+     *
+     * @param me mouse event for location information
+     * @return none
+     */
+    public void showPopup(MouseEvent me)
+    {
+        pandaPopup.show(me.getComponent(), me.getX(), me.getY());
+    }
 
     /**
      * Request panda to speak.
@@ -164,11 +185,11 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         this.setAlwaysOnTop(true);
         this.setSize(windowSizeX + this.getInsets().left + this.getInsets().right, windowSizeY + this.getInsets().top);
         this.setResizable(false);
-        this.setJMenuBar(menuBar);
+        // this.setJMenuBar(menuBar);
         this.setVisible(true);
 
-        contentPane.setLayout(layout);
-        this.setLayout(layout);
+        contentPane.setLayout(flowLayout);
+        this.setLayout(flowLayout);
 
         // Create Panel
         balloonPanel.setPreferredSize(new Dimension(windowSizeX - pandaSizeX - 5, windowSizeY));
@@ -179,7 +200,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
 
         clockPanel.setPreferredSize(new Dimension(clockPanelSizeX, clockPanelSizeY));
         clockThread.start();
-        rightPanel.setLayout(layout);
+        rightPanel.setLayout(flowLayout);
         rightPanel.add(clockPanel);
 
         pandaPanel.setPreferredSize(new Dimension(pandaSizeX, pandaSizeY));
@@ -190,6 +211,12 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         balloonLeftPadding.setOpaque(false);
         balloonPanel.add("West", balloonLeftPadding);
         balloonPanel.add("Center", pandaMessageLabel);
+
+        // Initialze Popup
+        pandaPopup.add(menuPanda);
+        pandaPopup.add(menuPreference);
+        pandaPopup.add(menuItemExit);
+        menuItemExit.addActionListener(this);
 
         // Other
         mouse = new Mouse(this);
@@ -279,8 +306,31 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         }
         if (e.getSource() == menuItemForTest1)
         {
-            GoogleCalendarToday tmp = new GoogleCalendarToday(this);
-            tmp.test();
+            // twitter
+            Twitter twitter = new TwitterFactory().getInstance();
+            try
+            {
+                Query query = new Query("Robert perker");
+                QueryResult result;
+                do
+                {
+                    result = twitter.search(query);
+                    List<Status> tweets = result.getTweets();
+                    for(Status tweet : tweets)
+                    {
+                        System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                    }
+                } while ((query = result.nextQuery()) != null);
+            }
+            catch(Exception te)
+            {
+                System.out.println(te);
+                te.printStackTrace();
+            }
+        }
+        if (e.getSource() == menuItemExit)
+        {
+            System.exit(0);
         }
     }
 
