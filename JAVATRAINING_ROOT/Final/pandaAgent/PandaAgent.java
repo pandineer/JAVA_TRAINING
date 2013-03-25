@@ -23,7 +23,7 @@ import javax.swing.JPopupMenu;
 
 import twitter4j.*;
 
-/*
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -32,13 +32,13 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
-*/
 
-import pandaAgent.extension.GoogleCalendarToday;
+
+
 
 public class PandaAgent extends JFrame implements Runnable, ActionListener
 {
-    // Parameter
+    // Fixed Parameter
     private final int windowSizeX = 640;
     private final int windowSizeY = 400;
     private final int clockPanelSizeX = 240;
@@ -49,6 +49,13 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     private final int speakQueueSize = 10;
     private final int speakMouthSwitchSpeed = 3;
     private final int pandaSleep = 100;
+
+    // Variable Parameter
+    private boolean isProxyEnable = false;
+    private String proxyHost = "";
+    private int proxyPort = 8080;
+    private String proxyUsername = "";
+    private String proxyPassword = "";
 
     // String
     private final String helloString = "Hello, how are you??";
@@ -81,8 +88,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     private final Queue<String> speakQueue = new LinkedList<String>();
     private final Thread clockThread = new Thread(clockPanel);
     private final Mouse mouse;
-
-
+    private final NetworkDialog networkDialog = new NetworkDialog(this);
 
     /**
      * Show popup menu
@@ -121,7 +127,6 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     /**
      * getHttpRequestReponse
      */
-    /*
     public HttpResponse getHttpResponse()
     {
         DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -148,7 +153,6 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         }
         return httpResponse;
     }
-    */
 
     // Constructor
     public PandaAgent()
@@ -302,7 +306,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         }
         if (e.getSource() == menuItemNetwork)
         {
-            // TODO: please implement
+            networkDialog.setVisible(true);
         }
         if (e.getSource() == menuItemForTest1)
         {
@@ -334,6 +338,56 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         }
     }
 
+
+    public final boolean isProxyEnable()
+    {
+        return isProxyEnable;
+    }
+
+    public final void setProxyEnable(boolean isProxyEnable)
+    {
+        this.isProxyEnable = isProxyEnable;
+    }
+
+    public final String getProxyHost()
+    {
+        return proxyHost;
+    }
+
+    public final void setProxyHost(String proxyHost)
+    {
+        this.proxyHost = proxyHost;
+    }
+
+    public final int getProxyPort()
+    {
+        return proxyPort;
+    }
+
+    public final void setProxyPort(int proxyPort)
+    {
+        this.proxyPort = proxyPort;
+    }
+
+    public final String getProxyUsername()
+    {
+        return proxyUsername;
+    }
+
+    public final void setProxyUsername(String proxyUsername)
+    {
+        this.proxyUsername = proxyUsername;
+    }
+
+    public final String getProxyPassword()
+    {
+        return proxyPassword;
+    }
+
+    public final void setProxyPassword(String proxyPassword)
+    {
+        this.proxyPassword = proxyPassword;
+    }
 
     public static void main(String[] args)
     {
