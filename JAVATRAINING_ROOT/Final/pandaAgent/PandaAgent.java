@@ -9,8 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 import javax.swing.JFrame;
@@ -21,14 +21,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
-import twitter4j.*;
-
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -89,7 +88,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     private final Thread clockThread = new Thread(clockPanel);
     private final Mouse mouse;
     private final NetworkDialog networkDialog = new NetworkDialog(this);
-
+    private boolean isPandaSpeakStop = false;
     /**
      * Show popup menu
      *
@@ -127,30 +126,35 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     /**
      * getHttpRequestReponse
      */
-    public HttpResponse getHttpResponse()
+    public HttpResponse getHttpResponse(String targetURL) throws IOException, ClientProtocolException
     {
         DefaultHttpClient httpClient = new DefaultHttpClient();
+        if (isProxyEnable)
+        {
+            HttpHost proxy = null;
+            proxy = new HttpHost(proxyHost, proxyPort, "http");
+            httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 
-        // TODO: プロクシ関係の実装
-        // HttpHost proxy = null;
-        // proxy = new HttpHost(PROXY_HOST, PROXY_PORT, "http");
-        // httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+            Credentials credentials = new UsernamePasswordCredentials(proxyUsername, proxyPassword);
+            AuthScope scope = new AuthScope(proxyHost, proxyPort);
+            httpClient.getCredentialsProvider().setCredentials(scope, credentials);
+        }
 
-        // Credentials credentials = new UsernamePasswordCredentials("proxy_username", "proxu_password");
-        // AuthScope scope = new AuthScope(PROXY_HOST, PROXY_PORT);
-        // httpClient.getCredentialsProvider().setCredentials(scope, credentials);
-
-        // HttpGet request = new HttpGet("http://google.com");
-        HttpGet request = new HttpGet("http://panda.holy.jp");
+        HttpGet request = new HttpGet(targetURL);
         HttpResponse httpResponse = null;
         try
         {
             httpResponse = httpClient.execute(request);
         }
-        catch (Exception e)
+        catch (ClientProtocolException e)
         {
-            System.out.println("http request execute error. ");
+            throw new ClientProtocolException("In getHttpResponse");
         }
+        catch (IOException e)
+        {
+            throw new IOException("In getHttpResponse");
+        }
+
         return httpResponse;
     }
 
@@ -233,7 +237,7 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
 
     }
 
-    private void speak(String givenPhrase)
+    private synchronized void speak(String givenPhrase)
     {
         StringBuilder speakPhrase = new StringBuilder();
         boolean isMouthOpen = true;
@@ -264,6 +268,14 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
                 }
                 pandaPanel.repaint();
             }
+            isPandaSpeakStop = true;
+            while(isPandaSpeakStop)
+            {
+                Thread.sleep(1000);
+            }
+            pandaMessageLabel.setText("");
+            pandaPanel.changeImage("/pandaAgent/panda_agent_close.png");
+            isMouthOpen = false;
         }
         catch (Exception e)
         {
@@ -310,26 +322,13 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         }
         if (e.getSource() == menuItemForTest1)
         {
-            // twitter
-            Twitter twitter = new TwitterFactory().getInstance();
             try
             {
-                Query query = new Query("Robert perker");
-                QueryResult result;
-                do
-                {
-                    result = twitter.search(query);
-                    List<Status> tweets = result.getTweets();
-                    for(Status tweet : tweets)
-                    {
-                        System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
-                    }
-                } while ((query = result.nextQuery()) != null);
+                System.out.println(getHttpResponse("http://panda.holy.jp"));
             }
-            catch(Exception te)
+            catch(Exception ex)
             {
-                System.out.println(te);
-                te.printStackTrace();
+                ;
             }
         }
         if (e.getSource() == menuItemExit)
@@ -387,6 +386,16 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     public final void setProxyPassword(String proxyPassword)
     {
         this.proxyPassword = proxyPassword;
+    }
+
+    public final boolean isPandaSpeakStop()
+    {
+        return isPandaSpeakStop;
+    }
+
+    public final void setPandaSpeakStop(boolean isPandaSpeakStop)
+    {
+        this.isPandaSpeakStop = isPandaSpeakStop;
     }
 
     public static void main(String[] args)
