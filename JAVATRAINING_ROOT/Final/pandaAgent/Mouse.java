@@ -23,7 +23,7 @@ public class Mouse extends MouseAdapter
         }
         else if (MouseEvent.BUTTON3 == e.getButton())
         {
-            ;
+            pandaAgent.showPopup(e);
         }
     }
 
@@ -41,13 +41,6 @@ public class Mouse extends MouseAdapter
         if (MouseEvent.BUTTON1 == e.getButton())
         {
             startMouse = e;
-        }
-        else if (MouseEvent.BUTTON3 == e.getButton())
-        {
-            if (e.isPopupTrigger())
-            {
-                ;
-            }
         }
     }
 }
