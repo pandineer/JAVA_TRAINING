@@ -13,11 +13,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class NetworkDialog extends JDialog implements ActionListener
+public class NetworkDialog extends JDialog implements ActionListener, ChangeListener
 {
     private static final long serialVersionUID = -263842725382458799L;
     private final PandaAgent pandaAgent;
+    private boolean newProxyEnable;
 
     // Component
     GridBagLayout layout = new GridBagLayout();
@@ -41,6 +44,7 @@ public class NetworkDialog extends JDialog implements ActionListener
 
         // Load parameter
         checkBox = new JCheckBox("Use Proxy?", pandaAgent.isProxyEnable());
+        newProxyEnable = pandaAgent.isProxyEnable();
         hostField = new JTextField(pandaAgent.getProxyHost(), 20);
         portField = new JTextField(String.valueOf(pandaAgent.getProxyPort()), 20);
         usernameField = new JTextField(pandaAgent.getProxyUsername(), 20);
@@ -74,10 +78,9 @@ public class NetworkDialog extends JDialog implements ActionListener
         this.setSize(360, 200);
         this.setResizable(false);
 
+        checkBox.addChangeListener(this);
         okButton.addActionListener(this);
         cancelButton.addActionListener(this);
-
-
     }
 
     private void addComponent(JComponent c, int x, int y, int w, int h, int anchor)
@@ -99,7 +102,10 @@ public class NetworkDialog extends JDialog implements ActionListener
             {
                 // If portField has NOT int value, throw Exception.
                 pandaAgent.setProxyPort(Integer.parseInt(portField.getText()));
-                pandaAgent.setProxyEnable(okButton.isSelected());
+                // pandaAgent.setProxyEnable(okButton.isSelected());
+                // System.out.println(okButton.isSelected());
+                pandaAgent.setProxyEnable(newProxyEnable);
+                System.out.println(newProxyEnable);
                 pandaAgent.setProxyHost(hostField.getText());
                 pandaAgent.setProxyUsername(usernameField.getText());
                 pandaAgent.setProxyPassword(new String(passwordField.getPassword()));
@@ -120,5 +126,11 @@ public class NetworkDialog extends JDialog implements ActionListener
             usernameField.setText(pandaAgent.getProxyUsername());
             passwordField.setText((pandaAgent.getProxyPassword()));
         }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e)
+    {
+        newProxyEnable = ((JCheckBox)e.getSource()).isSelected();
     }
 }
