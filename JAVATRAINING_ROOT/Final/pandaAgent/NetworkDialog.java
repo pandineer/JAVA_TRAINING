@@ -102,10 +102,7 @@ public class NetworkDialog extends JDialog implements ActionListener, ChangeList
             {
                 // If portField has NOT int value, throw Exception.
                 pandaAgent.setProxyPort(Integer.parseInt(portField.getText()));
-                // pandaAgent.setProxyEnable(okButton.isSelected());
-                // System.out.println(okButton.isSelected());
                 pandaAgent.setProxyEnable(newProxyEnable);
-                System.out.println(newProxyEnable);
                 pandaAgent.setProxyHost(hostField.getText());
                 pandaAgent.setProxyUsername(usernameField.getText());
                 pandaAgent.setProxyPassword(new String(passwordField.getPassword()));
