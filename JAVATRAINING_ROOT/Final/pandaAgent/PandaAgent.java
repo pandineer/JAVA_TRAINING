@@ -129,7 +129,6 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
     public HttpResponse getHttpResponse(String targetURL) throws IOException, ClientProtocolException
     {
         DefaultHttpClient httpClient = new DefaultHttpClient();
-        System.out.println(isProxyEnable);
         if (isProxyEnable)
         {
             HttpHost proxy = null;
@@ -139,9 +138,6 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
             Credentials credentials = new UsernamePasswordCredentials(proxyUsername, proxyPassword);
             AuthScope scope = new AuthScope(proxyHost, proxyPort);
             httpClient.getCredentialsProvider().setCredentials(scope, credentials);
-            System.out.println(proxyHost);
-            System.out.println(proxyPort);
-            System.out.println(proxyUsername);
         }
 
         HttpGet request = new HttpGet(targetURL);
@@ -152,12 +148,10 @@ public class PandaAgent extends JFrame implements Runnable, ActionListener
         }
         catch (ClientProtocolException e)
         {
-            e.printStackTrace();
             throw new ClientProtocolException("In getHttpResponse");
         }
         catch (IOException e)
         {
-            e.printStackTrace();
             throw new IOException("In getHttpResponse");
         }
 
